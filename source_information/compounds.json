@@ -1,0 +1,111 @@
+﻿[
+            {
+                "product": "NES 1B", "brand": "Nicco NESL", "minTemp": 80, "maxTemp": 200,
+                "category": "water_steam_utilities", "form": "Injectable Compound", "color": "Blue",
+                "features": "Lower temperature, water & utility service; Broad chemical compatibility; Suitable for caustic/glycol streams; Live leak injection method.",
+                "apps": "Valves, Clamps, Flanges, Pipelines"
+            },
+            {
+                "product": "NES 1/2A", "brand": "Nicco NESL", "minTemp": 100, "maxTemp": 250,
+                "category": "water_steam_utilities", "form": "Injectable Compound", "color": "Black",
+                "features": "Steam & boiler feed water service; Chemical plant utility applications; Ammonia & caustic compatible; Mid-range temperature performance.",
+                "apps": "Valves, Clamps, Flanges, Pipelines"
+            },
+            {
+                "product": "C2AT", "brand": "Beruseal", "minTemp": -60, "maxTemp": 220,
+                "category": "ptfe_gas_caustic_amine", "form": "Stick (PTFE base)", "color": "White",
+                "features": "PTFE based - Excellent chemical resistance; Injection method - no hot work; Fast, non-invasive, no downtime. (Do not use in direct oxygen/ozone).",
+                "apps": "Valves, Clamps, Flanges, Custom Engineered Tooling"
+            },
+            {
+                "product": "JNL 1240B", "brand": "Petroseal", "minTemp": -180, "maxTemp": 700,
+                "category": "water_steam_utilities", "form": "Injectable Paste", "color": "Blue/Mid Granulometry",
+                "features": "Final compression compound; Compensates for lack of enclosure adjustments; ISO 9001 certified; Asbestos free; 2-year shelf life.",
+                "apps": "Metallic Enclosures, Clamps, Flanges, G Clamps, Line Sealing"
+            },
+            {
+                "product": "JNL 1242", "brand": "Petroseal", "minTemp": -180, "maxTemp": 700,
+                "category": "water_steam_utilities", "form": "Injectable Paste", "color": "Pink / Very Fluid",
+                "features": "Dedicated reinjection compound; Very fluid - ideal for injection ring starts; Hand pump application only; ISO 9001 certified.",
+                "apps": "G Clamps, Flanges with Small Gap, Metallic Enclosures, Clamps with Injection Rings"
+            },
+            {
+                "product": "NES 2B", "brand": "Nicco NESL", "minTemp": 160, "maxTemp": 300,
+                "category": "hydrocarbons", "form": "Injectable Compound", "color": "Green",
+                "features": "High-pressure hydrocarbon service (>100 Bar); Broad refinery & petrochemical compatibility; Suitable for H2 and propane streams.",
+                "apps": "Valves, Clamps, Flanges, Pipelines"
+            },
+            {
+                "product": "NES 2C", "brand": "Nicco NESL", "minTemp": 160, "maxTemp": 350,
+                "category": "hydrocarbons", "form": "Injectable Compound", "color": "Dark Grey",
+                "features": "Extended temperature to 350°C; Hydrocarbon Service up to 100 Bar; Ammonia & methanol compatible; Suitable for refinery process lines.",
+                "apps": "Valves, Clamps, Flanges, Pipelines"
+            },
+            {
+                "product": "NES 5A", "brand": "Nicco NESL", "minTemp": -100, "maxTemp": 240,
+                "category": "hydrocarbons_cryo", "form": "Injectable Compound", "color": "White",
+                "features": "Cryogenic capable, down to -100°C; High pressure service up to 120 Bar; Suitable for DMDS & TiCl4 streams; LNG & low-temp hydrocarbons.",
+                "apps": "Valves, Clamps, Flanges, Cryogenic Pipelines"
+            },
+            {
+                "product": "NES 5B", "brand": "Nicco NESL", "minTemp": -85, "maxTemp": 240,
+                "category": "hydrocarbons_cryo", "form": "Injectable Compound", "color": "White",
+                "features": "Cryogenic capable, down to -85°C; Lower pressure hydrocarbon service (<40 Bar); Same broad fluid compatibility as NES 5A.",
+                "apps": "Valves, Clamps, Flanges, Low Temperature Pipelines"
+            },
+            {
+                "product": "JNL 1241B", "brand": "Petroseal", "minTemp": -180, "maxTemp": 700,
+                "category": "hydrocarbons", "form": "Injectable Paste", "color": "Green / Mid Granulometry",
+                "features": "Final compression for hydrocarbon applications; Compensates for lack of enclosure adjustments; ISO 9001; Incompatible with acid/solvents.",
+                "apps": "Metallic Enclosures, Clamps (final compression), Flanges, G Clamps, Line Sealing"
+            },
+            {
+                "product": "JNL 1247", "brand": "Petroseal", "minTemp": -180, "maxTemp": 700,
+                "category": "hydrocarbons", "form": "Injectable Compound", "color": "N/A",
+                "features": "Dedicated reinjection for hydrocarbon service; Very fluid - ideal for injection ring starts; Hand pump only; Incompatible with acid/solvents.",
+                "apps": "G Clamps, Flanges with Small Gap, Metallic Enclosures, Clamps with Injection Rings"
+            },
+            {
+                "product": "C7", "brand": "Beruseal", "minTemp": 300, "maxTemp": 500,
+                "category": "hydrocarbons", "form": "Injectable Stick (NBR base)", "color": "Black",
+                "features": "NBR base - Graphite-coated, glass fibre filled; Excellent thermal resistance up to 500°C; Fast, non-invasive repair. (No direct oxygen/ozone).",
+                "apps": "Valves, Clamps, Flanges, Custom Engineered Tooling"
+            },
+            {
+                "product": "NES 2F", "brand": "Nicco NESL", "minTemp": 250, "maxTemp": 450,
+                "category": "superheated_steam", "form": "Injectable Compound", "color": "Black",
+                "features": "Specialist superheated steam compound; Bridges mid-to-extreme temperature ranges; High-temp refinery & power station service; Live injection.",
+                "apps": "Valves, Clamps, Flanges, High-Temperature Pipelines"
+            },
+            {
+                "product": "NES 2H", "brand": "Nicco NESL", "minTemp": 450, "maxTemp": 850,
+                "category": "superheated_steam", "form": "Injectable Compound", "color": "Dark Blue",
+                "features": "Extreme high-temperature capability to 850°C; Suitable for fired equipment & steam headers; Specialist consultation recommended.",
+                "apps": "Valves, Clamps, Flanges, Extreme High-Temperature Lines"
+            },
+            {
+                "product": "NES 9E", "brand": "Nicco NESL", "minTemp": -40, "maxTemp": 160,
+                "category": "acids_chemicals", "form": "Injectable Compound", "color": "White",
+                "features": "Specialist HCl & halogenated acid compound; Below ambient to moderate temperature range; Glycol & alcohol compatible.",
+                "apps": "Valves, Clamps, Flanges, Acid Service Lines"
+            },
+            {
+                "product": "NES 8A", "brand": "Nicco NESL", "minTemp": -200, "maxTemp": 350,
+                "category": "acids_chemicals", "form": "Injectable Compound", "color": "Dark Grey",
+                "features": "Carboxylic & glacial acetic acid service; Suitable for thermic fluids; Chlorine & benzene compatible. Note: Corrosive media check.",
+                "apps": "Valves, Clamps, Flanges, Chemical Plant Lines"
+            },
+            {
+                "product": "JNL 1249", "brand": "Petroseal", "minTemp": -200, "maxTemp": 260,
+                "category": "acids_chemicals", "form": "Injectable Paste", "color": "White / Very Fluid",
+                "features": "Primary injection for acid/chemical service; Very fluid - ideal for stud filling; Incompatible with gasoline & hydrocarbons.",
+                "apps": "Clamps, Flanges, G-Clamps"
+            },
+            {
+                "product": "JNL 1249F", "brand": "Petroseal", "minTemp": -200, "maxTemp": 260,
+                "category": "acids_chemicals", "form": "Paste (High Density)", "color": "White / Fibered",
+                "features": "High density fibered acid/chemical compound; Used when enclosure has large volume or poor fit; Incompatible with gasoline.",
+                "apps": "Enclosures, Clamps, Line Sealing"
+            }
+        ]
+

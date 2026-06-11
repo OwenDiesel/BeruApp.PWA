@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#b01722" />
+  <meta name="description" content="BeruApp engineering calculators and reference tools." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <title>BeruApp</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #242424;
+      --muted: #6d6d6d;
+      --label: #3f3f3f;
+      --line: #d8d8d8;
+      --line-strong: #bdbdbd;
+      --panel: #ffffff;
+      --page: #f3f4f5;
+      --page-highlight: rgba(255,255,255,.78);
+      --page-wash: rgba(222,224,226,.94);
+      --brand: #b01722;
+      --brand-dark: #89121a;
+      --accent: #6f6f6f;
+      --sidebar: #2d2d2d;
+      --sidebar-ink: #f7f7f7;
+      --sidebar-muted: #d4d4d4;
+      --sidebar-line: rgba(255,255,255,.13);
+      --nav-active: #ffffff;
+      --nav-active-text: #242424;
+      --input-bg: #ffffff;
+      --input-line: #c8c8c8;
+      --table-bg: #ffffff;
+      --table-head: #f0f1f2;
+      --card-bg: #ffffff;
+      --result-bg: #fafafa;
+      --result-line: #d9d9d9;
+      --working-bg: #242424;
+      --working-ink: #f7f7f7;
+      --notice-bg: #fcfcfc;
+      --notice-line: #bababa;
+      --pill-bg: #f1e7e8;
+      --pill-ink: #89121a;
+      --secondary: #686868;
+      --secondary-hover: #4f4f4f;
+      --focus: rgba(176,23,34,.22);
+      --button-shadow: rgba(176,23,34,.2);
+      --ok-bg: #e8f5ee;
+      --ok-line: #b8dfc8;
+      --ok: #16784c;
+      --danger-bg: #fff0f1;
+      --danger-line: #efbdc2;
+      --warn: #b54708;
+      --danger: #b42318;
+      --shadow: 0 16px 48px rgba(16, 24, 40, 0.10);
+    }
+
+    body[data-theme="dark"] {
+      color-scheme: dark;
+      --ink: #f4f4f4;
+      --muted: #b8b8b8;
+      --label: #dddddd;
+      --line: #444444;
+      --line-strong: #666666;
+      --panel: #222222;
+      --page: #151515;
+      --page-highlight: rgba(48,48,48,.55);
+      --page-wash: rgba(20,20,20,.96);
+      --brand: #d21f2a;
+      --brand-dark: #f0444d;
+      --accent: #a8a8a8;
+      --sidebar: #101010;
+      --sidebar-ink: #ffffff;
+      --sidebar-muted: #c9c9c9;
+      --sidebar-line: rgba(255,255,255,.12);
+      --nav-active: #d21f2a;
+      --nav-active-text: #ffffff;
+      --input-bg: #2c2c2c;
+      --input-line: #5d5d5d;
+      --table-bg: #252525;
+      --table-head: #303030;
+      --card-bg: #262626;
+      --result-bg: #292929;
+      --result-line: #4c4c4c;
+      --working-bg: #111111;
+      --working-ink: #f7f7f7;
+      --notice-bg: #242424;
+      --notice-line: #666666;
+      --pill-bg: #3a1c20;
+      --pill-ink: #ffb8bd;
+      --secondary: #5f5f5f;
+      --secondary-hover: #787878;
+      --focus: rgba(210,31,42,.28);
+      --button-shadow: rgba(210,31,42,.24);
+      --ok-bg: #173629;
+      --ok-line: #2f7655;
+      --danger-bg: #3a171a;
+      --danger-line: #8d3139;
+      --shadow: 0 16px 48px rgba(0, 0, 0, 0.34);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Century Gothic", "CenturyGothic", Arial, sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, var(--page-highlight), var(--page) 34%, var(--page-wash)),
+        var(--page);
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      background: var(--sidebar);
+      color: var(--sidebar-ink);
+      padding: 22px 18px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      box-shadow: inset -1px 0 0 var(--sidebar-line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      padding: 8px 8px 22px;
+      border-bottom: 1px solid var(--sidebar-line);
+      margin-bottom: 18px;
+    }
+
+    .brand-logo {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 8px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+    }
+
+    nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nav-item {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--sidebar-muted);
+      text-align: left;
+      padding: 12px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: transform .18s ease, background-color .18s ease, color .18s ease, box-shadow .18s ease;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: var(--nav-active);
+      color: var(--nav-active-text);
+      transform: translateX(3px);
+      box-shadow: 0 10px 22px rgba(0,0,0,.16);
+    }
+
+    main {
+      padding: 26px;
+      min-width: 0;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 0 0 auto;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .topbar p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      max-width: 760px;
+      line-height: 1.45;
+    }
+
+    .status {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--ok-bg);
+      color: var(--ok);
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--ok-line);
+    }
+
+    .status.error {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border-color: var(--danger-line);
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 8px 18px rgba(0,0,0,.06);
+    }
+
+    .theme-option {
+      min-height: 34px;
+      padding: 7px 11px;
+      background: transparent;
+      color: var(--muted);
+      box-shadow: none;
+    }
+
+    .theme-option:hover {
+      background: var(--result-bg);
+      color: var(--ink);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .theme-option.active {
+      background: var(--brand);
+      color: #ffffff;
+    }
+
+    .view { display: none; }
+    .view.active {
+      display: block;
+      animation: viewIn .22s ease-out;
+    }
+
+    @keyframes viewIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 18px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-1px);
+      border-color: var(--line-strong);
+      box-shadow: 0 20px 54px rgba(16, 24, 40, 0.13);
+    }
+
+    .section h3 {
+      margin: 0 0 16px;
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .grid.two { grid-template-columns: repeat(2, minmax(180px, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(160px, 1fr)); }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--label);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid var(--input-line);
+      background: var(--input-bg);
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 10px 11px;
+      min-height: 42px;
+      font-size: 14px;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 2px solid var(--focus);
+      border-color: var(--brand);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 15px;
+      min-height: 42px;
+      font-weight: 800;
+      cursor: pointer;
+      background: var(--brand);
+      color: white;
+      font-size: 14px;
+      transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+    }
+
+    button:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px var(--button-shadow);
+    }
+
+    button:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .secondary {
+      background: var(--secondary);
+    }
+
+    .secondary:hover {
+      background: var(--secondary-hover);
+    }
+
+    .result,
+    .working {
+      display: none;
+      margin-top: 16px;
+      border-radius: 8px;
+      padding: 16px;
+      line-height: 1.5;
+    }
+
+    .result {
+      background: var(--result-bg);
+      border: 1px solid var(--result-line);
+      border-left: 4px solid var(--brand);
+      white-space: pre-line;
+    }
+
+    .working {
+      background: var(--working-bg);
+      color: var(--working-ink);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--table-bg);
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+
+    th,
+    td {
+      padding: 11px 13px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--table-head);
+      color: var(--label);
+      font-size: 13px;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .compound-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card-bg);
+      padding: 16px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .compound-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      box-shadow: 0 14px 30px rgba(16,24,40,.10);
+    }
+
+    .compound-card h4 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .compound-card .meta {
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+      margin: 4px 0 12px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: var(--pill-bg);
+      color: var(--pill-ink);
+      font-weight: 800;
+      font-size: 12px;
+      margin: 0 6px 8px 0;
+    }
+
+    .notice {
+      color: var(--muted);
+      padding: 18px;
+      border: 1px dashed var(--notice-line);
+      border-radius: 8px;
+      background: var(--notice-bg);
+    }
+
+    .error-text { color: var(--danger); font-weight: 800; }
+
+    .inline-lookup {
+      display: grid;
+      grid-template-columns: minmax(240px, 360px) minmax(210px, 1fr);
+      gap: 14px;
+      align-items: end;
+    }
+
+    .od-panel {
+      min-height: 66px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--brand);
+      border-radius: 8px;
+      background: var(--result-bg);
+      padding: 10px 14px;
+      display: grid;
+      gap: 2px;
+    }
+
+    .od-panel span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+
+    .od-panel strong {
+      font-size: 24px;
+      line-height: 1.1;
+      color: var(--brand);
+    }
+
+    .calc-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .calc-panel { display: none; }
+    .calc-panel.active { display: block; }
+
+    .mini-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--result-bg);
+      padding: 13px;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .metric strong {
+      font-size: 20px;
+    }
+
+    @media (max-width: 860px) {
+      .shell { grid-template-columns: 1fr; }
+      aside {
+        position: static;
+        height: auto;
+      }
+      nav { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .topbar-actions { width: 100%; justify-content: space-between; }
+      .inline-lookup { grid-template-columns: 1fr; }
+      .grid,
+      .grid.two,
+      .grid.three { grid-template-columns: 1fr; }
+      main { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">
+        <img class="brand-logo" src="assets/beruapp-logo.jpg" alt="BeruApp logo">
+      </div>
+      <nav>
+        <button class="nav-item active" data-view="compoundCalculator">Compound Calculator</button>
+        <button class="nav-item" data-view="compoundSelector">Compound Selector</button>
+        <button class="nav-item" data-view="pipeScheduleLookup">Pipe Schedule</button>
+        <button class="nav-item" data-view="ansiFlanges">ANSI Flanges</button>
+        <button class="nav-item" data-view="weldingProcedure">WPS Library</button>
+        <button class="nav-item" data-view="unitConverter">Unit Converter</button>
+        <button class="nav-item" data-view="nonCircularCalc">Non-Circular</button>
+        <button class="nav-item" data-view="circularCalc">Circular</button>
+        <button class="nav-item" data-view="boltStandaloneCalc">Bolt Standalone</button>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div>
+          <h2 id="viewTitle">Compound Calculator</h2>
+          <p id="viewDescription">Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences.</p>
+        </div>
+        <div class="topbar-actions">
+          <div class="theme-toggle" role="group" aria-label="Theme setting">
+            <button type="button" class="theme-option" data-theme-choice="light">Light</button>
+            <button type="button" class="theme-option" data-theme-choice="dark">Dark</button>
+          </div>
+          <div id="dataStatus" class="status">Loading source data</div>
+        </div>
+      </div>
+
+      <section id="compoundCalculator" class="view active">
+        <div class="section">
+          <h3>Sealing Groove Volume</h3>
+          <div class="grid">
+            <label>Clamp length (mm)<input type="number" id="clampLength" placeholder="200"></label>
+            <label>Clamp width (mm)<input type="number" id="clampWidth" placeholder="150"></label>
+            <label>Groove width (mm)<input type="number" id="grooveWidth" placeholder="15"></label>
+            <label>Groove depth (mm)<input type="number" id="grooveDepth" placeholder="10"></label>
+            <label>Pipe OD (mm)<input type="number" id="pipeOD" placeholder="60.3"></label>
+            <label>Number of bores<input type="number" id="numBores" value="2"></label>
+            <label>Stick volume (mm3)<input type="number" id="stickVolume" value="14074"></label>
+          </div>
+          <div class="actions">
+            <button class="secondary" data-action="showGrooveWorking">Show Formula & Working</button>
+          </div>
+          <div class="result" id="resultGroove"></div>
+          <div class="working" id="workingGroove"></div>
+        </div>
+
+        <div class="section">
+          <h3>Annular Void Fill</h3>
+          <div class="grid">
+            <label>Internal length (mm)<input type="number" id="internalLength" placeholder="100"></label>
+            <label>Clamp ID (mm)<input type="number" id="clampID" placeholder="120"></label>
+            <label>Pipe OD (mm)<input type="number" id="pipeOD2" placeholder="60.3"></label>
+            <label>Stick volume (mm3)<input type="number" id="stickVolume2" value="14074"></label>
+          </div>
+          <div class="actions">
+            <button class="secondary" data-action="showVoidWorking">Show Formula & Working</button>
+          </div>
+          <div class="result" id="resultVoid"></div>
+          <div class="working" id="workingVoid"></div>
+        </div>
+
+        <div class="section">
+          <h3>Square Cavity Fill</h3>
+          <div class="grid">
+            <label>Cavity length (mm)<input type="number" id="sqLength" placeholder="150"></label>
+            <label>Cavity depth (mm)<input type="number" id="sqDepth" placeholder="80"></label>
+            <label>Cavity width (mm)<input type="number" id="sqWidth" placeholder="120"></label>
+            <label>Pipe OD (mm)<input type="number" id="pipeOD3" placeholder="48.3"></label>
+            <label>Pipe length in cavity (mm)<input type="number" id="pipeLength" placeholder="150"></label>
+            <label>Stick volume (mm3)<input type="number" id="stickVolume3" value="14074"></label>
+          </div>
+          <div class="actions">
+            <button class="secondary" data-action="showSquareWorking">Show Formula & Working</button>
+          </div>
+          <div class="result" id="resultSquareVoid"></div>
+          <div class="working" id="workingSquareVoid"></div>
+        </div>
+
+        <div class="section">
+          <h3>Known Volume Difference</h3>
+          <div class="grid three">
+            <label>Cavity volume (mm3)<input type="number" id="cavityVolumeInput" placeholder="500000"></label>
+            <label>Existing volume (mm3)<input type="number" id="existingVolumeInput" placeholder="150000"></label>
+            <label>Stick volume (mm3)<input type="number" id="stickVolume4" value="14074"></label>
+          </div>
+          <div class="actions">
+            <button class="secondary" data-action="showDifferenceWorking">Show Formula & Working</button>
+          </div>
+          <div class="result" id="resultDifference"></div>
+          <div class="working" id="workingDifference"></div>
+        </div>
+      </section>
+
+      <section id="compoundSelector" class="view">
+        <div class="section">
+          <h3>Compound Selector</h3>
+          <div class="grid two">
+            <label>Fluid category
+              <select id="searchCategory">
+                <option value="">Select category</option>
+                <option value="water_steam_utilities">Water, steam & utilities</option>
+                <option value="hydrocarbons">Hydrocarbons</option>
+                <option value="hydrocarbons_cryo">Hydrocarbons, cryogenic</option>
+                <option value="superheated_steam">Superheated steam</option>
+                <option value="ptfe_gas_caustic_amine">PTFE, gas, caustic & amine</option>
+                <option value="acids_chemicals">Acids & chemicals</option>
+              </select>
+            </label>
+          </div>
+          <div class="cards" id="compoundResultsGrid">
+            <div class="notice">Select a category to list matching compounds from the source information.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pipeScheduleLookup" class="view">
+        <div class="section">
+          <h3>Pipe Schedule Lookup</h3>
+          <div class="inline-lookup">
+            <label>Nominal pipe size
+              <select id="npsSelect"></select>
+            </label>
+            <div class="od-panel" id="pipeOdPanel">
+              <span>Outside diameter (OD)</span>
+              <strong>Select a size</strong>
+            </div>
+          </div>
+          <div class="result" id="pipeResult"></div>
+        </div>
+      </section>
+
+      <section id="ansiFlanges" class="view">
+        <div class="section">
+          <h3>ANSI B16.5 Flange Dimensions</h3>
+          <div class="grid three">
+            <label>Nominal pipe size
+              <select id="npsFlangeSelect"></select>
+            </label>
+            <label>Pressure class
+              <select id="classFlangeSelect">
+                <option value="150">Class 150</option>
+                <option value="300">Class 300</option>
+                <option value="400">Class 400</option>
+                <option value="600">Class 600</option>
+                <option value="900">Class 900</option>
+                <option value="1500">Class 1500</option>
+                <option value="2500">Class 2500</option>
+              </select>
+            </label>
+            <label>Flange type
+              <select id="typeFlangeSelect">
+                <option value="WN">Weld Neck</option>
+                <option value="SO">Slip On</option>
+              </select>
+            </label>
+          </div>
+          <div class="result" id="flangeResult"></div>
+        </div>
+      </section>
+
+      <section id="weldingProcedure" class="view">
+        <div class="section">
+          <h3>Welding Procedure Specifications</h3>
+          <div class="grid two">
+            <label>WPS
+              <select id="wpsSelect"></select>
+            </label>
+          </div>
+          <div class="result" id="wpsResult"></div>
+        </div>
+      </section>
+
+      <section id="unitConverter" class="view">
+        <div class="section">
+          <h3>Length Conversion</h3>
+          <div class="grid three">
+            <label>Value<input type="number" id="lengthInput" placeholder="Enter value"></label>
+            <label>From<select id="lengthFrom"></select></label>
+            <label>To<select id="lengthTo"></select></label>
+          </div>
+          <div class="result" id="lengthResult"></div>
+        </div>
+
+        <div class="section">
+          <h3>Volume Conversion</h3>
+          <div class="grid three">
+            <label>Value<input type="number" id="volumeInput" placeholder="Enter value"></label>
+            <label>From<select id="volumeFrom"></select></label>
+            <label>To<select id="volumeTo"></select></label>
+          </div>
+          <div class="result" id="volumeResult"></div>
+        </div>
+
+        <div class="section">
+          <h3>Pressure Conversion</h3>
+          <div class="grid three">
+            <label>Value<input type="number" id="pressureInput" placeholder="Enter value"></label>
+            <label>From<select id="pressureFrom"></select></label>
+            <label>To<select id="pressureTo"></select></label>
+          </div>
+          <div class="result" id="pressureResult"></div>
+        </div>
+
+        <div class="section">
+          <h3>Quick Volume Tools</h3>
+          <div class="grid three">
+            <label>Length (mm)<input type="number" id="rectLength" placeholder="L"></label>
+            <label>Width (mm)<input type="number" id="rectWidth" placeholder="W"></label>
+            <label>Height (mm)<input type="number" id="rectHeight" placeholder="H"></label>
+          </div>
+          <div class="result" id="rectVolumeResult"></div>
+
+          <div style="height:18px"></div>
+          <div class="grid two">
+            <label>Diameter (mm)<input type="number" id="cylDiameter" placeholder="D"></label>
+            <label>Length (mm)<input type="number" id="cylLength" placeholder="L"></label>
+          </div>
+          <div class="result" id="cylVolumeResult"></div>
+        </div>
+      </section>
+
+      <section id="nonCircularCalc" class="view">
+        <div class="section">
+          <h3>Non-Circular UG-34</h3>
+          <div class="grid three">
+            <label>Design pressure Pm (MPa)<input type="number" id="ncPressure" value="1"></label>
+            <label>Design temperature (C)<input type="number" id="ncTemp" value="40"></label>
+            <label>Corrosion allowance (mm)<input type="number" id="ncCA" value="0"></label>
+            <label>Clamp material<select id="ncMaterial"></select></label>
+            <label>Shell joint<select id="ncShellJoint"><option>Machined</option><option>Welded</option></select></label>
+            <label>Endplate joint<select id="ncEndJoint"><option>Machined</option><option>Welded</option></select></label>
+            <label>Short side cavity H (mm)<input type="number" id="ncH" value="150"></label>
+            <label>Long side cavity h (mm)<input type="number" id="ncSmallH" value="150"></label>
+            <label>Required shell thickness tr (mm)<input type="number" id="ncTr" value="23.67"></label>
+            <label>Actual short side thickness (mm)<input type="number" id="ncT1a" value="25"></label>
+            <label>Actual long side thickness (mm)<input type="number" id="ncT2a" value="25"></label>
+            <label>Actual endplate thickness (mm)<input type="number" id="ncEndActual" value="12"></label>
+          </div>
+          <div class="result" id="nonCircularResult"></div>
+        </div>
+      </section>
+
+      <section id="circularCalc" class="view">
+        <div class="section">
+          <h3>Circular UG-27 and UG-34</h3>
+          <div class="grid three">
+            <label>Design pressure Pm (MPa)<input type="number" id="circPressure" value="1"></label>
+            <label>Design temperature (C)<input type="number" id="circTemp" value="40"></label>
+            <label>Corrosion allowance (mm)<input type="number" id="circCA" value="0"></label>
+            <label>Shell material<select id="circShellMaterial"></select></label>
+            <label>Endplate material<select id="circEndMaterial"></select></label>
+            <label>Joint efficiency E<select id="circJoint"><option value="1">Machined / 1.0</option><option value="0.7" selected>Welded / 0.7</option></select></label>
+            <label>Outside diameter Do (mm)<input type="number" id="circOD" value="108"></label>
+            <label>Inside diameter Di (mm)<input type="number" id="circID" value="88"></label>
+            <label>Endplate diameter D1 (mm)<input type="number" id="circEndDiameter" value="48"></label>
+            <label>Actual cylinder thickness (mm)<input type="number" id="circShellActual" value="10"></label>
+            <label>Actual endplate thickness (mm)<input type="number" id="circEndActual" value="16"></label>
+          </div>
+          <div class="result" id="circularResult"></div>
+        </div>
+      </section>
+
+      <section id="boltStandaloneCalc" class="view">
+        <div class="section">
+          <h3>Bolt Standalone</h3>
+          <div class="grid three">
+            <label>Design pressure Pm (MPa)<input type="number" id="boltPressure" value="1"></label>
+            <label>Design temperature (C)<input type="number" id="boltTemp" value="40"></label>
+            <label>Bolt material<select id="boltMaterial"></select></label>
+            <label>Pressure area (mm2)<input type="number" id="boltArea" value="17671.46"></label>
+            <label>Number of bolts<input type="number" id="boltCount" value="2"></label>
+            <label>Required bolt size<select id="boltSize"></select></label>
+            <label>Diametrical clearance (mm)<input type="number" id="boltClearance" value="2"></label>
+            <label>Bolt preload (% of Sy)<input type="number" id="boltPreload" value="50"></label>
+            <label>Friction coefficient<input type="number" id="boltFriction" value="0.16" step="0.01"></label>
+          </div>
+          <div class="result" id="boltStandaloneResult"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const DATA_PATH = "source_information/";
+    const state = { pipes: {}, flanges: {}, wps: {}, compounds: [], engineering: { materials: [], boltMaterials: [], boltSizes: [] } };
+    const titles = {
+      compoundCalculator: ["Compound Calculator", "Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences."],
+      compoundSelector: ["Compound Selector", "Shortlist compounds by service category."],
+      pipeScheduleLookup: ["Pipe Schedule", "Look up outside diameter and schedule wall thickness by NPS."],
+      ansiFlanges: ["ANSI Flanges", "Look up ANSI B16.5 weld neck and slip-on flange dimensions."],
+      weldingProcedure: ["WPS Library", "Review welding procedure variables from the source information."],
+      unitConverter: ["Unit Converter", "Convert length, volume, pressure, and calculate simple volumes."],
+      nonCircularCalc: ["Non-Circular", ""],
+      circularCalc: ["Circular", ""],
+      boltStandaloneCalc: ["Bolt Standalone", ""]
+    };
+
+    const fmt = (value, digits = 2) => Number(value).toLocaleString(undefined, { maximumFractionDigits: digits });
+    const fmtComma = (value, digits = 1) => fmt(value, digits).replace(".", ",");
+    const byId = id => document.getElementById(id);
+    const num = id => parseFloat(byId(id).value);
+    const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+    const THEME_KEY = "beruapp-theme";
+    const liveCalculators = [
+      {
+        fields: ["clampLength", "clampWidth", "grooveWidth", "grooveDepth", "pipeOD", "numBores", "stickVolume"],
+        required: ["clampLength", "clampWidth", "grooveWidth", "grooveDepth", "pipeOD", "numBores", "stickVolume"],
+        resultIds: ["resultGroove"],
+        workingId: "workingGroove",
+        calculate: calculateGrooveVolume
+      },
+      {
+        fields: ["internalLength", "clampID", "pipeOD2", "stickVolume2"],
+        required: ["internalLength", "clampID", "pipeOD2", "stickVolume2"],
+        resultIds: ["resultVoid"],
+        workingId: "workingVoid",
+        calculate: calculateVoidVolume
+      },
+      {
+        fields: ["sqLength", "sqDepth", "sqWidth", "pipeOD3", "pipeLength", "stickVolume3"],
+        required: ["sqLength", "sqDepth", "sqWidth", "pipeOD3", "pipeLength", "stickVolume3"],
+        resultIds: ["resultSquareVoid"],
+        workingId: "workingSquareVoid",
+        calculate: calculateSquareVoidVolume
+      },
+      {
+        fields: ["cavityVolumeInput", "existingVolumeInput", "stickVolume4"],
+        required: ["cavityVolumeInput", "existingVolumeInput", "stickVolume4"],
+        resultIds: ["resultDifference"],
+        workingId: "workingDifference",
+        calculate: calculateDifferenceVolume
+      },
+      {
+        fields: ["rectLength", "rectWidth", "rectHeight"],
+        required: ["rectLength", "rectWidth", "rectHeight"],
+        resultIds: ["rectVolumeResult"],
+        calculate: calcRectangularVolume
+      },
+      {
+        fields: ["cylDiameter", "cylLength"],
+        required: ["cylDiameter", "cylLength"],
+        resultIds: ["cylVolumeResult"],
+        calculate: calcCylindricalVolume
+      },
+      {
+        fields: ["ncPressure", "ncTemp", "ncCA", "ncMaterial", "ncShellJoint", "ncEndJoint", "ncH", "ncSmallH", "ncTr", "ncT1a", "ncT2a", "ncEndActual"],
+        required: ["ncPressure", "ncTemp", "ncCA", "ncMaterial", "ncShellJoint", "ncEndJoint", "ncH", "ncSmallH", "ncTr", "ncT1a", "ncT2a", "ncEndActual"],
+        resultIds: ["nonCircularResult"],
+        calculate: calculateNonCircular
+      },
+      {
+        fields: ["circPressure", "circTemp", "circCA", "circShellMaterial", "circEndMaterial", "circJoint", "circOD", "circID", "circEndDiameter", "circShellActual", "circEndActual"],
+        required: ["circPressure", "circTemp", "circCA", "circShellMaterial", "circEndMaterial", "circJoint", "circOD", "circID", "circEndDiameter", "circShellActual", "circEndActual"],
+        resultIds: ["circularResult"],
+        calculate: calculateCircular
+      },
+      {
+        fields: ["boltPressure", "boltTemp", "boltMaterial", "boltArea", "boltCount", "boltSize", "boltClearance", "boltPreload", "boltFriction"],
+        required: ["boltPressure", "boltTemp", "boltMaterial", "boltArea", "boltCount", "boltSize", "boltClearance", "boltPreload", "boltFriction"],
+        resultIds: ["boltStandaloneResult"],
+        calculate: calculateBoltStandalone
+      }
+    ];
+
+    function applyTheme(theme, persist = true) {
+      const selected = theme === "dark" ? "dark" : "light";
+      document.body.dataset.theme = selected;
+      document.querySelectorAll("[data-theme-choice]").forEach(button => {
+        button.classList.toggle("active", button.dataset.themeChoice === selected);
+      });
+      if (persist) {
+        try { localStorage.setItem(THEME_KEY, selected); } catch {}
+      }
+    }
+
+    function initTheme() {
+      let saved = "";
+      try { saved = localStorage.getItem(THEME_KEY) || ""; } catch {}
+      applyTheme(saved || "light", false);
+    }
+
+    function fieldHasValue(id) {
+      const element = byId(id);
+      return Boolean(element && String(element.value).trim() !== "");
+    }
+
+    function hideLiveOutputs(config) {
+      config.resultIds.forEach(id => {
+        const element = byId(id);
+        if (!element) return;
+        element.textContent = "";
+        element.innerHTML = "";
+        element.style.display = "none";
+      });
+      if (config.workingId) {
+        const working = byId(config.workingId);
+        if (working) working.style.display = "none";
+      }
+    }
+
+    function runLiveCalculator(config) {
+      if (config.required.some(id => !fieldHasValue(id))) {
+        hideLiveOutputs(config);
+        return;
+      }
+      config.calculate();
+    }
+
+    function runLiveForTarget(id) {
+      liveCalculators
+        .filter(config => config.fields.includes(id))
+        .forEach(runLiveCalculator);
+    }
+
+    function runAllLiveCalculators() {
+      liveCalculators.forEach(runLiveCalculator);
+      convertLength();
+      convertVolume();
+      convertPressure();
+    }
+
+    document.addEventListener("click", event => {
+      const theme = event.target.closest("[data-theme-choice]");
+      if (theme) {
+        applyTheme(theme.dataset.themeChoice);
+        return;
+      }
+
+      const nav = event.target.closest("[data-view]");
+      if (nav) navigate(nav.dataset.view, nav);
+
+      const action = event.target.closest("[data-action]");
+      if (action) window[action.dataset.action]?.();
+    });
+
+    document.addEventListener("change", event => {
+      if (event.target.id === "searchCategory") searchCompounds();
+      if (event.target.id === "npsSelect") showPipeData();
+      if (["npsFlangeSelect", "classFlangeSelect", "typeFlangeSelect"].includes(event.target.id)) showFlangeData();
+      if (event.target.id === "wpsSelect") showWpsData();
+      if (["lengthFrom", "lengthTo"].includes(event.target.id)) convertLength();
+      if (["volumeFrom", "volumeTo"].includes(event.target.id)) convertVolume();
+      if (["pressureFrom", "pressureTo"].includes(event.target.id)) convertPressure();
+      runLiveForTarget(event.target.id);
+    });
+
+    document.addEventListener("input", event => {
+      if (event.target.id === "lengthInput") convertLength();
+      if (event.target.id === "volumeInput") convertVolume();
+      if (event.target.id === "pressureInput") convertPressure();
+      runLiveForTarget(event.target.id);
+    });
+
+    initTheme();
+
+    async function loadDatabases() {
+      const status = byId("dataStatus");
+      try {
+        const [pipes, flanges, wps, compounds, engineering] = await Promise.all([
+          fetchJson("pipes.json"),
+          fetchJson("flanges.json"),
+          fetchJson("wps.json"),
+          fetchJson("compounds.json"),
+          fetchJson("engineering_calcs.json")
+        ]);
+        state.pipes = pipes;
+        state.flanges = flanges;
+        state.wps = wps;
+        state.compounds = compounds;
+        state.engineering = engineering;
+        populatePipeSelects();
+        populateWpsDropdown();
+        populateUnitSelects();
+        populateEngineeringSelects();
+        updatePipeOdPanel();
+        showPipeData();
+        showFlangeData();
+        showWpsData();
+        runAllLiveCalculators();
+        status.textContent = "Source data loaded";
+        status.classList.remove("error");
+      } catch (error) {
+        status.textContent = "Source data unavailable";
+        status.classList.add("error");
+        console.error(error);
+      }
+    }
+
+    async function fetchJson(file) {
+      const response = await fetch(DATA_PATH + file);
+      if (!response.ok) throw new Error(`Could not load ${file}`);
+      return response.json();
+    }
+
+    function navigate(viewId, element) {
+      document.querySelectorAll(".view").forEach(view => view.classList.toggle("active", view.id === viewId));
+      document.querySelectorAll(".nav-item").forEach(button => button.classList.remove("active"));
+      element.classList.add("active");
+      byId("viewTitle").textContent = titles[viewId][0];
+      byId("viewDescription").textContent = titles[viewId][1];
+      byId("viewDescription").style.display = titles[viewId][1] ? "block" : "none";
+    }
+
+    function populatePipeSelects() {
+      const options = Object.keys(state.pipes).map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
+      byId("npsSelect").innerHTML = `<option value="">Select pipe size</option>${options}`;
+      const flangeOptions = Object.keys(state.flanges)
+        .map(key => key.replace("NPS_", ""))
+        .map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
+      byId("npsFlangeSelect").innerHTML = `<option value="">Select pipe size</option>${flangeOptions}`;
+    }
+
+    function updatePipeOdPanel() {
+      const panel = byId("pipeOdPanel");
+      if (!panel) return;
+      const nps = byId("npsSelect").value;
+      const od = state.pipes[nps]?.od;
+      panel.innerHTML = `<span>Outside diameter (OD)</span><strong>${od ? `${fmtComma(od, 1)} mm` : "Select a size"}</strong>`;
+    }
+
+    function populateWpsDropdown() {
+      byId("wpsSelect").innerHTML = `<option value="">Select WPS</option>` +
+        Object.keys(state.wps).map(key => `<option value="${esc(key)}">${esc(key)}</option>`).join("");
+    }
+
+    function populateUnitSelects() {
+      fillOptions("lengthFrom", [["mm","mm"],["cm","cm"],["m","m"],["km","km"],["inch","inch"],["foot","foot"],["yard","yard"],["mile","mile"]], "mm");
+      fillOptions("lengthTo", [["mm","mm"],["cm","cm"],["m","m"],["km","km"],["inch","inch"],["foot","foot"],["yard","yard"],["mile","mile"]], "inch");
+      fillOptions("volumeFrom", [["mm3","mm3"],["cm3","cm3"],["L","L"],["m3","m3"],["in3","in3"],["ft3","ft3"],["us_gal","US gal"]], "mm3");
+      fillOptions("volumeTo", [["mm3","mm3"],["cm3","cm3"],["L","L"],["m3","m3"],["in3","in3"],["ft3","ft3"],["us_gal","US gal"]], "L");
+      fillOptions("pressureFrom", [["Pa","Pa"],["kPa","kPa"],["MPa","MPa"],["bar","bar"]], "bar");
+      fillOptions("pressureTo", [["Pa","Pa"],["kPa","kPa"],["MPa","MPa"],["bar","bar"]], "kPa");
+    }
+
+    function fillOptions(id, options, selected) {
+      byId(id).innerHTML = options.map(([value, label]) => `<option value="${value}" ${value === selected ? "selected" : ""}>${label}</option>`).join("");
+    }
+
+    function populateEngineeringSelects() {
+      const materialOptions = state.engineering.materials.map(material => [material.name, material.name]);
+      const boltMaterialOptions = state.engineering.boltMaterials.map(material => [material.name, material.name]);
+      const boltSizeOptions = state.engineering.boltSizes
+        .filter(size => Number.isFinite(Number(size.rootArea)) && Number.isFinite(Number(size.boltOD)) && Number.isFinite(Number(size.pitch)) && Number.isFinite(Number(size.tensileArea)))
+        .map(size => [size.size, size.size]);
+
+      ["ncMaterial", "circShellMaterial", "circEndMaterial"].forEach(id => fillOptions(id, materialOptions, "SA-516 Gr 70"));
+      fillOptions("boltMaterial", boltMaterialOptions, "SA-193 Gr B7");
+      fillOptions("boltSize", boltSizeOptions, "M16");
+    }
+
+    function showResult(id, text) {
+      const element = byId(id);
+      element.textContent = text;
+      element.style.display = "block";
+    }
+
+    function showHtml(id, html) {
+      const element = byId(id);
+      element.innerHTML = html;
+      element.style.display = "block";
+    }
+
+    function showErrors(resultId, workingId, errors) {
+      showHtml(resultId, `<span class="error-text">${errors.map(esc).join("<br>")}</span>`);
+      const working = byId(workingId);
+      if (working) working.style.display = "none";
+    }
+
+    function validatePositive(fields) {
+      const errors = [];
+      fields.forEach(([id, label]) => {
+        const value = num(id);
+        if (!Number.isFinite(value) || value <= 0) errors.push(`${label} must be a positive number.`);
+      });
+      return errors;
+    }
+
+    function grooveValues() {
+      const values = {
+        clampLength: num("clampLength"),
+        clampWidth: num("clampWidth"),
+        grooveWidth: num("grooveWidth"),
+        grooveDepth: num("grooveDepth"),
+        pipeOD: num("pipeOD"),
+        numBores: parseInt(byId("numBores").value, 10),
+        stickVolume: num("stickVolume")
+      };
+      const initialPerimeter = 2 * (values.clampLength + values.clampWidth);
+      const perimeterReduction = values.numBores * values.pipeOD;
+      const adjustedPerimeter = initialPerimeter - perimeterReduction;
+      const mainGrooveVolume = adjustedPerimeter * values.grooveWidth * values.grooveDepth;
+      const boreOuterRadius = values.pipeOD / 2 + values.grooveDepth;
+      const boreInnerRadius = values.pipeOD / 2;
+      const boreVolumeSingle = values.numBores > 0 ? Math.PI * (boreOuterRadius ** 2 - boreInnerRadius ** 2) * values.grooveWidth : 0;
+      const totalBoreVolume = boreVolumeSingle * values.numBores;
+      const total = mainGrooveVolume + totalBoreVolume;
+      return { ...values, initialPerimeter, perimeterReduction, adjustedPerimeter, mainGrooveVolume, boreOuterRadius, boreInnerRadius, boreVolumeSingle, totalBoreVolume, total, sticks: Math.ceil(total / values.stickVolume), boxes: Math.ceil(Math.ceil(total / values.stickVolume) / 10) };
+    }
+
+    function calculateGrooveVolume() {
+      const errors = validatePositive([["clampLength","Clamp length"],["clampWidth","Clamp width"],["grooveWidth","Groove width"],["grooveDepth","Groove depth"],["pipeOD","Pipe OD"],["stickVolume","Stick volume"]]);
+      const bores = parseInt(byId("numBores").value, 10);
+      if (!Number.isInteger(bores) || bores < 0) errors.push("Number of bores cannot be negative.");
+      if (errors.length) return showErrors("resultGroove", "workingGroove", errors);
+      const g = grooveValues();
+      if (g.adjustedPerimeter <= 0 && g.numBores > 0) return showErrors("resultGroove", "workingGroove", ["Adjusted perimeter is not positive. Reduce bores or check dimensions."]);
+      showResult("resultGroove", `Total sealing groove volume: ${fmt(g.total)} mm3\nSticks required: ${g.sticks}\nBoxes required: ${g.boxes} (10 sticks/box)`);
+    }
+
+    function showGrooveWorking() {
+      const errors = validatePositive([["clampLength","Clamp length"],["clampWidth","Clamp width"],["grooveWidth","Groove width"],["grooveDepth","Groove depth"],["pipeOD","Pipe OD"],["stickVolume","Stick volume"]]);
+      const bores = parseInt(byId("numBores").value, 10);
+      if (!Number.isInteger(bores) || bores < 0) errors.push("Number of bores cannot be negative.");
+      if (errors.length) return showErrors("resultGroove", "workingGroove", errors);
+      const g = grooveValues();
+      if (g.adjustedPerimeter <= 0 && g.numBores > 0) return showErrors("resultGroove", "workingGroove", ["Adjusted perimeter is not positive. Reduce bores or check dimensions."]);
+      const element = byId("workingGroove");
+      if (element.style.display === "block") return element.style.display = "none";
+      element.textContent = `Formula working:
+1. Perimeter = 2 x (${g.clampLength} + ${g.clampWidth}) = ${fmt(g.initialPerimeter)} mm
+2. Perimeter reduction = ${g.numBores} x ${g.pipeOD} = ${fmt(g.perimeterReduction)} mm
+3. Adjusted perimeter = ${fmt(g.initialPerimeter)} - ${fmt(g.perimeterReduction)} = ${fmt(g.adjustedPerimeter)} mm
+4. Main groove volume = ${fmt(g.adjustedPerimeter)} x ${g.grooveWidth} x ${g.grooveDepth} = ${fmt(g.mainGrooveVolume)} mm3
+5. Bore volume = pi x (${fmt(g.boreOuterRadius)}2 - ${fmt(g.boreInnerRadius)}2) x ${g.grooveWidth} x ${g.numBores} = ${fmt(g.totalBoreVolume)} mm3
+6. Total = ${fmt(g.mainGrooveVolume)} + ${fmt(g.totalBoreVolume)} = ${fmt(g.total)} mm3
+7. Sticks = ceil(${fmt(g.total)} / ${g.stickVolume}) = ${g.sticks}`;
+      element.style.display = "block";
+    }
+
+    function calculateVoidVolume() {
+      const errors = validatePositive([["internalLength","Internal length"],["clampID","Clamp ID"],["pipeOD2","Pipe OD"],["stickVolume2","Stick volume"]]);
+      if (!errors.length && num("clampID") <= num("pipeOD2")) errors.push("Clamp ID must be larger than pipe OD.");
+      if (errors.length) return showErrors("resultVoid", "workingVoid", errors);
+      const volume = Math.PI * ((num("clampID") / 2) ** 2 - (num("pipeOD2") / 2) ** 2) * num("internalLength");
+      const sticks = Math.ceil(volume / num("stickVolume2"));
+      showResult("resultVoid", `Total void volume: ${fmt(volume)} mm3\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
+    }
+
+    function showVoidWorking() {
+      const errors = validatePositive([["internalLength","Internal length"],["clampID","Clamp ID"],["pipeOD2","Pipe OD"],["stickVolume2","Stick volume"]]);
+      if (!errors.length && num("clampID") <= num("pipeOD2")) errors.push("Clamp ID must be larger than pipe OD.");
+      if (errors.length) return showErrors("resultVoid", "workingVoid", errors);
+      const element = byId("workingVoid");
+      if (element.style.display === "block") return element.style.display = "none";
+      const volume = Math.PI * ((num("clampID") / 2) ** 2 - (num("pipeOD2") / 2) ** 2) * num("internalLength");
+      element.textContent = `Void volume = pi x (clamp radius2 - pipe radius2) x internal length
+= pi x (${num("clampID")}/2)2 - (${num("pipeOD2")}/2)2 x ${num("internalLength")}
+= ${fmt(volume)} mm3
+Sticks = ceil(${fmt(volume)} / ${num("stickVolume2")}) = ${Math.ceil(volume / num("stickVolume2"))}`;
+      element.style.display = "block";
+    }
+
+    function calculateSquareVoidVolume() {
+      const errors = validatePositive([["sqLength","Cavity length"],["sqDepth","Cavity depth"],["sqWidth","Cavity width"],["pipeOD3","Pipe OD"],["pipeLength","Pipe length"],["stickVolume3","Stick volume"]]);
+      if (!errors.length && num("pipeLength") > num("sqLength")) errors.push("Pipe length cannot exceed cavity length.");
+      if (errors.length) return showErrors("resultSquareVoid", "workingSquareVoid", errors);
+      const cavity = num("sqLength") * num("sqDepth") * num("sqWidth");
+      const pipe = Math.PI * (num("pipeOD3") / 2) ** 2 * num("pipeLength");
+      const net = cavity - pipe;
+      if (net <= 0) return showErrors("resultSquareVoid", "workingSquareVoid", ["Net volume is not positive. Check the cavity and pipe dimensions."]);
+      const sticks = Math.ceil(net / num("stickVolume3"));
+      showResult("resultSquareVoid", `Net void volume: ${fmt(net)} mm3\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
+    }
+
+    function showSquareWorking() {
+      const errors = validatePositive([["sqLength","Cavity length"],["sqDepth","Cavity depth"],["sqWidth","Cavity width"],["pipeOD3","Pipe OD"],["pipeLength","Pipe length"],["stickVolume3","Stick volume"]]);
+      if (!errors.length && num("pipeLength") > num("sqLength")) errors.push("Pipe length cannot exceed cavity length.");
+      if (errors.length) return showErrors("resultSquareVoid", "workingSquareVoid", errors);
+      const element = byId("workingSquareVoid");
+      if (element.style.display === "block") return element.style.display = "none";
+      const cavity = num("sqLength") * num("sqDepth") * num("sqWidth");
+      const pipe = Math.PI * (num("pipeOD3") / 2) ** 2 * num("pipeLength");
+      const net = cavity - pipe;
+      if (net <= 0) return showErrors("resultSquareVoid", "workingSquareVoid", ["Net volume is not positive. Check the cavity and pipe dimensions."]);
+      element.textContent = `Cavity volume = ${num("sqLength")} x ${num("sqDepth")} x ${num("sqWidth")} = ${fmt(cavity)} mm3
+Pipe volume = pi x (${num("pipeOD3")}/2)2 x ${num("pipeLength")} = ${fmt(pipe)} mm3
+Net volume = ${fmt(cavity)} - ${fmt(pipe)} = ${fmt(net)} mm3
+Sticks = ceil(${fmt(net)} / ${num("stickVolume3")}) = ${Math.ceil(net / num("stickVolume3"))}`;
+      element.style.display = "block";
+    }
+
+    function calculateDifferenceVolume() {
+      const errors = validatePositive([["cavityVolumeInput","Cavity volume"],["stickVolume4","Stick volume"]]);
+      const existing = num("existingVolumeInput");
+      if (!Number.isFinite(existing) || existing < 0) errors.push("Existing volume must be zero or higher.");
+      if (!errors.length && num("cavityVolumeInput") <= existing) errors.push("Cavity volume must be greater than existing volume.");
+      if (errors.length) return showErrors("resultDifference", "workingDifference", errors);
+      const net = num("cavityVolumeInput") - existing;
+      const sticks = Math.ceil(net / num("stickVolume4"));
+      showResult("resultDifference", `Net volume to fill: ${fmt(net)} mm3\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
+    }
+
+    function showDifferenceWorking() {
+      const errors = validatePositive([["cavityVolumeInput","Cavity volume"],["stickVolume4","Stick volume"]]);
+      const existing = num("existingVolumeInput");
+      if (!Number.isFinite(existing) || existing < 0) errors.push("Existing volume must be zero or higher.");
+      if (!errors.length && num("cavityVolumeInput") <= existing) errors.push("Cavity volume must be greater than existing volume.");
+      if (errors.length) return showErrors("resultDifference", "workingDifference", errors);
+      const element = byId("workingDifference");
+      if (element.style.display === "block") return element.style.display = "none";
+      const net = num("cavityVolumeInput") - num("existingVolumeInput");
+      element.textContent = `Net fill volume = cavity volume - existing volume
+= ${num("cavityVolumeInput")} - ${num("existingVolumeInput")}
+= ${fmt(net)} mm3
+Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("stickVolume4"))}`;
+      element.style.display = "block";
+    }
+
+    function showPipeData() {
+      const nps = byId("npsSelect").value;
+      updatePipeOdPanel();
+      if (!nps) {
+        byId("pipeResult").style.display = "none";
+        byId("pipeResult").innerHTML = "";
+        return;
+      }
+      const pipe = state.pipes[nps];
+      if (!pipe) return showHtml("pipeResult", `<span class="error-text">Size data not found.</span>`);
+      const rows = Object.entries(pipe).map(([key, value]) => {
+        const label = key === "od" ? "Outside diameter (OD)" : `Wall thickness (${key.toUpperCase()})`;
+        return `<tr><td>${esc(label)}</td><td><strong>${fmtComma(value, key === "od" ? 1 : 2)} mm</strong></td></tr>`;
+      }).join("");
+      showHtml("pipeResult", `<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td>NPS</td><td><strong>${esc(nps)} in</strong></td></tr>${rows}</tbody></table>`);
+    }
+
+    function showFlangeData() {
+      const nps = byId("npsFlangeSelect").value;
+      const cls = byId("classFlangeSelect").value;
+      const type = byId("typeFlangeSelect").value;
+      if (!nps) {
+        byId("flangeResult").style.display = "none";
+        byId("flangeResult").innerHTML = "";
+        return;
+      }
+      const data = state.flanges[`NPS_${nps}`]?.[`CLASS_${cls}`]?.[type];
+      if (!data) return showHtml("flangeResult", `<span class="error-text">Data is not available for this flange combination.</span>`);
+      const labels = {
+        O: "Flange OD (O)", C: "Minimum thickness (C)", X: "Hub diameter (X)", A_Bore_WN: "Bore (A - WN)",
+        B_Bore_SO: "Bore (B - SO)", Y: "Hub length (Y)", K: "Bolt circle diameter (K)", R: "Raised face diameter (R)",
+        RF_Height: "Raised face height", Bolt_Hole_Dia: "Bolt hole diameter", Num_Bolts: "Number of bolts", Bolt_Size: "Bolt size", Bronze_Size: "Bolt size"
+      };
+      const rows = Object.entries(data).map(([key, value]) => {
+        const isCount = key === "Num_Bolts";
+        const isBolt = key === "Bolt_Size" || key === "Bronze_Size";
+        const display = value == null ? "N/A" : isCount ? value : isBolt ? `${value} in (${getMetricBoltEquivalent(value)})` : `${fmt(value)} mm`;
+        return `<tr><td>${esc(labels[key] || key)}</td><td><strong>${esc(display)}</strong></td></tr>`;
+      }).join("");
+      showHtml("flangeResult", `<table><thead><tr><th>Dimension</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table>`);
+    }
+
+    function getMetricBoltEquivalent(size) {
+      return ({ "1/2": "M12", "5/8": "M16", "3/4": "M20", "7/8": "M22", "1": "M24", "1 1/8": "M27", "1 1/4": "M30", "1 3/8": "M36", "1 1/2": "M39", "1 5/8": "M42", "1 7/8": "M48", "2": "M52", "2 1/4": "M56", "2 1/2": "M64", "2 3/4": "M72", "3": "M76", "3 1/2": "M90" })[size] || "N/A";
+    }
+
+    function showWpsData() {
+      const key = byId("wpsSelect").value;
+      if (!key) {
+        byId("wpsResult").style.display = "none";
+        byId("wpsResult").innerHTML = "";
+        return;
+      }
+      const wps = state.wps[key];
+      const rows = Object.entries(wps).map(([field, value]) => `<tr><td>${esc(field)}</td><td><strong>${esc(value)}</strong></td></tr>`).join("");
+      showHtml("wpsResult", `<table><thead><tr><th>WPS variable</th><th>Parameters</th></tr></thead><tbody>${rows}</tbody></table>`);
+    }
+
+    function searchCompounds() {
+      const category = byId("searchCategory").value;
+      const grid = byId("compoundResultsGrid");
+      if (!category) return grid.innerHTML = `<div class="notice error-text">Please select a fluid category.</div>`;
+      const matches = state.compounds.filter(compound => {
+        let categoryMatch = compound.category === category;
+        if (category === "water_steam_utilities" && ["C2AT", "C7"].includes(compound.product)) categoryMatch = true;
+        if (category === "hydrocarbons" && compound.product === "C7") categoryMatch = true;
+        return categoryMatch;
+      });
+      if (!matches.length) {
+        grid.innerHTML = `<div class="notice">No matching compounds found for that category. Consult Beruseal engineering for confirmation.</div>`;
+        return;
+      }
+      grid.innerHTML = matches.map(compound => `
+        <article class="compound-card">
+          <h4>${esc(compound.product)}</h4>
+          <div class="meta">${esc(compound.brand)}</div>
+          <span class="pill">${esc(compound.minTemp)} C to ${esc(compound.maxTemp)} C</span>
+          <span class="pill">${esc(compound.color)}</span>
+          <p><strong>Form:</strong> ${esc(compound.form)}</p>
+          <p><strong>Features:</strong> ${esc(compound.features)}</p>
+          <p><strong>Applications:</strong> ${esc(compound.apps)}</p>
+        </article>`).join("");
+    }
+
+    function convertLength() {
+      convertUnit("lengthInput", "lengthFrom", "lengthTo", "lengthResult", { mm: 1, cm: 10, m: 1000, km: 1000000, inch: 25.4, foot: 304.8, yard: 914.4, mile: 1609344 }, "mm");
+    }
+
+    function convertVolume() {
+      convertUnit("volumeInput", "volumeFrom", "volumeTo", "volumeResult", { mm3: 0.000001, cm3: 0.001, L: 1, m3: 1000, in3: 0.016387064, ft3: 28.3168466, us_gal: 3.785411784 }, "L");
+    }
+
+    function convertPressure() {
+      convertUnit("pressureInput", "pressureFrom", "pressureTo", "pressureResult", { Pa: 1, kPa: 1000, MPa: 1000000, bar: 100000 }, "Pa");
+    }
+
+    function convertUnit(inputId, fromId, toId, resultId, units) {
+      const value = num(inputId);
+      if (!Number.isFinite(value)) {
+        byId(resultId).style.display = "none";
+        byId(resultId).textContent = "";
+        return;
+      }
+      const from = byId(fromId).value;
+      const to = byId(toId).value;
+      const converted = value * units[from] / units[to];
+      showResult(resultId, `${fmt(value, 6)} ${from} = ${fmt(converted, 6)} ${to}`);
+    }
+
+    function calcRectangularVolume() {
+      const errors = validatePositive([["rectLength", "Length"], ["rectWidth", "Width"], ["rectHeight", "Height"]]);
+      if (errors.length) return showHtml("rectVolumeResult", `<span class="error-text">${errors.map(esc).join("<br>")}</span>`);
+      const volume = num("rectLength") * num("rectWidth") * num("rectHeight");
+      showResult("rectVolumeResult", `Volume: ${fmt(volume)} mm3`);
+    }
+
+    function calcCylindricalVolume() {
+      const errors = validatePositive([["cylDiameter", "Diameter"], ["cylLength", "Length"]]);
+      if (errors.length) return showHtml("cylVolumeResult", `<span class="error-text">${errors.map(esc).join("<br>")}</span>`);
+      const volume = Math.PI * (num("cylDiameter") / 2) ** 2 * num("cylLength");
+      showResult("cylVolumeResult", `Volume: ${fmt(volume)} mm3`);
+    }
+
+    function interpStress(collection, name, temp) {
+      const row = collection.find(item => item.name === name);
+      if (!row || !row.stresses?.length) return null;
+      const points = row.stresses
+        .filter(point => Number.isFinite(point.temp) && Number.isFinite(point.stress))
+        .sort((a, b) => a.temp - b.temp);
+      if (temp <= points[0].temp) return { stress: points[0].stress, row };
+      if (temp >= points[points.length - 1].temp) return { stress: points[points.length - 1].stress, row };
+      for (let i = 1; i < points.length; i++) {
+        if (temp <= points[i].temp) {
+          const a = points[i - 1];
+          const b = points[i];
+          const ratio = (temp - a.temp) / (b.temp - a.temp);
+          return { stress: a.stress + ratio * (b.stress - a.stress), row };
+        }
+      }
+      return { stress: points[points.length - 1].stress, row };
+    }
+
+    function boltSize(sizeName) {
+      return state.engineering.boltSizes.find(size => size.size === sizeName);
+    }
+
+    function recommendBoltSize(requiredArea) {
+      return state.engineering.boltSizes
+        .filter(size => Number.isFinite(Number(size.rootArea)) && Number(size.rootArea) >= requiredArea)
+        .sort((a, b) => Number(a.rootArea) - Number(b.rootArea))[0];
+    }
+
+    function metricsHtml(metrics) {
+      return `<div class="mini-results">${metrics.map(metric => `
+        <div class="metric">
+          <span>${esc(metric.label)}</span>
+          <strong>${esc(metric.value)}</strong>
+        </div>`).join("")}</div>`;
+    }
+
+    function calculateNonCircular() {
+      const errors = validatePositive([
+        ["ncPressure", "Design pressure"],
+        ["ncH", "Short side cavity"],
+        ["ncSmallH", "Long side cavity"],
+        ["ncTr", "Required shell thickness"],
+        ["ncT1a", "Actual short side thickness"],
+        ["ncT2a", "Actual long side thickness"],
+        ["ncEndActual", "Actual endplate thickness"]
+      ]);
+      const ca = num("ncCA");
+      if (!Number.isFinite(num("ncTemp"))) errors.push("Design temperature must be numeric.");
+      if (!Number.isFinite(ca) || ca < 0) errors.push("Corrosion allowance must be zero or higher.");
+      if (errors.length) return showHtml("nonCircularResult", `<span class="error-text">${errors.map(esc).join("<br>")}</span>`);
+
+      const material = interpStress(state.engineering.materials, byId("ncMaterial").value, num("ncTemp"));
+      if (!material) return showHtml("nonCircularResult", `<span class="error-text">Material data could not be found.</span>`);
+
+      const pm = num("ncPressure");
+      const H = num("ncH") + 2 * ca;
+      const h = num("ncSmallH") + 2 * ca;
+      const minActualShell = Math.min(num("ncT1a"), num("ncT2a"));
+      const m = num("ncTr") / minActualShell;
+      const attachmentFactor = Math.max(0.33 * m, 0.2);
+      const squareFactor = Math.min(3.4 - 2.4 * (H / h), 2.5);
+      const endEfficiency = byId("ncEndJoint").value === "Machined" ? 1 : 0.7;
+      const requiredEndplate = H * Math.sqrt((squareFactor * attachmentFactor * pm) / (material.stress * endEfficiency)) + ca;
+
+      showHtml("nonCircularResult", metricsHtml([
+        { label: "Allowable material stress", value: `${fmt(material.stress)} MPa` },
+        { label: "Attachment factor C", value: fmt(attachmentFactor, 4) },
+        { label: "Square/rectangular factor Z", value: fmt(squareFactor, 4) },
+        { label: "Required endplate thickness UG-34", value: `${fmt(requiredEndplate)} mm` },
+        { label: "Endplate check", value: num("ncEndActual") >= requiredEndplate ? "Valid" : "Invalid" },
+        { label: "Shell thickness check", value: minActualShell >= num("ncTr") ? "Valid" : "Invalid" }
+      ]));
+    }
+
+    function calculateCircular() {
+      const errors = validatePositive([
+        ["circPressure", "Design pressure"],
+        ["circOD", "Outside diameter"],
+        ["circID", "Inside diameter"],
+        ["circEndDiameter", "Endplate diameter"],
+        ["circShellActual", "Actual cylinder thickness"],
+        ["circEndActual", "Actual endplate thickness"]
+      ]);
+      const ca = num("circCA");
+      if (!Number.isFinite(num("circTemp"))) errors.push("Design temperature must be numeric.");
+      if (!Number.isFinite(ca) || ca < 0) errors.push("Corrosion allowance must be zero or higher.");
+      if (!errors.length && num("circOD") <= num("circID")) errors.push("Outside diameter must be larger than inside diameter.");
+      if (errors.length) return showHtml("circularResult", `<span class="error-text">${errors.map(esc).join("<br>")}</span>`);
+
+      const shell = interpStress(state.engineering.materials, byId("circShellMaterial").value, num("circTemp"));
+      const endplate = interpStress(state.engineering.materials, byId("circEndMaterial").value, num("circTemp"));
+      if (!shell || !endplate) return showHtml("circularResult", `<span class="error-text">Material data could not be found.</span>`);
+
+      const pm = num("circPressure");
+      const E = parseFloat(byId("circJoint").value);
+      const ri = num("circID") / 2;
+      const riCorr = ri + ca;
+      const ro = num("circOD") / 2;
+      const actualShell = num("circShellActual");
+      const tminId = pm * riCorr / (shell.stress * E - 0.6 * pm) + ca;
+      const tminOd = pm * ro / (shell.stress * E + 0.4 * pm) + ca;
+      const cf = Math.max((tminId / actualShell) * 0.33, 0.2, (tminOd / actualShell) * 0.33);
+      const requiredEndplate = (num("circID") + 2 * ca) * Math.sqrt((cf * pm) / (endplate.stress * E)) + ca;
+
+      showHtml("circularResult", metricsHtml([
+        { label: "Shell allowable stress", value: `${fmt(shell.stress)} MPa` },
+        { label: "Endplate allowable stress", value: `${fmt(endplate.stress)} MPa` },
+        { label: "UG-27 ID basis thickness", value: `${fmt(tminId)} mm` },
+        { label: "UG-27 OD basis thickness", value: `${fmt(tminOd)} mm` },
+        { label: "UG-34 factor Cf", value: fmt(cf, 4) },
+        { label: "UG-34 required endplate", value: `${fmt(requiredEndplate)} mm` },
+        { label: "Cylinder check", value: actualShell >= Math.max(tminId, tminOd) ? "Valid" : "Invalid" },
+        { label: "Endplate check", value: num("circEndActual") >= requiredEndplate ? "Valid" : "Invalid" }
+      ]));
+    }
+
+    function calculateBoltStandalone() {
+      const errors = validatePositive([
+        ["boltPressure", "Design pressure"],
+        ["boltArea", "Pressure area"],
+        ["boltCount", "Number of bolts"],
+        ["boltPreload", "Bolt preload"],
+        ["boltFriction", "Friction coefficient"]
+      ]);
+      const clearance = num("boltClearance");
+      if (!Number.isFinite(num("boltTemp"))) errors.push("Design temperature must be numeric.");
+      if (!Number.isFinite(clearance) || clearance < 0) errors.push("Diametrical clearance must be zero or higher.");
+      if (errors.length) return showHtml("boltStandaloneResult", `<span class="error-text">${errors.map(esc).join("<br>")}</span>`);
+
+      const mat = interpStress(state.engineering.boltMaterials, byId("boltMaterial").value, num("boltTemp"));
+      const size = boltSize(byId("boltSize").value);
+      if (!mat || !size) return showHtml("boltStandaloneResult", `<span class="error-text">Bolt material or size data could not be found.</span>`);
+
+      const pm = num("boltPressure");
+      const area = num("boltArea");
+      const partingForceKn = pm * area / 1000;
+      const nominalLoad = partingForceKn * 1000 / num("boltCount");
+      const rootArea = Number(size.rootArea);
+      const tensileArea = Number(size.tensileArea || size.rootArea);
+      const boltOD = Number(size.boltOD);
+      const pitch = Number(size.pitch);
+      const outerBearing = Number(size.widthFlats || boltOD);
+      const innerBearing = boltOD + clearance;
+      const pitchDiameter = boltOD - 6 * Math.sqrt(3) * pitch / 16;
+      const betaRad = 30 * Math.PI / 180;
+      const workbookLambda = Math.atan(Math.PI * pitchDiameter / pitch);
+      const lambdaRad = workbookLambda * Math.PI / 180;
+      const requiredArea = nominalLoad / mat.stress;
+      const actualStress = nominalLoad / rootArea;
+      const suggestedPreloadStress = num("boltPreload") / 100 * Number(mat.row.yield || 0);
+      const suggestedPreloadForce = suggestedPreloadStress * tensileArea;
+      const minimumPreloadForce = nominalLoad * 1.1;
+      const effectiveBearing = (outerBearing + innerBearing) / 2;
+      const mu = num("boltFriction");
+      const targetTorque = suggestedPreloadForce * (0.16 * pitch + 0.58 * mu * pitchDiameter + effectiveBearing * mu / 2) / 1000;
+      const torqueCoefficient = (((0.5 * pitchDiameter) * (Math.tan(lambdaRad) + mu / Math.cos(betaRad)) / (1 - mu * Math.tan(lambdaRad) / Math.cos(betaRad))) + (0.625 * mu * boltOD)) / boltOD;
+      const tighteningTorque = suggestedPreloadForce * torqueCoefficient * boltOD / 1000;
+      const minimumTorque = minimumPreloadForce * torqueCoefficient * boltOD / 1000;
+      const torqueValues = [targetTorque, tighteningTorque, minimumTorque].filter(Number.isFinite);
+      const recommended = recommendBoltSize(requiredArea);
+
+      showHtml("boltStandaloneResult", metricsHtml([
+        { label: "Pressure area", value: `${fmt(area)} mm2` },
+        { label: "Nominal load per bolt", value: `${fmt(nominalLoad)} N` },
+        { label: "Available root area", value: `${fmt(rootArea)} mm2` },
+        { label: "Required root area", value: `${fmt(requiredArea)} mm2` },
+        { label: "Actual bolt stress", value: `${fmt(actualStress)} MPa` },
+        { label: "Stress check", value: mat.stress > actualStress ? "Valid" : "Invalid" },
+        { label: "Required bolt size", value: recommended?.size || "No size found" },
+        { label: "Torque coefficient K", value: fmt(torqueCoefficient, 4) },
+        { label: "Minimum torque needed", value: `${Math.ceil(Math.min(...torqueValues))} Nm` },
+        { label: "Maximum torque not to exceed", value: `${Math.floor(Math.max(...torqueValues))} Nm` }
+      ]));
+    }
+
+    loadDatabases();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js").catch(error => {
+          console.warn("Service worker registration failed:", error);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

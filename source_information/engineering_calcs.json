@@ -1,0 +1,1930 @@
+{
+  "source": "Calcs/Master Calc Rev 1.28 M.xlsm",
+  "materials": [
+    {
+      "name": "SA-516 Gr 70",
+      "yield": 260,
+      "tensile": 485,
+      "type": "Carbon steel",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 200.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 250.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 136.0
+        },
+        {
+          "temp": 325.0,
+          "stress": 132.0
+        },
+        {
+          "temp": 350.0,
+          "stress": 128.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 123.0
+        },
+        {
+          "temp": 400.0,
+          "stress": 101.0
+        },
+        {
+          "temp": 425.0,
+          "stress": 83.8
+        },
+        {
+          "temp": 450.0,
+          "stress": 67.1
+        },
+        {
+          "temp": 475.0,
+          "stress": 51.0
+        },
+        {
+          "temp": 500.0,
+          "stress": 33.6
+        },
+        {
+          "temp": 525.0,
+          "stress": 21.3
+        },
+        {
+          "temp": 550.0,
+          "stress": 12.9
+        }
+      ]
+    },
+    {
+      "name": "SA-240 Gr 304L",
+      "yield": 170,
+      "tensile": 485,
+      "type": "18Cr-8Ni",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 115.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 105.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 97.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 92.3
+        },
+        {
+          "temp": 150.0,
+          "stress": 88.1
+        },
+        {
+          "temp": 200.0,
+          "stress": 81.2
+        },
+        {
+          "temp": 250.0,
+          "stress": 76.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 72.3
+        },
+        {
+          "temp": 325.0,
+          "stress": 70.9
+        },
+        {
+          "temp": 350.0,
+          "stress": 69.7
+        },
+        {
+          "temp": 375.0,
+          "stress": 68.6
+        },
+        {
+          "temp": 400.0,
+          "stress": 67.6
+        },
+        {
+          "temp": 425.0,
+          "stress": 66.7
+        },
+        {
+          "temp": 450.0,
+          "stress": 65.7
+        },
+        {
+          "temp": 475.0,
+          "stress": 64.6
+        },
+        {
+          "temp": 500.0,
+          "stress": 63.4
+        },
+        {
+          "temp": 525.0,
+          "stress": 60.2
+        },
+        {
+          "temp": 550.0,
+          "stress": 49.5
+        },
+        {
+          "temp": 575.0,
+          "stress": 40.4
+        },
+        {
+          "temp": 600.0,
+          "stress": 32.9
+        },
+        {
+          "temp": 625.0,
+          "stress": 26.7
+        },
+        {
+          "temp": 650.0,
+          "stress": 22.0
+        }
+      ]
+    },
+    {
+      "name": "SA-240 Gr 316L",
+      "yield": 170,
+      "tensile": 485,
+      "type": "16Cr-12Ni-2Mo",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 115.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 106.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 96.3
+        },
+        {
+          "temp": 125.0,
+          "stress": 91.3
+        },
+        {
+          "temp": 150.0,
+          "stress": 87.4
+        },
+        {
+          "temp": 200.0,
+          "stress": 81.2
+        },
+        {
+          "temp": 250.0,
+          "stress": 76.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 72.5
+        },
+        {
+          "temp": 325.0,
+          "stress": 71.2
+        },
+        {
+          "temp": 350.0,
+          "stress": 70.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 68.8
+        },
+        {
+          "temp": 400.0,
+          "stress": 67.5
+        },
+        {
+          "temp": 425.0,
+          "stress": 66.3
+        },
+        {
+          "temp": 450.0,
+          "stress": 65.0
+        },
+        {
+          "temp": 475.0,
+          "stress": 63.8
+        }
+      ]
+    },
+    {
+      "name": "SA-106 Gr B",
+      "yield": 240,
+      "tensile": 415,
+      "type": "Carbon steel",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 200.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 250.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 325.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 350.0,
+          "stress": 117.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 105.0
+        },
+        {
+          "temp": 400.0,
+          "stress": 88.9
+        },
+        {
+          "temp": 425.0,
+          "stress": 75.3
+        },
+        {
+          "temp": 450.0,
+          "stress": 62.7
+        },
+        {
+          "temp": 475.0,
+          "stress": 45.5
+        },
+        {
+          "temp": 500.0,
+          "stress": 31.6
+        },
+        {
+          "temp": 525.0,
+          "stress": 21.9
+        },
+        {
+          "temp": 550.0,
+          "stress": 12.7
+        }
+      ]
+    },
+    {
+      "name": "SA-234 Gr WPB",
+      "yield": 240,
+      "tensile": 415,
+      "type": "Carbon steel",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 200.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 250.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 325.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 350.0,
+          "stress": 117.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 105.0
+        },
+        {
+          "temp": 400.0,
+          "stress": 88.9
+        },
+        {
+          "temp": 425.0,
+          "stress": 75.3
+        },
+        {
+          "temp": 450.0,
+          "stress": 62.7
+        },
+        {
+          "temp": 475.0,
+          "stress": 45.5
+        },
+        {
+          "temp": 500.0,
+          "stress": 31.6
+        },
+        {
+          "temp": 525.0,
+          "stress": 21.9
+        },
+        {
+          "temp": 550.0,
+          "stress": 12.7
+        }
+      ]
+    },
+    {
+      "name": "SA-333 Gr 6",
+      "yield": 240,
+      "tensile": 415,
+      "type": "Carbon steel",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 200.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 250.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 325.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 350.0,
+          "stress": 117.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 105.0
+        },
+        {
+          "temp": 400.0,
+          "stress": 88.9
+        },
+        {
+          "temp": 425.0,
+          "stress": 75.3
+        },
+        {
+          "temp": 450.0,
+          "stress": 62.7
+        },
+        {
+          "temp": 475.0,
+          "stress": 45.5
+        },
+        {
+          "temp": 500.0,
+          "stress": 31.6
+        },
+        {
+          "temp": 525.0,
+          "stress": 21.9
+        },
+        {
+          "temp": 550.0,
+          "stress": 12.7
+        }
+      ]
+    },
+    {
+      "name": "SA-420 Gr WPL6",
+      "yield": 240,
+      "tensile": 415,
+      "type": "Carbon steel",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 200.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 250.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 325.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 350.0,
+          "stress": 117.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 105.0
+        },
+        {
+          "temp": 400.0,
+          "stress": 88.9
+        },
+        {
+          "temp": 425.0,
+          "stress": 75.3
+        },
+        {
+          "temp": 450.0,
+          "stress": 62.7
+        },
+        {
+          "temp": 475.0,
+          "stress": 45.5
+        }
+      ]
+    },
+    {
+      "name": "SA-312 Gr TP304L",
+      "yield": 170,
+      "tensile": 485,
+      "type": "18Cr-8Ni",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 115.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 105.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 97.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 92.3
+        },
+        {
+          "temp": 150.0,
+          "stress": 88.1
+        },
+        {
+          "temp": 200.0,
+          "stress": 81.2
+        },
+        {
+          "temp": 250.0,
+          "stress": 76.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 72.3
+        },
+        {
+          "temp": 325.0,
+          "stress": 70.9
+        },
+        {
+          "temp": 350.0,
+          "stress": 69.7
+        },
+        {
+          "temp": 375.0,
+          "stress": 68.6
+        },
+        {
+          "temp": 400.0,
+          "stress": 67.6
+        },
+        {
+          "temp": 425.0,
+          "stress": 66.7
+        },
+        {
+          "temp": 450.0,
+          "stress": 65.7
+        },
+        {
+          "temp": 475.0,
+          "stress": 64.6
+        },
+        {
+          "temp": 500.0,
+          "stress": 63.4
+        },
+        {
+          "temp": 525.0,
+          "stress": 60.2
+        },
+        {
+          "temp": 550.0,
+          "stress": 49.5
+        },
+        {
+          "temp": 575.0,
+          "stress": 40.4
+        },
+        {
+          "temp": 600.0,
+          "stress": 32.9
+        },
+        {
+          "temp": 625.0,
+          "stress": 26.7
+        },
+        {
+          "temp": 650.0,
+          "stress": 22.0
+        }
+      ]
+    },
+    {
+      "name": "SA-312 Gr TP316L",
+      "yield": 170,
+      "tensile": 485,
+      "type": "16Cr-12Ni-2Mo",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 115.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 106.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 96.3
+        },
+        {
+          "temp": 125.0,
+          "stress": 91.3
+        },
+        {
+          "temp": 150.0,
+          "stress": 87.4
+        },
+        {
+          "temp": 200.0,
+          "stress": 81.2
+        },
+        {
+          "temp": 250.0,
+          "stress": 76.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 72.5
+        },
+        {
+          "temp": 325.0,
+          "stress": 71.2
+        },
+        {
+          "temp": 350.0,
+          "stress": 70.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 68.8
+        },
+        {
+          "temp": 400.0,
+          "stress": 67.5
+        },
+        {
+          "temp": 425.0,
+          "stress": 66.3
+        },
+        {
+          "temp": 450.0,
+          "stress": 65.0
+        },
+        {
+          "temp": 475.0,
+          "stress": 63.8
+        }
+      ]
+    },
+    {
+      "name": "SA-182 Gr F304L",
+      "yield": 170,
+      "tensile": 485,
+      "type": "18Cr-8Ni",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 115.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 105.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 97.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 92.3
+        },
+        {
+          "temp": 150.0,
+          "stress": 88.1
+        },
+        {
+          "temp": 200.0,
+          "stress": 81.2
+        },
+        {
+          "temp": 250.0,
+          "stress": 76.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 72.3
+        },
+        {
+          "temp": 325.0,
+          "stress": 70.9
+        },
+        {
+          "temp": 350.0,
+          "stress": 69.7
+        },
+        {
+          "temp": 375.0,
+          "stress": 68.6
+        },
+        {
+          "temp": 400.0,
+          "stress": 67.6
+        },
+        {
+          "temp": 425.0,
+          "stress": 66.7
+        },
+        {
+          "temp": 450.0,
+          "stress": 65.7
+        },
+        {
+          "temp": 475.0,
+          "stress": 64.6
+        },
+        {
+          "temp": 500.0,
+          "stress": 63.4
+        },
+        {
+          "temp": 525.0,
+          "stress": 60.2
+        },
+        {
+          "temp": 550.0,
+          "stress": 49.5
+        },
+        {
+          "temp": 575.0,
+          "stress": 40.4
+        },
+        {
+          "temp": 600.0,
+          "stress": 32.9
+        },
+        {
+          "temp": 625.0,
+          "stress": 26.7
+        },
+        {
+          "temp": 650.0,
+          "stress": 22.0
+        }
+      ]
+    },
+    {
+      "name": "SA-182 Gr F316L",
+      "yield": 170,
+      "tensile": 485,
+      "type": "16Cr-12Ni-2Mo",
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 115.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 106.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 96.3
+        },
+        {
+          "temp": 125.0,
+          "stress": 91.3
+        },
+        {
+          "temp": 150.0,
+          "stress": 87.4
+        },
+        {
+          "temp": 200.0,
+          "stress": 81.2
+        },
+        {
+          "temp": 250.0,
+          "stress": 76.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 72.5
+        },
+        {
+          "temp": 325.0,
+          "stress": 71.2
+        },
+        {
+          "temp": 350.0,
+          "stress": 70.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 68.8
+        },
+        {
+          "temp": 400.0,
+          "stress": 67.5
+        },
+        {
+          "temp": 425.0,
+          "stress": 66.3
+        },
+        {
+          "temp": 450.0,
+          "stress": 65.0
+        },
+        {
+          "temp": 475.0,
+          "stress": 63.8
+        }
+      ]
+    }
+  ],
+  "boltMaterials": [
+    {
+      "name": "SA-320 Gr L7M",
+      "yield": 550,
+      "tensile": 690,
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 175.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 200.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 225.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 250.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 275.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 325.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 350.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 400.0,
+          "stress": 138.0
+        },
+        {
+          "temp": 425.0,
+          "stress": 128.0
+        },
+        {
+          "temp": 450.0,
+          "stress": 115.0
+        },
+        {
+          "temp": 475.0,
+          "stress": 93.6
+        },
+        {
+          "temp": 500.0,
+          "stress": 68.4
+        },
+        {
+          "temp": 525.0,
+          "stress": 43.7
+        },
+        {
+          "temp": 550.0,
+          "stress": 18.9
+        }
+      ]
+    },
+    {
+      "name": "SA-193 Gr B7",
+      "yield": 725,
+      "tensile": 860,
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 175.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 200.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 225.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 250.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 275.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 325.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 350.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 400.0,
+          "stress": 162.0
+        },
+        {
+          "temp": 425.0,
+          "stress": 146.0
+        },
+        {
+          "temp": 450.0,
+          "stress": 118.0
+        },
+        {
+          "temp": 475.0,
+          "stress": 92.7
+        },
+        {
+          "temp": 500.0,
+          "stress": 68.8
+        },
+        {
+          "temp": 525.0,
+          "stress": 43.6
+        },
+        {
+          "temp": 550.0,
+          "stress": 18.9
+        }
+      ]
+    },
+    {
+      "name": "SA-193 Gr B16",
+      "yield": 725,
+      "tensile": 860,
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 175.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 200.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 225.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 250.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 275.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 300.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 325.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 350.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 375.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 400.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 425.0,
+          "stress": 172.0
+        },
+        {
+          "temp": 450.0,
+          "stress": 164.0
+        },
+        {
+          "temp": 475.0,
+          "stress": 148.0
+        },
+        {
+          "temp": 500.0,
+          "stress": 122.0
+        },
+        {
+          "temp": 525.0,
+          "stress": 91.8
+        },
+        {
+          "temp": 550.0,
+          "stress": 60.8
+        },
+        {
+          "temp": 575.0,
+          "stress": 34.6
+        },
+        {
+          "temp": 600.0,
+          "stress": 13.7
+        }
+      ]
+    },
+    {
+      "name": "SA-193 Gr B8",
+      "yield": 205,
+      "tensile": 515,
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 130.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 122.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 114.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 108.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 103.0
+        },
+        {
+          "temp": 175.0,
+          "stress": 99.1
+        },
+        {
+          "temp": 200.0,
+          "stress": 95.7
+        },
+        {
+          "temp": 225.0,
+          "stress": 92.8
+        },
+        {
+          "temp": 250.0,
+          "stress": 90.1
+        },
+        {
+          "temp": 275.0,
+          "stress": 87.2
+        },
+        {
+          "temp": 300.0,
+          "stress": 84.5
+        },
+        {
+          "temp": 325.0,
+          "stress": 83.1
+        },
+        {
+          "temp": 350.0,
+          "stress": 82.5
+        },
+        {
+          "temp": 375.0,
+          "stress": 81.1
+        },
+        {
+          "temp": 400.0,
+          "stress": 79.2
+        },
+        {
+          "temp": 425.0,
+          "stress": 77.3
+        },
+        {
+          "temp": 450.0,
+          "stress": 76.0
+        },
+        {
+          "temp": 475.0,
+          "stress": 74.8
+        },
+        {
+          "temp": 500.0,
+          "stress": 73.6
+        },
+        {
+          "temp": 525.0,
+          "stress": 72.4
+        },
+        {
+          "temp": 550.0,
+          "stress": 70.8
+        },
+        {
+          "temp": 575.0,
+          "stress": 68.9
+        },
+        {
+          "temp": 600.0,
+          "stress": 65.4
+        },
+        {
+          "temp": 625.0,
+          "stress": 51.0
+        },
+        {
+          "temp": 650.0,
+          "stress": 41.0
+        },
+        {
+          "temp": 675.0,
+          "stress": 32.9
+        },
+        {
+          "temp": 700.0,
+          "stress": 26.5
+        },
+        {
+          "temp": 725.0,
+          "stress": 21.3
+        },
+        {
+          "temp": 750.0,
+          "stress": 17.2
+        },
+        {
+          "temp": 775.0,
+          "stress": 13.9
+        },
+        {
+          "temp": 800.0,
+          "stress": 11.1
+        },
+        {
+          "temp": 825.0,
+          "stress": 8.73
+        }
+      ]
+    },
+    {
+      "name": "SA-193 Gr B8M",
+      "yield": 205,
+      "tensile": 515,
+      "stresses": [
+        {
+          "temp": 40.0,
+          "stress": 130.0
+        },
+        {
+          "temp": 65.0,
+          "stress": 127.0
+        },
+        {
+          "temp": 100.0,
+          "stress": 121.0
+        },
+        {
+          "temp": 125.0,
+          "stress": 114.0
+        },
+        {
+          "temp": 150.0,
+          "stress": 107.0
+        },
+        {
+          "temp": 175.0,
+          "stress": 103.0
+        },
+        {
+          "temp": 200.0,
+          "stress": 99.2
+        },
+        {
+          "temp": 225.0,
+          "stress": 95.9
+        },
+        {
+          "temp": 250.0,
+          "stress": 92.8
+        },
+        {
+          "temp": 275.0,
+          "stress": 90.2
+        },
+        {
+          "temp": 300.0,
+          "stress": 88.1
+        },
+        {
+          "temp": 325.0,
+          "stress": 86.1
+        },
+        {
+          "temp": 350.0,
+          "stress": 84.4
+        },
+        {
+          "temp": 375.0,
+          "stress": 83.2
+        },
+        {
+          "temp": 400.0,
+          "stress": 82.0
+        },
+        {
+          "temp": 425.0,
+          "stress": 80.7
+        },
+        {
+          "temp": 450.0,
+          "stress": 80.1
+        },
+        {
+          "temp": 475.0,
+          "stress": 79.5
+        },
+        {
+          "temp": 500.0,
+          "stress": 78.8
+        },
+        {
+          "temp": 525.0,
+          "stress": 78.2
+        },
+        {
+          "temp": 550.0,
+          "stress": 77.6
+        },
+        {
+          "temp": 575.0,
+          "stress": 77.1
+        },
+        {
+          "temp": 600.0,
+          "stress": 74.7
+        },
+        {
+          "temp": 625.0,
+          "stress": 65.5
+        },
+        {
+          "temp": 650.0,
+          "stress": 50.4
+        },
+        {
+          "temp": 675.0,
+          "stress": 38.6
+        },
+        {
+          "temp": 700.0,
+          "stress": 29.6
+        },
+        {
+          "temp": 725.0,
+          "stress": 23.0
+        },
+        {
+          "temp": 750.0,
+          "stress": 17.7
+        },
+        {
+          "temp": 775.0,
+          "stress": 13.4
+        },
+        {
+          "temp": 800.0,
+          "stress": 10.4
+        },
+        {
+          "temp": 825.0,
+          "stress": 8.05
+        }
+      ]
+    }
+  ],
+  "boltSizes": [
+    {
+      "size": "M5",
+      "rootArea": 13.9,
+      "boltOD": 5,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": null
+    },
+    {
+      "size": "M6",
+      "rootArea": 18.9,
+      "boltOD": 6,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": null
+    },
+    {
+      "size": "M8",
+      "rootArea": 30.9,
+      "boltOD": 8,
+      "widthFlats": 13,
+      "bearingCorner": 14.2,
+      "pitch": 1.25,
+      "thickness": 8,
+      "tensileArea": 36.6
+    },
+    {
+      "size": "M10",
+      "rootArea": 49.5,
+      "boltOD": 10,
+      "widthFlats": 17,
+      "bearingCorner": 19.6,
+      "pitch": 1.5,
+      "thickness": 10,
+      "tensileArea": 58
+    },
+    {
+      "size": "M12",
+      "rootArea": 72,
+      "boltOD": 12,
+      "widthFlats": 19,
+      "bearingCorner": 21.9,
+      "pitch": 1.75,
+      "thickness": 12,
+      "tensileArea": 84
+    },
+    {
+      "size": "M14",
+      "rootArea": 100,
+      "boltOD": 14,
+      "widthFlats": 22,
+      "bearingCorner": 25.4,
+      "pitch": 2,
+      "thickness": 14,
+      "tensileArea": 115
+    },
+    {
+      "size": "M16",
+      "rootArea": 138,
+      "boltOD": 16,
+      "widthFlats": 24,
+      "bearingCorner": 27.7,
+      "pitch": 2,
+      "thickness": 16,
+      "tensileArea": 157
+    },
+    {
+      "size": "M18",
+      "rootArea": 168,
+      "boltOD": 18,
+      "widthFlats": 27,
+      "bearingCorner": 31.2,
+      "pitch": 2.5,
+      "thickness": 18,
+      "tensileArea": 192
+    },
+    {
+      "size": "M20",
+      "rootArea": 217,
+      "boltOD": 20,
+      "widthFlats": 30,
+      "bearingCorner": 34.6,
+      "pitch": 2.5,
+      "thickness": 20,
+      "tensileArea": 245
+    },
+    {
+      "size": "M22",
+      "rootArea": 272,
+      "boltOD": 22,
+      "widthFlats": 32,
+      "bearingCorner": 36.9,
+      "pitch": 2.5,
+      "thickness": 22,
+      "tensileArea": 303
+    },
+    {
+      "size": "M24",
+      "rootArea": 313,
+      "boltOD": 24,
+      "widthFlats": 36,
+      "bearingCorner": 41.6,
+      "pitch": 3,
+      "thickness": 24,
+      "tensileArea": 353
+    },
+    {
+      "size": "M27",
+      "rootArea": 414,
+      "boltOD": 27,
+      "widthFlats": 41,
+      "bearingCorner": 47.2,
+      "pitch": 3,
+      "thickness": 27,
+      "tensileArea": 459
+    },
+    {
+      "size": "M30",
+      "rootArea": 503,
+      "boltOD": 30,
+      "widthFlats": 46,
+      "bearingCorner": 53.1,
+      "pitch": 3.5,
+      "thickness": 30,
+      "tensileArea": 561
+    },
+    {
+      "size": "M33",
+      "rootArea": 629,
+      "boltOD": 33,
+      "widthFlats": 50,
+      "bearingCorner": 57.8,
+      "pitch": 3.5,
+      "thickness": 33,
+      "tensileArea": 694
+    },
+    {
+      "size": "M36",
+      "rootArea": 738,
+      "boltOD": 36,
+      "widthFlats": 55,
+      "bearingCorner": 63.6,
+      "pitch": 4,
+      "thickness": 36,
+      "tensileArea": 817
+    },
+    {
+      "size": "M39",
+      "rootArea": 890,
+      "boltOD": 39,
+      "widthFlats": 60,
+      "bearingCorner": 69.3,
+      "pitch": 4,
+      "thickness": 39,
+      "tensileArea": 976
+    },
+    {
+      "size": "M42",
+      "rootArea": 1018,
+      "boltOD": 42,
+      "widthFlats": 65,
+      "bearingCorner": 75,
+      "pitch": 4.5,
+      "thickness": 42,
+      "tensileArea": 1121
+    },
+    {
+      "size": "M45",
+      "rootArea": 1195,
+      "boltOD": 45,
+      "widthFlats": 70,
+      "bearingCorner": 80.9,
+      "pitch": 4.5,
+      "thickness": 45,
+      "tensileArea": 1306
+    },
+    {
+      "size": "M48",
+      "rootArea": 1343,
+      "boltOD": 48,
+      "widthFlats": 75,
+      "bearingCorner": 86.7,
+      "pitch": 5,
+      "thickness": 48,
+      "tensileArea": 1473
+    },
+    {
+      "size": "M52",
+      "rootArea": 1615,
+      "boltOD": 52,
+      "widthFlats": 80,
+      "bearingCorner": 92.4,
+      "pitch": 5,
+      "thickness": 52,
+      "tensileArea": 1758
+    },
+    {
+      "size": "M56",
+      "rootArea": 1863,
+      "boltOD": 56,
+      "widthFlats": 85,
+      "bearingCorner": 98.2,
+      "pitch": 5.5,
+      "thickness": 56,
+      "tensileArea": 2030
+    },
+    {
+      "size": "M60",
+      "rootArea": "N/A",
+      "boltOD": null,
+      "widthFlats": 90,
+      "bearingCorner": 105,
+      "pitch": 5.5,
+      "thickness": 60,
+      "tensileArea": "N/A"
+    },
+    {
+      "size": "M64",
+      "rootArea": 2467,
+      "boltOD": 64,
+      "widthFlats": 95,
+      "bearingCorner": 110,
+      "pitch": 6,
+      "thickness": 64,
+      "tensileArea": 2676
+    },
+    {
+      "size": "M68",
+      "rootArea": "N/A",
+      "boltOD": null,
+      "widthFlats": 100,
+      "bearingCorner": 116,
+      "pitch": 6,
+      "thickness": 68,
+      "tensileArea": "N/A"
+    },
+    {
+      "size": "M70",
+      "rootArea": "N/A",
+      "boltOD": 70,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": 70,
+      "tensileArea": "N/A"
+    },
+    {
+      "size": "M72",
+      "rootArea": 3222,
+      "boltOD": 72,
+      "widthFlats": 105,
+      "bearingCorner": 121,
+      "pitch": 6,
+      "thickness": 72,
+      "tensileArea": 3460
+    },
+    {
+      "size": "M76",
+      "rootArea": 3969,
+      "boltOD": 76,
+      "widthFlats": 110,
+      "bearingCorner": 127,
+      "pitch": 6,
+      "thickness": 76,
+      "tensileArea": "N/A"
+    },
+    {
+      "size": "M80",
+      "rootArea": 4077,
+      "boltOD": null,
+      "widthFlats": 115,
+      "bearingCorner": 133,
+      "pitch": 6,
+      "thickness": 80,
+      "tensileArea": 4344
+    },
+    {
+      "size": "M82",
+      "rootArea": "N/A",
+      "boltOD": 82,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": 82,
+      "tensileArea": "N/A"
+    },
+    {
+      "size": "M85",
+      "rootArea": "N/A",
+      "boltOD": null,
+      "widthFlats": 120,
+      "bearingCorner": 138,
+      "pitch": 6,
+      "thickness": 85,
+      "tensileArea": "N/A"
+    },
+    {
+      "size": "M90",
+      "rootArea": 5287,
+      "boltOD": 90,
+      "widthFlats": 130,
+      "bearingCorner": 150,
+      "pitch": 6,
+      "thickness": 90,
+      "tensileArea": 5591
+    },
+    {
+      "size": "M95",
+      "rootArea": "N/A",
+      "boltOD": 95,
+      "widthFlats": 135,
+      "bearingCorner": 155,
+      "pitch": 6,
+      "thickness": 95,
+      "tensileArea": "N/A"
+    },
+    {
+      "size": "M100",
+      "rootArea": 6652,
+      "boltOD": 100,
+      "widthFlats": 145,
+      "bearingCorner": 167,
+      "pitch": 6,
+      "thickness": 100,
+      "tensileArea": 6995
+    },
+    {
+      "size": "0.5",
+      "rootArea": 81,
+      "boltOD": 12.7,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 81
+    },
+    {
+      "size": "0.625",
+      "rootArea": 130,
+      "boltOD": 15.875,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 130
+    },
+    {
+      "size": "0.75",
+      "rootArea": 195,
+      "boltOD": 19.049999999999997,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 195
+    },
+    {
+      "size": "0.875",
+      "rootArea": 271,
+      "boltOD": 22.224999999999998,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 271
+    },
+    {
+      "size": "1",
+      "rootArea": 356,
+      "boltOD": 25.4,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 356
+    },
+    {
+      "size": "1.125",
+      "rootArea": 470,
+      "boltOD": 28.575,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 470
+    },
+    {
+      "size": "1.25",
+      "rootArea": 599,
+      "boltOD": 31.75,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 599
+    },
+    {
+      "size": "1.375",
+      "rootArea": 745,
+      "boltOD": 34.925,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 745
+    },
+    {
+      "size": "1.5",
+      "rootArea": 907,
+      "boltOD": 38.099999999999994,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 907
+    },
+    {
+      "size": "1.625",
+      "rootArea": 1084,
+      "boltOD": 41.275,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 1084
+    },
+    {
+      "size": "1.75",
+      "rootArea": 1277,
+      "boltOD": 44.449999999999996,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 1277
+    },
+    {
+      "size": "1.875",
+      "rootArea": 1486,
+      "boltOD": 47.625,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 1486
+    },
+    {
+      "size": "2",
+      "rootArea": 1711,
+      "boltOD": 50.8,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 1711
+    },
+    {
+      "size": "2.25",
+      "rootArea": 2208,
+      "boltOD": 57.15,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 2208
+    },
+    {
+      "size": "2.5",
+      "rootArea": 2769,
+      "boltOD": 63.5,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 2769
+    },
+    {
+      "size": "2.75",
+      "rootArea": 3393,
+      "boltOD": 69.85,
+      "widthFlats": null,
+      "bearingCorner": null,
+      "pitch": null,
+      "thickness": null,
+      "tensileArea": 3393
+    }
+  ]
+}
