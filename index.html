@@ -229,19 +229,21 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 4px;
+      padding: 3px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--panel);
-      box-shadow: 0 8px 18px rgba(0,0,0,.06);
+      background: transparent;
+      box-shadow: none;
+      opacity: .72;
     }
 
     .theme-option {
-      min-height: 34px;
-      padding: 7px 11px;
+      min-height: 28px;
+      padding: 5px 8px;
       background: transparent;
       color: var(--muted);
       box-shadow: none;
+      font-size: 12px;
     }
 
     .theme-option:hover {
@@ -252,8 +254,8 @@
     }
 
     .theme-option.active {
-      background: var(--brand);
-      color: #ffffff;
+      background: var(--result-bg);
+      color: var(--ink);
     }
 
     .view { display: none; }
@@ -466,6 +468,30 @@
 
     .error-text { color: var(--danger); font-weight: 800; }
 
+    .diagram-panel {
+      margin: 0 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--table-bg);
+      padding: 14px;
+    }
+
+    .diagram-panel img {
+      display: block;
+      width: 100%;
+      max-height: 420px;
+      object-fit: contain;
+    }
+
+    .footer {
+      margin-top: 22px;
+      padding: 16px 0 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
+
     .inline-lookup {
       display: grid;
       grid-template-columns: minmax(240px, 360px) minmax(210px, 1fr);
@@ -561,7 +587,9 @@
         <button class="nav-item active" data-view="compoundCalculator">Compound Calculator</button>
         <button class="nav-item" data-view="compoundSelector">Compound Selector</button>
         <button class="nav-item" data-view="pipeScheduleLookup">Pipe Schedule</button>
+        <button class="nav-item" data-view="elbowDimensions">90 deg Elbows</button>
         <button class="nav-item" data-view="ansiFlanges">ANSI Flanges</button>
+        <button class="nav-item" data-view="sans347Hazard">SANS 347 Hazard Category</button>
         <button class="nav-item" data-view="weldingProcedure">WPS Library</button>
         <button class="nav-item" data-view="unitConverter">Unit Converter</button>
         <button class="nav-item" data-view="nonCircularCalc">Non-Circular</button>
@@ -689,9 +717,33 @@
         </div>
       </section>
 
+      <section id="elbowDimensions" class="view">
+        <div class="section">
+          <h3>90 deg Elbow Dimensions</h3>
+          <div class="diagram-panel">
+            <img src="assets/diagrams/elbow-diagram.png" alt="90 degree elbow dimension diagram">
+          </div>
+          <div class="grid two">
+            <label>Nominal pipe size
+              <select id="npsElbowSelect"></select>
+            </label>
+            <label>Radius type
+              <select id="elbowRadiusSelect">
+                <option value="long">Long radius</option>
+                <option value="short">Short radius</option>
+              </select>
+            </label>
+          </div>
+          <div class="result" id="elbowResult"></div>
+        </div>
+      </section>
+
       <section id="ansiFlanges" class="view">
         <div class="section">
           <h3>ANSI B16.5 Flange Dimensions</h3>
+          <div class="diagram-panel">
+            <img src="assets/diagrams/flange-diagram.png" alt="ANSI flange dimension diagram">
+          </div>
           <div class="grid three">
             <label>Nominal pipe size
               <select id="npsFlangeSelect"></select>
@@ -715,6 +767,27 @@
             </label>
           </div>
           <div class="result" id="flangeResult"></div>
+        </div>
+      </section>
+
+      <section id="sans347Hazard" class="view">
+        <div class="section">
+          <h3>SANS 347 Hazard Category</h3>
+          <div class="grid three">
+            <label>Pressure PS (kPa)<input type="number" id="sansPressure" placeholder="500" value="500"></label>
+            <label>Service type
+              <select id="sansServiceType">
+                <option value="dangerousGas">Piping - Dangerous Gas</option>
+                <option value="nonDangerousGas">Piping - Non Dangerous Gas</option>
+                <option value="dangerousLiquid">Piping - Dangerous Liquids</option>
+                <option value="nonDangerousLiquid">Piping - Non Dangerous Liquids</option>
+              </select>
+            </label>
+            <label>Line size (in)
+              <select id="sansLineSize"></select>
+            </label>
+          </div>
+          <div class="result" id="sansHazardResult"></div>
         </div>
       </section>
 
@@ -837,17 +910,43 @@
           <div class="result" id="boltStandaloneResult"></div>
         </div>
       </section>
+
+      <footer class="footer">Created by Owen Diesel</footer>
     </main>
   </div>
 
+  <script src="source_information/source-data.js"></script>
   <script>
-    const DATA_PATH = "source_information/";
+    const DATA_PATHS = ["source_information/", "../source_information/"];
     const state = { pipes: {}, flanges: {}, wps: {}, compounds: [], engineering: { materials: [], boltMaterials: [], boltSizes: [] } };
+    const standardNps = ["1/8","1/4","3/8","1/2","3/4","1","1.25","1.5","2","2.5","3","3.5","4","5","6","8","10","12","14","16","18","20","22","24","26","28","30","32","34","36","38","40","42","44","46","48"];
+    const npsToDn = {
+      "1/8": 6, "1/4": 8, "3/8": 10, "1/2": 15, "3/4": 20, "1": 25, "1.25": 32, "1.5": 40,
+      "2": 50, "2.5": 65, "3": 80, "3.5": 90, "4": 100, "5": 125, "6": 150, "8": 200,
+      "10": 250, "12": 300, "14": 350, "16": 400, "18": 450, "20": 500, "22": 550, "24": 600,
+      "26": 650, "28": 700, "30": 750, "32": 800, "34": 850, "36": 900, "38": 950, "40": 1000,
+      "42": 1050, "44": 1100, "46": 1150, "48": 1200
+    };
+    const elbowDimensions90 = {
+      "1/2": { long: 38, short: null }, "3/4": { long: 38, short: null }, "1": { long: 38, short: 25 },
+      "1.25": { long: 48, short: 32 }, "1.5": { long: 57, short: 38 }, "2": { long: 76, short: 51 },
+      "2.5": { long: 95, short: 64 }, "3": { long: 114, short: 76 }, "3.5": { long: 133, short: 89 },
+      "4": { long: 152, short: 102 }, "5": { long: 190, short: 127 }, "6": { long: 229, short: 152 },
+      "8": { long: 305, short: 203 }, "10": { long: 381, short: 254 }, "12": { long: 457, short: 305 },
+      "14": { long: 533, short: 356 }, "16": { long: 610, short: 406 }, "18": { long: 686, short: 457 },
+      "20": { long: 762, short: 508 }, "22": { long: 838, short: 559 }, "24": { long: 914, short: 610 },
+      "26": { long: 991, short: 660 }, "28": { long: 1067, short: 711 }, "30": { long: 1143, short: 762 },
+      "32": { long: 1219, short: 813 }, "34": { long: 1295, short: 864 }, "36": { long: 1372, short: 914 },
+      "38": { long: 1448, short: 965 }, "40": { long: 1524, short: 1016 }, "42": { long: 1600, short: 1067 },
+      "44": { long: 1676, short: 1118 }, "46": { long: 1753, short: 1168 }, "48": { long: 1829, short: 1219 }
+    };
     const titles = {
       compoundCalculator: ["Compound Calculator", "Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences."],
       compoundSelector: ["Compound Selector", "Shortlist compounds by service category."],
       pipeScheduleLookup: ["Pipe Schedule", "Look up outside diameter and schedule wall thickness by NPS."],
+      elbowDimensions: ["90 deg Elbows", "Look up 90 degree long-radius and short-radius elbow center-to-end dimensions up to NPS 48."],
       ansiFlanges: ["ANSI Flanges", "Look up ANSI B16.5 weld neck and slip-on flange dimensions."],
+      sans347Hazard: ["SANS 347 Hazard Category", "Determine piping hazard category from pressure, service type, and line size only."],
       weldingProcedure: ["WPS Library", "Review welding procedure variables from the source information."],
       unitConverter: ["Unit Converter", "Convert length, volume, pressure, and calculate simple volumes."],
       nonCircularCalc: ["Non-Circular", ""],
@@ -901,6 +1000,12 @@
         required: ["cylDiameter", "cylLength"],
         resultIds: ["cylVolumeResult"],
         calculate: calcCylindricalVolume
+      },
+      {
+        fields: ["sansPressure", "sansServiceType", "sansLineSize"],
+        required: ["sansPressure", "sansServiceType", "sansLineSize"],
+        resultIds: ["sansHazardResult"],
+        calculate: calculateSans347Hazard
       },
       {
         fields: ["ncPressure", "ncTemp", "ncCA", "ncMaterial", "ncShellJoint", "ncEndJoint", "ncH", "ncSmallH", "ncTr", "ncT1a", "ncT2a", "ncEndActual"],
@@ -996,6 +1101,8 @@
     document.addEventListener("change", event => {
       if (event.target.id === "searchCategory") searchCompounds();
       if (event.target.id === "npsSelect") showPipeData();
+      if (["npsElbowSelect", "elbowRadiusSelect"].includes(event.target.id)) showElbowData();
+      if (["sansServiceType", "sansLineSize"].includes(event.target.id)) calculateSans347Hazard();
       if (["npsFlangeSelect", "classFlangeSelect", "typeFlangeSelect"].includes(event.target.id)) showFlangeData();
       if (event.target.id === "wpsSelect") showWpsData();
       if (["lengthFrom", "lengthTo"].includes(event.target.id)) convertLength();
@@ -1008,6 +1115,7 @@
       if (event.target.id === "lengthInput") convertLength();
       if (event.target.id === "volumeInput") convertVolume();
       if (event.target.id === "pressureInput") convertPressure();
+      if (event.target.id === "sansPressure") calculateSans347Hazard();
       runLiveForTarget(event.target.id);
     });
 
@@ -1034,6 +1142,8 @@
         populateEngineeringSelects();
         updatePipeOdPanel();
         showPipeData();
+        showElbowData();
+        calculateSans347Hazard();
         showFlangeData();
         showWpsData();
         runAllLiveCalculators();
@@ -1047,9 +1157,23 @@
     }
 
     async function fetchJson(file) {
-      const response = await fetch(DATA_PATH + file);
-      if (!response.ok) throw new Error(`Could not load ${file}`);
-      return response.json();
+      if (window.BERUAPP_SOURCE_DATA?.[file]) {
+        return JSON.parse(JSON.stringify(window.BERUAPP_SOURCE_DATA[file]));
+      }
+      let lastError;
+      for (const path of DATA_PATHS) {
+        try {
+          const response = await fetch(path + file);
+          if (response.ok) {
+            const text = await response.text();
+            return JSON.parse(text.replace(/^\uFEFF/, ""));
+          }
+          lastError = new Error(`Could not load ${path}${file}`);
+        } catch (error) {
+          lastError = error;
+        }
+      }
+      throw lastError || new Error(`Could not load ${file}`);
     }
 
     function navigate(viewId, element) {
@@ -1064,6 +1188,12 @@
     function populatePipeSelects() {
       const options = Object.keys(state.pipes).map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
       byId("npsSelect").innerHTML = `<option value="">Select pipe size</option>${options}`;
+      byId("npsElbowSelect").innerHTML = standardNps
+        .filter(size => elbowDimensions90[size])
+        .map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
+      byId("sansLineSize").innerHTML = standardNps
+        .filter(size => npsToDn[size])
+        .map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
       const flangeOptions = Object.keys(state.flanges)
         .map(key => key.replace("NPS_", ""))
         .map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
@@ -1283,6 +1413,25 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       showHtml("pipeResult", `<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td>NPS</td><td><strong>${esc(nps)} in</strong></td></tr>${rows}</tbody></table>`);
     }
 
+    function showElbowData() {
+      const nps = byId("npsElbowSelect").value;
+      const radius = byId("elbowRadiusSelect").value;
+      const data = elbowDimensions90[nps];
+      if (!data) return showHtml("elbowResult", `<div class="notice error-text">Please select a line size.</div>`);
+      const centerToEnd = data[radius];
+      if (!centerToEnd) {
+        return showHtml("elbowResult", `<div class="notice">Short-radius 90 degree elbow dimensions start at NPS 1 in this lookup.</div>`);
+      }
+      const label = radius === "long" ? "Long radius" : "Short radius";
+      showHtml("elbowResult", `<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>
+        <tr><td>Fitting</td><td><strong>90 deg elbow</strong></td></tr>
+        <tr><td>NPS</td><td>${esc(nps)} in</td></tr>
+        <tr><td>DN</td><td>${npsToDn[nps] ? `DN ${npsToDn[nps]}` : "-"}</td></tr>
+        <tr><td>Radius type</td><td>${label}</td></tr>
+        <tr><td>Center-to-end dimension A</td><td><strong>${fmt(centerToEnd, 0)} mm</strong></td></tr>
+      </tbody></table>`);
+    }
+
     function showFlangeData() {
       const nps = byId("npsFlangeSelect").value;
       const cls = byId("classFlangeSelect").value;
@@ -1306,6 +1455,63 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
         return `<tr><td>${esc(labels[key] || key)}</td><td><strong>${esc(display)}</strong></td></tr>`;
       }).join("");
       showHtml("flangeResult", `<table><thead><tr><th>Dimension</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table>`);
+    }
+
+    function assessmentModuleForCategory(category) {
+      return {
+        "Not Regulated": "None",
+        "SEP": "Sound engineering practice; no conformity assessment module",
+        "CAT I": "Module A",
+        "CAT II": "Module A2, D1, or E1",
+        "CAT III": "Module B + D, B + F, B + E, B + C2, or H"
+      }[category] || "Undetermined";
+    }
+
+    function calculateSans347Hazard() {
+      const pressure = num("sansPressure");
+      const nps = byId("sansLineSize").value;
+      const dn = npsToDn[nps];
+      const service = byId("sansServiceType").value;
+      const errors = [];
+      if (!Number.isFinite(pressure) || pressure < 0) errors.push("Pressure must be zero or higher.");
+      if (!dn) errors.push("Please select a line size.");
+      if (errors.length) return showErrors("sansHazardResult", null, errors);
+
+      const pd = pressure * dn;
+      let category = "Undetermined";
+      if (service === "dangerousGas") {
+        if (pressure < 50) category = "Not Regulated";
+        else if (dn < 25) category = "SEP";
+        else if (pd < 100000 && dn >= 25 && dn < 100) category = "CAT I";
+        else if ((dn >= 25 && dn < 100 && pd >= 100000) || (dn >= 100 && dn < 350 && pd < 350000)) category = "CAT II";
+        else if ((dn >= 100 && dn < 350 && pd >= 350000) || (dn >= 350 && pressure >= 50)) category = "CAT III";
+      } else if (service === "nonDangerousGas") {
+        if (pressure < 50) category = "Not Regulated";
+        else if (dn < 32 || (dn >= 32 && pd < 100000)) category = "SEP";
+        else if ((dn >= 32 && dn < 100 && pd >= 100000) || (dn >= 100 && pd >= 100000 && pd < 350000)) category = "CAT I";
+        else if ((dn >= 100 && dn < 250 && pd >= 350000) || (dn >= 250 && pd >= 350000 && pd < 500000)) category = "CAT II";
+        else if (dn >= 250 && pd >= 500000) category = "CAT III";
+      } else if (service === "dangerousLiquid") {
+        if (pressure < 50) category = "Not Regulated";
+        else if (dn < 25 || (dn >= 25 && pd < 200000)) category = "SEP";
+        else if (pd >= 200000 && pressure < 1000) category = "CAT I";
+        else if ((dn >= 25 && dn < 200 && pd >= 200000 && pressure < 50000) || (dn >= 200 && pressure >= 1000 && pressure < 50000)) category = "CAT II";
+        else if (pressure >= 50000 && dn >= 25) category = "CAT III";
+      } else if (service === "nonDangerousLiquid") {
+        if (pressure < 50) category = "Not Regulated";
+        else if (dn < 200 || (dn >= 200 && dn < 500 && pd < 500000) || (dn >= 500 && pressure < 1000)) category = "SEP";
+        else if ((dn >= 200 && dn < 500 && pd >= 500000 && pressure < 50000) || (dn >= 500 && pressure >= 1000 && pressure < 50000)) category = "CAT I";
+        else if (dn >= 200 && pressure >= 50000) category = "CAT II";
+      }
+
+      const serviceLabel = byId("sansServiceType").selectedOptions[0]?.textContent || "";
+      showHtml("sansHazardResult", `<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>
+        <tr><td>Service type</td><td>${esc(serviceLabel)}</td></tr>
+        <tr><td>Pressure PS</td><td>${fmt(pressure, 2)} kPa</td></tr>
+        <tr><td>Line size</td><td>NPS ${esc(nps)} in</td></tr>
+        <tr><td>Hazard category</td><td><strong>${esc(category)}</strong></td></tr>
+        <tr><td>Assessment module</td><td><strong>${esc(assessmentModuleForCategory(category))}</strong></td></tr>
+      </tbody></table>`);
     }
 
     function getMetricBoltEquivalent(size) {

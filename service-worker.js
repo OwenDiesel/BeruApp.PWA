@@ -1,4 +1,4 @@
-const CACHE_NAME = "beruapp-pwa-v1";
+const CACHE_NAME = "beruapp-pwa-v4";
 
 const APP_SHELL = [
   "./",
@@ -10,7 +10,10 @@ const APP_SHELL = [
   "./assets/target.ico",
   "./assets/icons/icon-192.png",
   "./assets/icons/icon-512.png",
+  "./assets/diagrams/elbow-diagram.png",
+  "./assets/diagrams/flange-diagram.png",
   "./source_information/pipes.json",
+  "./source_information/source-data.js",
   "./source_information/flanges.json",
   "./source_information/wps.json",
   "./source_information/compounds.json",
