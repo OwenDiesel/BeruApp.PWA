@@ -414,6 +414,16 @@
 
     tr:last-child td { border-bottom: 0; }
 
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    .muted-cell {
+      color: var(--muted);
+      font-style: italic;
+    }
+
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -586,7 +596,7 @@
       <nav>
         <button class="nav-item active" data-view="compoundCalculator">Compound Calculator</button>
         <button class="nav-item" data-view="compoundSelector">Compound Selector</button>
-        <button class="nav-item" data-view="materialTempSelector">Material by Temp</button>
+        <button class="nav-item" data-view="materialGuideLookup">Material Guide</button>
         <button class="nav-item" data-view="pipeScheduleLookup">Pipe Schedule</button>
         <button class="nav-item" data-view="elbowDimensions">90 deg Elbows</button>
         <button class="nav-item" data-view="ansiFlanges">ANSI Flanges</button>
@@ -702,16 +712,16 @@
         </div>
       </section>
 
-      <section id="materialTempSelector" class="view">
+      <section id="materialGuideLookup" class="view">
         <div class="section">
-          <h3>Material Selection by Temperature</h3>
+          <h3>Material Guide Based on Temperature</h3>
           <div class="grid two">
-            <label>Temperature (C)<input type="number" id="materialTemp" placeholder="Enter temperature"></label>
+            <label>Design temperature (F)<input type="number" id="guideTempF" placeholder="Enter temperature"></label>
           </div>
           <div class="actions">
-            <button data-action="showMaterialByTemp">Show Material</button>
+            <button data-action="showMaterialGuideByTemp">Show PDF Values</button>
           </div>
-          <div class="result" id="materialTempResult"></div>
+          <div class="result" id="guideTempResult"></div>
         </div>
       </section>
 
@@ -957,7 +967,7 @@
     const titles = {
       compoundCalculator: ["Compound Calculator", "Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences."],
       compoundSelector: ["Compound Selector", "Shortlist compounds by service category."],
-      materialTempSelector: ["Material by Temp", "Enter a service temperature to list suitable sealing materials from the source ranges."],
+      materialGuideLookup: ["Material Guide", "Return the Material Guide based on Temp PDF values for a design temperature in Fahrenheit."],
       pipeScheduleLookup: ["Pipe Schedule", "Look up outside diameter and schedule wall thickness by NPS."],
       elbowDimensions: ["90 deg Elbows", "Look up 90 degree long-radius and short-radius elbow center-to-end dimensions up to NPS 48."],
       ansiFlanges: ["ANSI Flanges", "Look up ANSI B16.5 weld neck and slip-on flange dimensions."],
@@ -975,6 +985,23 @@
     const num = id => parseFloat(byId(id).value);
     const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
     const THEME_KEY = "beruapp-theme";
+    const materialGuideRows = [
+      { band: "Cryogenic", range: "-425 to -321", min: -425, max: -321, material: "Stainless steel", plate: "SA-240-304, 304L, 347, 316, 316L", pipe: "SA-312-304, 304L, 347, 316, 316L", forgings: "SA-182-304, 304L, 347, 316, 316L", fittings: "SA-403-304, 304L, 347, 316, 316L", bolting: "SA-320-B8 with SA-194-8" },
+      { band: "Cryogenic", range: "-320 to -151", min: -320, max: -151, material: "9 nickel", plate: "SA-353", pipe: "SA-333-8", forgings: "SA-522-1", fittings: "SA-420-WPL8", bolting: "SA-320-B8 with SA-194-8" },
+      { band: "Low temperature", range: "-150 to -76", min: -150, max: -76, material: "3-1/2 nickel", plate: "SA-203-D", pipe: "SA-333-3", forgings: "SA-350-LF3", fittings: "SA-420-WPL3", bolting: "SA-320-L7 with SA-194-4" },
+      { band: "Low temperature", range: "-75 to -51", min: -75, max: -51, material: "2-1/2 nickel", plate: "SA-203-A", pipe: "SA-333-3", forgings: "SA-350-LF3", fittings: "SA-420-WPL3", bolting: "SA-320-L7 with SA-194-4" },
+      { band: "Low temperature", range: "-50 to -21", min: -50, max: -21, material: "Carbon steel", plate: "SA-516-55, 60 to SA-20", pipe: "SA-333-6", forgings: "SA-350-LF2", fittings: "SA-420-WPL6", bolting: "SA-320-L7 with SA-194-4" },
+      { band: "Low temperature", range: "-20 to 4", min: -20, max: 4, material: "Carbon steel", plate: "SA-516-All", pipe: "SA-333-1 or 6", forgings: "SA-350-LF2", fittings: "SA-420-WPL6", bolting: "" },
+      { band: "Low temperature", range: "5 to 32", min: 5, max: 32, material: "Carbon steel", plate: "SA-285-C", pipe: "", forgings: "", fittings: "", bolting: "" },
+      { band: "Intermediate", range: "33 to 60 / 61 to 775", min: 33, max: 775, material: "Carbon steel", plate: "SA-516-All; SA-515-All; SA-455-II", pipe: "SA-53-B; SA-106-B", forgings: "SA-105; SA-181-60,70", fittings: "SA-234-WPB", bolting: "SA-193-B7 with SA-194-2H" },
+      { band: "Elevated temperature", range: "776 to 875", min: 776, max: 875, material: "C-1/2Mo", plate: "SA-204-B", pipe: "SA-335-P1", forgings: "SA-182-F1", fittings: "SA-234-WP1", bolting: "SA-193-B7 with SA-194-2H" },
+      { band: "Elevated temperature", range: "876 to 1000", min: 876, max: 1000, material: "1Cr-1/2Mo", plate: "SA-387-12-1", pipe: "SA-335-P12", forgings: "SA-182-F12", fittings: "SA-234-WP12", bolting: "SA-193-B7 with SA-194-2H" },
+      { band: "Elevated temperature", range: "876 to 1000", min: 876, max: 1000, material: "1-1/4Cr-1/2Mo", plate: "SA-387-11-2", pipe: "SA-335-P11", forgings: "SA-182-F11", fittings: "SA-234-WP11", bolting: "SA-193-B7 with SA-194-2H" },
+      { band: "Elevated temperature", range: "1001 to 1100", min: 1001, max: 1100, material: "2-1/4Cr-1Mo", plate: "SA-387-22-1", pipe: "SA-335-P22", forgings: "SA-182-F22", fittings: "SA-234-WP22", bolting: "SA-193-B5 with SA-194-3" },
+      { band: "Elevated temperature", range: "1101 to 1500", min: 1101, max: 1500, material: "Stainless steel", plate: "SA-240-347H", pipe: "SA-312-347H", forgings: "SA-182-347H", fittings: "SA-403-347H", bolting: "SA-193-BB with SA-194-B" },
+      { band: "Elevated temperature", range: "1101 to 1500", min: 1101, max: 1500, material: "Incoloy", plate: "SB-424", pipe: "SB-423", forgings: "SB-425", fittings: "SB-366", bolting: "SA-193-BB with SA-194-B" },
+      { band: "Elevated temperature", range: "Above 1500", min: 1500, max: Infinity, minExclusive: true, material: "Inconel", plate: "SB-443", pipe: "SB-444", forgings: "SB-446", fittings: "SB-366", bolting: "SA-193-BB with SA-194-B" }
+    ];
     const liveCalculators = [
       {
         fields: ["clampLength", "clampWidth", "grooveWidth", "grooveDepth", "pipeOD", "numBores", "stickVolume"],
@@ -1131,7 +1158,7 @@
       if (event.target.id === "volumeInput") convertVolume();
       if (event.target.id === "pressureInput") convertPressure();
       if (event.target.id === "sansPressure") calculateSans347Hazard();
-      if (event.target.id === "materialTemp") byId("materialTempResult").style.display = "none";
+      if (event.target.id === "guideTempF") byId("guideTempResult").style.display = "none";
       runLiveForTarget(event.target.id);
     });
 
@@ -1572,45 +1599,44 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
         </article>`).join("");
     }
 
-    function showMaterialByTemp() {
-      const temp = num("materialTemp");
+    function showMaterialGuideByTemp() {
+      const temp = num("guideTempF");
       if (!Number.isFinite(temp)) {
-        return showHtml("materialTempResult", `<span class="error-text">Please enter a valid temperature.</span>`);
+        return showHtml("guideTempResult", `<span class="error-text">Please enter a valid temperature in degrees Fahrenheit.</span>`);
       }
 
-      const categoryLabels = {
-        water_steam_utilities: "Water, steam & utilities",
-        hydrocarbons: "Hydrocarbons",
-        hydrocarbons_cryo: "Hydrocarbons, cryogenic",
-        superheated_steam: "Superheated steam",
-        ptfe_gas_caustic_amine: "PTFE, gas, caustic & amine",
-        acids_chemicals: "Acids & chemicals"
-      };
-      const matches = state.compounds
-        .filter(compound => temp >= Number(compound.minTemp) && temp <= Number(compound.maxTemp))
-        .sort((a, b) => (Number(a.maxTemp) - Number(a.minTemp)) - (Number(b.maxTemp) - Number(b.minTemp)) || a.product.localeCompare(b.product));
+      const matches = materialGuideRows.filter(row => {
+        const aboveMin = row.minExclusive ? temp > row.min : temp >= row.min;
+        return aboveMin && temp <= row.max;
+      });
 
       if (!matches.length) {
-        return showHtml("materialTempResult", `<div class="notice">No material range in the source data covers ${esc(temp)} C. Consult Beruseal engineering for confirmation.</div>`);
+        return showHtml("guideTempResult", `<div class="notice">No row in the PDF table covers ${esc(temp)} F.</div>`);
       }
 
-      const rows = matches.map(compound => `
+      const cell = value => value ? esc(value) : `<span class="muted-cell">Blank in PDF</span>`;
+      const rows = matches.map(row => `
         <tr>
-          <td><strong>${esc(compound.product)}</strong><br>${esc(compound.brand)}</td>
-          <td>${esc(compound.minTemp)} C to ${esc(compound.maxTemp)} C</td>
-          <td>${esc(categoryLabels[compound.category] || compound.category)}</td>
-          <td>${esc(compound.form)}</td>
-          <td>${esc(compound.color)}</td>
+          <td>${esc(row.band)}</td>
+          <td><strong>${esc(row.range)} F</strong></td>
+          <td><strong>${esc(row.material)}</strong></td>
+          <td>${cell(row.plate)}</td>
+          <td>${cell(row.pipe)}</td>
+          <td>${cell(row.forgings)}</td>
+          <td>${cell(row.fittings)}</td>
+          <td>${cell(row.bolting)}</td>
         </tr>`).join("");
 
-      showHtml("materialTempResult", `
-        <p><strong>${matches.length} suitable material${matches.length === 1 ? "" : "s"} found for ${esc(temp)} C.</strong></p>
-        <table>
-          <thead>
-            <tr><th>Material</th><th>Temperature range</th><th>Service category</th><th>Form</th><th>Colour</th></tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>`);
+      showHtml("guideTempResult", `
+        <p><strong>${matches.length} PDF row${matches.length === 1 ? "" : "s"} found for ${esc(temp)} F.</strong></p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Range type</th><th>Design temperature</th><th>Material</th><th>Plate</th><th>Pipe</th><th>Forgings</th><th>Fittings</th><th>Bolting</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`);
     }
 
     function convertLength() {
