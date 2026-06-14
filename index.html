@@ -586,6 +586,7 @@
       <nav>
         <button class="nav-item active" data-view="compoundCalculator">Compound Calculator</button>
         <button class="nav-item" data-view="compoundSelector">Compound Selector</button>
+        <button class="nav-item" data-view="materialTempSelector">Material by Temp</button>
         <button class="nav-item" data-view="pipeScheduleLookup">Pipe Schedule</button>
         <button class="nav-item" data-view="elbowDimensions">90 deg Elbows</button>
         <button class="nav-item" data-view="ansiFlanges">ANSI Flanges</button>
@@ -698,6 +699,19 @@
           <div class="cards" id="compoundResultsGrid">
             <div class="notice">Select a category to list matching compounds from the source information.</div>
           </div>
+        </div>
+      </section>
+
+      <section id="materialTempSelector" class="view">
+        <div class="section">
+          <h3>Material Selection by Temperature</h3>
+          <div class="grid two">
+            <label>Temperature (C)<input type="number" id="materialTemp" placeholder="Enter temperature"></label>
+          </div>
+          <div class="actions">
+            <button data-action="showMaterialByTemp">Show Material</button>
+          </div>
+          <div class="result" id="materialTempResult"></div>
         </div>
       </section>
 
@@ -943,6 +957,7 @@
     const titles = {
       compoundCalculator: ["Compound Calculator", "Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences."],
       compoundSelector: ["Compound Selector", "Shortlist compounds by service category."],
+      materialTempSelector: ["Material by Temp", "Enter a service temperature to list suitable sealing materials from the source ranges."],
       pipeScheduleLookup: ["Pipe Schedule", "Look up outside diameter and schedule wall thickness by NPS."],
       elbowDimensions: ["90 deg Elbows", "Look up 90 degree long-radius and short-radius elbow center-to-end dimensions up to NPS 48."],
       ansiFlanges: ["ANSI Flanges", "Look up ANSI B16.5 weld neck and slip-on flange dimensions."],
@@ -1116,6 +1131,7 @@
       if (event.target.id === "volumeInput") convertVolume();
       if (event.target.id === "pressureInput") convertPressure();
       if (event.target.id === "sansPressure") calculateSans347Hazard();
+      if (event.target.id === "materialTemp") byId("materialTempResult").style.display = "none";
       runLiveForTarget(event.target.id);
     });
 
@@ -1554,6 +1570,47 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
           <p><strong>Features:</strong> ${esc(compound.features)}</p>
           <p><strong>Applications:</strong> ${esc(compound.apps)}</p>
         </article>`).join("");
+    }
+
+    function showMaterialByTemp() {
+      const temp = num("materialTemp");
+      if (!Number.isFinite(temp)) {
+        return showHtml("materialTempResult", `<span class="error-text">Please enter a valid temperature.</span>`);
+      }
+
+      const categoryLabels = {
+        water_steam_utilities: "Water, steam & utilities",
+        hydrocarbons: "Hydrocarbons",
+        hydrocarbons_cryo: "Hydrocarbons, cryogenic",
+        superheated_steam: "Superheated steam",
+        ptfe_gas_caustic_amine: "PTFE, gas, caustic & amine",
+        acids_chemicals: "Acids & chemicals"
+      };
+      const matches = state.compounds
+        .filter(compound => temp >= Number(compound.minTemp) && temp <= Number(compound.maxTemp))
+        .sort((a, b) => (Number(a.maxTemp) - Number(a.minTemp)) - (Number(b.maxTemp) - Number(b.minTemp)) || a.product.localeCompare(b.product));
+
+      if (!matches.length) {
+        return showHtml("materialTempResult", `<div class="notice">No material range in the source data covers ${esc(temp)} C. Consult Beruseal engineering for confirmation.</div>`);
+      }
+
+      const rows = matches.map(compound => `
+        <tr>
+          <td><strong>${esc(compound.product)}</strong><br>${esc(compound.brand)}</td>
+          <td>${esc(compound.minTemp)} C to ${esc(compound.maxTemp)} C</td>
+          <td>${esc(categoryLabels[compound.category] || compound.category)}</td>
+          <td>${esc(compound.form)}</td>
+          <td>${esc(compound.color)}</td>
+        </tr>`).join("");
+
+      showHtml("materialTempResult", `
+        <p><strong>${matches.length} suitable material${matches.length === 1 ? "" : "s"} found for ${esc(temp)} C.</strong></p>
+        <table>
+          <thead>
+            <tr><th>Material</th><th>Temperature range</th><th>Service category</th><th>Form</th><th>Colour</th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>`);
     }
 
     function convertLength() {
