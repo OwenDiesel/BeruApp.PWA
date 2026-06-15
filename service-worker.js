@@ -1,4 +1,4 @@
-const CACHE_NAME = "beruapp-pwa-v4";
+const CACHE_NAME = "beruapp-pwa-v5";
 
 const APP_SHELL = [
   "./",
@@ -17,7 +17,8 @@ const APP_SHELL = [
   "./source_information/flanges.json",
   "./source_information/wps.json",
   "./source_information/compounds.json",
-  "./source_information/engineering_calcs.json"
+  "./source_information/engineering_calcs.json",
+  "./source_information/asme_table_1a.json"
 ];
 
 self.addEventListener("install", event => {
@@ -40,14 +41,10 @@ self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
 
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-
-      return fetch(event.request).then(response => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-        return response;
-      });
-    })
+    fetch(event.request, { cache: "no-store" }).then(response => {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+      return response;
+    }).catch(() => caches.match(event.request))
   );
 });

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <meta name="theme-color" content="#b01722" />
   <meta name="description" content="BeruApp engineering calculators and reference tools." />
   <link rel="manifest" href="manifest.webmanifest" />
@@ -150,7 +153,22 @@
 
     nav {
       display: grid;
-      gap: 8px;
+      gap: 14px;
+    }
+
+    .nav-group {
+      display: grid;
+      gap: 7px;
+    }
+
+    .nav-label {
+      color: var(--sidebar-muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 10px 0;
+      opacity: .76;
     }
 
     .nav-item {
@@ -419,6 +437,36 @@
       margin-top: 12px;
     }
 
+    .reference-toolbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1.2fr) minmax(150px, .5fr) auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .count-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--result-bg);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .compact-note {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
     .muted-cell {
       color: var(--muted);
       font-style: italic;
@@ -576,10 +624,11 @@
         position: static;
         height: auto;
       }
-      nav { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+      nav { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
       .topbar { align-items: flex-start; flex-direction: column; }
       .topbar-actions { width: 100%; justify-content: space-between; }
       .inline-lookup { grid-template-columns: 1fr; }
+      .reference-toolbar { grid-template-columns: 1fr; }
       .grid,
       .grid.two,
       .grid.three { grid-template-columns: 1fr; }
@@ -594,18 +643,28 @@
         <img class="brand-logo" src="assets/beruapp-logo.jpg" alt="BeruApp logo">
       </div>
       <nav>
-        <button class="nav-item active" data-view="compoundCalculator">Compound Calculator</button>
-        <button class="nav-item" data-view="compoundSelector">Compound Selector</button>
-        <button class="nav-item" data-view="materialGuideLookup">Material Guide</button>
-        <button class="nav-item" data-view="pipeScheduleLookup">Pipe Schedule</button>
-        <button class="nav-item" data-view="elbowDimensions">90 deg Elbows</button>
-        <button class="nav-item" data-view="ansiFlanges">ANSI Flanges</button>
-        <button class="nav-item" data-view="sans347Hazard">SANS 347 Hazard Category</button>
-        <button class="nav-item" data-view="weldingProcedure">WPS Library</button>
-        <button class="nav-item" data-view="unitConverter">Unit Converter</button>
-        <button class="nav-item" data-view="nonCircularCalc">Non-Circular</button>
-        <button class="nav-item" data-view="circularCalc">Circular</button>
-        <button class="nav-item" data-view="boltStandaloneCalc">Bolt Standalone</button>
+        <div class="nav-group">
+          <div class="nav-label">Calculators</div>
+          <button class="nav-item active" data-view="compoundCalculator">Compound Calculator</button>
+          <button class="nav-item" data-view="nonCircularCalc">Non-Circular</button>
+          <button class="nav-item" data-view="circularCalc">Circular</button>
+          <button class="nav-item" data-view="boltStandaloneCalc">Bolt Standalone</button>
+          <button class="nav-item" data-view="unitConverter">Unit Converter</button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Materials</div>
+          <button class="nav-item" data-view="compoundSelector">Compound Selector</button>
+          <button class="nav-item" data-view="materialGuideLookup">Material Guide</button>
+          <button class="nav-item" data-view="asmeTable1A">ASME Table 1A</button>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">References</div>
+          <button class="nav-item" data-view="pipeScheduleLookup">Pipe Schedule</button>
+          <button class="nav-item" data-view="elbowDimensions">90 deg Elbows</button>
+          <button class="nav-item" data-view="ansiFlanges">ANSI Flanges</button>
+          <button class="nav-item" data-view="sans347Hazard">SANS 347 Hazard Category</button>
+          <button class="nav-item" data-view="weldingProcedure">WPS Library</button>
+        </div>
       </nav>
     </aside>
 
@@ -716,12 +775,29 @@
         <div class="section">
           <h3>Material Guide Based on Temperature</h3>
           <div class="grid two">
-            <label>Design temperature (F)<input type="number" id="guideTempF" placeholder="Enter temperature"></label>
+            <label>Design temperature (degrees Celsius)<input type="number" id="guideTempC" placeholder="Enter temperature"></label>
           </div>
           <div class="actions">
             <button data-action="showMaterialGuideByTemp">Show PDF Values</button>
           </div>
           <div class="result" id="guideTempResult"></div>
+        </div>
+      </section>
+
+      <section id="asmeTable1A" class="view">
+        <div class="section">
+          <h3>ASME BPVC II - Part D Table 1A</h3>
+          <div class="reference-toolbar">
+            <label>Search material, spec, grade, UNS, or line number
+              <input type="search" id="asmeSearch" placeholder="Example: SA-516, 304L, S40910">
+            </label>
+            <label>Stress temperature (C)
+              <select id="asmeTempSelect"></select>
+            </label>
+            <div class="count-chip" id="asmeCount">Loading table</div>
+          </div>
+          <p class="compact-note">Showing the first 80 matches to keep the phone view responsive. Narrow the search for a shorter list.</p>
+          <div class="table-wrap" id="asmeTableWrap"></div>
         </div>
       </section>
 
@@ -942,7 +1018,7 @@
   <script src="source_information/source-data.js"></script>
   <script>
     const DATA_PATHS = ["source_information/", "../source_information/"];
-    const state = { pipes: {}, flanges: {}, wps: {}, compounds: [], engineering: { materials: [], boltMaterials: [], boltSizes: [] } };
+    const state = { pipes: {}, flanges: {}, wps: {}, compounds: [], engineering: { materials: [], boltMaterials: [], boltSizes: [] }, asmeTable1A: { temperatureColumnsC: [], rows: [] } };
     const standardNps = ["1/8","1/4","3/8","1/2","3/4","1","1.25","1.5","2","2.5","3","3.5","4","5","6","8","10","12","14","16","18","20","22","24","26","28","30","32","34","36","38","40","42","44","46","48"];
     const npsToDn = {
       "1/8": 6, "1/4": 8, "3/8": 10, "1/2": 15, "3/4": 20, "1": 25, "1.25": 32, "1.5": 40,
@@ -967,7 +1043,8 @@
     const titles = {
       compoundCalculator: ["Compound Calculator", "Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences."],
       compoundSelector: ["Compound Selector", "Shortlist compounds by service category."],
-      materialGuideLookup: ["Material Guide", "Return the Material Guide based on Temp PDF values for a design temperature in Fahrenheit."],
+      materialGuideLookup: ["Material Guide", "Return the Material Guide based on Temp PDF values for a design temperature in degrees Celsius."],
+      asmeTable1A: ["ASME Table 1A", "Search ASME BPVC II - Part D Table 1A allowable stress values for ferrous materials."],
       pipeScheduleLookup: ["Pipe Schedule", "Look up outside diameter and schedule wall thickness by NPS."],
       elbowDimensions: ["90 deg Elbows", "Look up 90 degree long-radius and short-radius elbow center-to-end dimensions up to NPS 48."],
       ansiFlanges: ["ANSI Flanges", "Look up ANSI B16.5 weld neck and slip-on flange dimensions."],
@@ -981,6 +1058,8 @@
 
     const fmt = (value, digits = 2) => Number(value).toLocaleString(undefined, { maximumFractionDigits: digits });
     const fmtComma = (value, digits = 1) => fmt(value, digits).replace(".", ",");
+    const fToC = value => (value - 32) * 5 / 9;
+    const cToF = value => value * 9 / 5 + 32;
     const byId = id => document.getElementById(id);
     const num = id => parseFloat(byId(id).value);
     const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
@@ -1147,6 +1226,7 @@
       if (["sansServiceType", "sansLineSize"].includes(event.target.id)) calculateSans347Hazard();
       if (["npsFlangeSelect", "classFlangeSelect", "typeFlangeSelect"].includes(event.target.id)) showFlangeData();
       if (event.target.id === "wpsSelect") showWpsData();
+      if (event.target.id === "asmeTempSelect") renderAsmeTable();
       if (["lengthFrom", "lengthTo"].includes(event.target.id)) convertLength();
       if (["volumeFrom", "volumeTo"].includes(event.target.id)) convertVolume();
       if (["pressureFrom", "pressureTo"].includes(event.target.id)) convertPressure();
@@ -1158,7 +1238,8 @@
       if (event.target.id === "volumeInput") convertVolume();
       if (event.target.id === "pressureInput") convertPressure();
       if (event.target.id === "sansPressure") calculateSans347Hazard();
-      if (event.target.id === "guideTempF") byId("guideTempResult").style.display = "none";
+      if (event.target.id === "guideTempC") byId("guideTempResult").style.display = "none";
+      if (event.target.id === "asmeSearch") renderAsmeTable();
       runLiveForTarget(event.target.id);
     });
 
@@ -1167,20 +1248,23 @@
     async function loadDatabases() {
       const status = byId("dataStatus");
       try {
-        const [pipes, flanges, wps, compounds, engineering] = await Promise.all([
+        const [pipes, flanges, wps, compounds, engineering, asmeTable1A] = await Promise.all([
           fetchJson("pipes.json"),
           fetchJson("flanges.json"),
           fetchJson("wps.json"),
           fetchJson("compounds.json"),
-          fetchJson("engineering_calcs.json")
+          fetchJson("engineering_calcs.json"),
+          fetchJson("asme_table_1a.json")
         ]);
         state.pipes = pipes;
         state.flanges = flanges;
         state.wps = wps;
         state.compounds = compounds;
         state.engineering = engineering;
+        state.asmeTable1A = asmeTable1A;
         populatePipeSelects();
         populateWpsDropdown();
+        populateAsmeControls();
         populateUnitSelects();
         populateEngineeringSelects();
         updatePipeOdPanel();
@@ -1189,6 +1273,7 @@
         calculateSans347Hazard();
         showFlangeData();
         showWpsData();
+        renderAsmeTable();
         runAllLiveCalculators();
         status.textContent = "Source data loaded";
         status.classList.remove("error");
@@ -1254,6 +1339,13 @@
     function populateWpsDropdown() {
       byId("wpsSelect").innerHTML = `<option value="">Select WPS</option>` +
         Object.keys(state.wps).map(key => `<option value="${esc(key)}">${esc(key)}</option>`).join("");
+    }
+
+    function populateAsmeControls() {
+      const temperatures = state.asmeTable1A.temperatureColumnsC || [];
+      byId("asmeTempSelect").innerHTML = temperatures
+        .map(temp => `<option value="${esc(temp)}" ${Number(temp) === 40 ? "selected" : ""}>${esc(temp)} C</option>`)
+        .join("");
     }
 
     function populateUnitSelects() {
@@ -1573,6 +1665,79 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       showHtml("wpsResult", `<table><thead><tr><th>WPS variable</th><th>Parameters</th></tr></thead><tbody>${rows}</tbody></table>`);
     }
 
+    function asmeSearchText(row) {
+      return [
+        row.lineNo,
+        row.nominalComposition,
+        row.productForm,
+        row.specNo,
+        row.typeGrade,
+        row.alloyDesigUnsNo,
+        row.classConditionTemper,
+        row.pNo,
+        row.groupNo,
+        row.notes
+      ].filter(value => value != null).join(" ").toLowerCase();
+    }
+
+    function renderAsmeTable() {
+      const wrap = byId("asmeTableWrap");
+      const count = byId("asmeCount");
+      if (!wrap || !count) return;
+
+      const rows = state.asmeTable1A.rows || [];
+      const query = (byId("asmeSearch")?.value || "").trim().toLowerCase();
+      const temp = byId("asmeTempSelect")?.value || "40";
+      const matches = rows.filter(row => !query || asmeSearchText(row).includes(query));
+      const visible = matches.slice(0, 80);
+
+      count.textContent = `${matches.length.toLocaleString()} match${matches.length === 1 ? "" : "es"}`;
+      if (!visible.length) {
+        wrap.innerHTML = `<div class="notice">No ASME Table 1A rows match that search.</div>`;
+        return;
+      }
+
+      const cell = value => value == null || value === "" ? `<span class="muted-cell">N/A</span>` : esc(value);
+      const mpaCell = value => value == null || value === "" ? `<span class="muted-cell">N/A</span>` : `${esc(value)} MPa`;
+      wrap.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Line</th>
+              <th>Composition</th>
+              <th>Product form</th>
+              <th>Spec.</th>
+              <th>Type / grade</th>
+              <th>UNS / alloy</th>
+              <th>P-No.</th>
+              <th>Group</th>
+              <th>Min tensile</th>
+              <th>Min yield</th>
+              <th>Stress at ${esc(temp)} C</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${visible.map(row => {
+              const stress = row.stressMpaByTempC?.[temp];
+              return `
+                <tr>
+                  <td>${cell(row.lineNo)}</td>
+                  <td>${cell(row.nominalComposition)}</td>
+                  <td>${cell(row.productForm)}</td>
+                  <td><strong>${cell(row.specNo)}</strong></td>
+                  <td>${cell(row.typeGrade)}</td>
+                  <td>${cell(row.alloyDesigUnsNo)}</td>
+                  <td>${cell(row.pNo)}</td>
+                  <td>${cell(row.groupNo)}</td>
+                  <td>${mpaCell(row.minTensileStrengthMpa)}</td>
+                  <td>${mpaCell(row.minYieldStrengthMpa)}</td>
+                  <td><strong>${stress == null ? "N/A" : `${esc(stress)} MPa`}</strong></td>
+                </tr>`;
+            }).join("")}
+          </tbody>
+        </table>`;
+    }
+
     function searchCompounds() {
       const category = byId("searchCategory").value;
       const grid = byId("compoundResultsGrid");
@@ -1599,26 +1764,32 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
         </article>`).join("");
     }
 
+    function materialGuideRangeC(row) {
+      if (row.max === Infinity) return `Above ${fmt(fToC(row.min), 0)} C`;
+      return `${fmt(fToC(row.min), 0)} to ${fmt(fToC(row.max), 0)} C`;
+    }
+
     function showMaterialGuideByTemp() {
-      const temp = num("guideTempF");
-      if (!Number.isFinite(temp)) {
-        return showHtml("guideTempResult", `<span class="error-text">Please enter a valid temperature in degrees Fahrenheit.</span>`);
+      const tempC = num("guideTempC");
+      if (!Number.isFinite(tempC)) {
+        return showHtml("guideTempResult", `<span class="error-text">Please enter a valid temperature in degrees Celsius.</span>`);
       }
+      const tempF = cToF(tempC);
 
       const matches = materialGuideRows.filter(row => {
-        const aboveMin = row.minExclusive ? temp > row.min : temp >= row.min;
-        return aboveMin && temp <= row.max;
+        const aboveMin = row.minExclusive ? tempF > row.min : tempF >= row.min;
+        return aboveMin && tempF <= row.max;
       });
 
       if (!matches.length) {
-        return showHtml("guideTempResult", `<div class="notice">No row in the PDF table covers ${esc(temp)} F.</div>`);
+        return showHtml("guideTempResult", `<div class="notice">No row in the PDF table covers ${esc(fmt(tempC, 1))} C.</div>`);
       }
 
       const cell = value => value ? esc(value) : `<span class="muted-cell">Blank in PDF</span>`;
       const rows = matches.map(row => `
         <tr>
           <td>${esc(row.band)}</td>
-          <td><strong>${esc(row.range)} F</strong></td>
+          <td><strong>${esc(materialGuideRangeC(row))}</strong></td>
           <td><strong>${esc(row.material)}</strong></td>
           <td>${cell(row.plate)}</td>
           <td>${cell(row.pipe)}</td>
@@ -1628,7 +1799,7 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
         </tr>`).join("");
 
       showHtml("guideTempResult", `
-        <p><strong>${matches.length} PDF row${matches.length === 1 ? "" : "s"} found for ${esc(temp)} F.</strong></p>
+        <p><strong>${matches.length} PDF row${matches.length === 1 ? "" : "s"} found for ${esc(fmt(tempC, 1))} C.</strong></p>
         <div class="table-wrap">
           <table>
             <thead>
@@ -1857,8 +2028,17 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
     loadDatabases();
 
     if ("serviceWorker" in navigator) {
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.addEventListener("controllerchange", () => {
+          if (window.__beruappRefreshing) return;
+          window.__beruappRefreshing = true;
+          window.location.reload();
+        });
+      }
       window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js").catch(error => {
+        navigator.serviceWorker.register("./service-worker.js").then(registration => {
+          registration.update();
+        }).catch(error => {
           console.warn("Service worker registration failed:", error);
         });
       });
