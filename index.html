@@ -136,19 +136,19 @@
     .brand {
       display: flex;
       align-items: center;
-      padding: 8px 8px 22px;
+      justify-content: center;
+      padding: 4px 8px 18px;
       border-bottom: 1px solid var(--sidebar-line);
       margin-bottom: 18px;
     }
 
     .brand-logo {
-      width: 100%;
+      display: block;
+      width: min(100%, 184px);
+      max-height: 68px;
       height: auto;
       object-fit: contain;
-      border-radius: 8px;
-      background: #ffffff;
-      padding: 8px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,.18));
     }
 
     nav {
@@ -716,7 +716,10 @@
       aside {
         position: static;
         height: auto;
+        padding: 16px;
       }
+      .brand { padding: 0 8px 14px; margin-bottom: 14px; }
+      .brand-logo { width: min(58vw, 150px); max-height: 54px; }
       nav { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
       .topbar { align-items: flex-start; flex-direction: column; }
       .topbar-actions { width: 100%; justify-content: space-between; }
@@ -735,7 +738,7 @@
   <div class="shell">
     <aside>
       <div class="brand">
-        <img class="brand-logo" src="assets/beruapp-logo.jpg" alt="BeruApp logo">
+        <img class="brand-logo" src="assets/beruapp-logo.png" alt="BeruApp logo">
       </div>
       <nav>
         <details class="nav-group" open>
@@ -982,6 +985,7 @@
           <h3>SANS 347 Hazard Category</h3>
           <div class="grid three">
             <label>Pressure PS (kPa)<input type="number" id="sansPressure" placeholder="500" value="500"></label>
+            <label>Volume V (L)<input type="number" id="sansVolume" placeholder="1" value="1"></label>
             <label>Service type
               <select id="sansServiceType">
                 <option value="dangerousGas">Piping - Dangerous Gas</option>
@@ -990,7 +994,7 @@
                 <option value="nonDangerousLiquid">Piping - Non Dangerous Liquids</option>
               </select>
             </label>
-            <label>Line size (in)
+            <label>Line size (in / OD mm)
               <select id="sansLineSize"></select>
             </label>
           </div>
@@ -1134,6 +1138,10 @@
       "26": 650, "28": 700, "30": 750, "32": 800, "34": 850, "36": 900, "38": 950, "40": 1000,
       "42": 1050, "44": 1100, "46": 1150, "48": 1200
     };
+    const npsOdFallbackMm = {
+      "26": 660.4, "28": 711.2, "30": 762.0, "32": 812.8, "34": 863.6, "36": 914.4,
+      "38": 965.2, "40": 1016.0, "42": 1066.8, "44": 1117.6, "46": 1168.4, "48": 1219.2
+    };
     const elbowDimensions90 = {
       "1/2": { long: 38, short: null }, "3/4": { long: 38, short: null }, "1": { long: 38, short: 25 },
       "1.25": { long: 48, short: 32 }, "1.5": { long: 57, short: 38 }, "2": { long: 76, short: 51 },
@@ -1241,8 +1249,8 @@
         calculate: calcCylindricalVolume
       },
       {
-        fields: ["sansPressure", "sansServiceType", "sansLineSize"],
-        required: ["sansPressure", "sansServiceType", "sansLineSize"],
+        fields: ["sansPressure", "sansVolume", "sansServiceType", "sansLineSize"],
+        required: ["sansPressure", "sansVolume", "sansServiceType", "sansLineSize"],
         resultIds: ["sansHazardResult"],
         calculate: calculateSans347Hazard
       },
@@ -1360,7 +1368,7 @@
       if (event.target.id === "lengthInput") convertLength();
       if (event.target.id === "volumeInput") convertVolume();
       if (event.target.id === "pressureInput") convertPressure();
-      if (event.target.id === "sansPressure") calculateSans347Hazard();
+      if (["sansPressure", "sansVolume"].includes(event.target.id)) calculateSans347Hazard();
       if (event.target.id === "asmeSearch") renderAsmeTable();
       runLiveForTarget(event.target.id);
     });
@@ -1449,7 +1457,7 @@
         .map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
       byId("sansLineSize").innerHTML = standardNps
         .filter(size => npsToDn[size])
-        .map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
+        .map(size => `<option value="${esc(size)}">${esc(formatNpsWithOd(size))}</option>`).join("");
       const flangeOptions = Object.keys(state.flanges)
         .map(key => key.replace("NPS_", ""))
         .map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
@@ -1742,27 +1750,66 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       showHtml("flangeResult", `<table><thead><tr><th>Dimension</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table>`);
     }
 
-    function assessmentModuleForCategory(category) {
-      return {
-        "Not Regulated": "None",
-        "SEP": "Sound engineering practice; no conformity assessment module",
-        "CAT I": "Module A",
-        "CAT II": "Module A2, D1, or E1",
-        "CAT III": "Module B + D, B + F, B + E, B + C2, or H"
-      }[category] || "Undetermined";
+    function getNpsOdMm(nps) {
+      return state.pipes[nps]?.od || npsOdFallbackMm[nps] || null;
+    }
+
+    function formatSansOdMm(value) {
+      return Number(value).toLocaleString("en-US", { maximumFractionDigits: 1 });
+    }
+
+    function formatNpsWithOd(nps) {
+      const od = getNpsOdMm(nps);
+      return od ? `${nps} in (${formatSansOdMm(od)} mm OD)` : `${nps} in`;
+    }
+
+    function calculateSans347VolumeCategory(pressure, volume, service) {
+      const pv = pressure * volume;
+      if (service === "dangerousGas") {
+        if (pressure < 50) return "Not Regulated";
+        if ((pressure < 20000 && volume < 1) || pv < 2000) return "SEP";
+        if (volume >= 1 && pv >= 2000 && pv < 5000) return "CAT I";
+        if (volume >= 1 && pv >= 5000 && pv < 20000) return "CAT II";
+        if ((volume >= 1 && pv >= 20000 && pv < 100000) || (pressure >= 20000 && pressure < 100000 && volume < 1)) return "CAT III";
+        if (pressure >= 100000 || pressure >= 50 || pv >= 100000) return "CAT IV";
+      } else if (service === "nonDangerousGas") {
+        if (pressure < 50) return "Not Regulated";
+        if ((pressure < 100000 && volume < 1) || pv < 5000) return "SEP";
+        if (volume >= 1 && pv >= 5000 && pv < 20000) return "CAT I";
+        if (volume >= 1 && pv >= 20000 && pv < 100000) return "CAT II";
+        if ((pressure >= 100000 && pressure < 300000 && volume < 1) || (volume >= 1 && pv >= 100000 && pv < 300000 && volume < 750) || (volume >= 750 && pv >= 100000 && volume < 2000 && pressure < 400) || (pressure >= 50 && pressure < 400 && volume >= 2000)) return "CAT III";
+        if (pressure >= 300000 || pressure >= 400 || pv >= 300000) return "CAT IV";
+      } else if (service === "dangerousLiquid") {
+        if (pressure < 50) return "Not Regulated";
+        if ((pressure < 50000 && volume < 1) || pv < 20000) return "SEP";
+        if (pressure < 1000 && pv >= 20000) return "CAT I";
+        if (pressure < 50000 && pressure >= 1000 && pv >= 20000 && volume >= 1) return "CAT II";
+        if (pressure >= 50000 && volume < 1) return "CAT II";
+        if (pressure >= 50000 && volume >= 1) return "CAT III";
+      } else if (service === "nonDangerousLiquid") {
+        if (pressure < 50) return "Not Regulated";
+        if ((pressure < 100000 && volume < 10) || (pv < 1000000 && volume >= 10 && volume < 1000) || (volume >= 1000 && pressure >= 50 && pressure < 1000)) return "SEP";
+        if ((pv >= 1000000 && pressure < 50000 && volume < 1000) || (volume >= 1000 && pressure >= 1000 && pressure < 50000)) return "CAT I";
+        if (pressure >= 100000 && volume < 10) return "CAT I";
+        if ((volume >= 10 && volume < 20 && pv >= 1000000) || (volume >= 20 && pressure >= 50000)) return "CAT II";
+      }
+      return "Undetermined";
     }
 
     function calculateSans347Hazard() {
       const pressure = num("sansPressure");
+      const volume = num("sansVolume");
       const nps = byId("sansLineSize").value;
       const dn = npsToDn[nps];
       const service = byId("sansServiceType").value;
       const errors = [];
       if (!Number.isFinite(pressure) || pressure < 0) errors.push("Pressure must be zero or higher.");
+      if (!Number.isFinite(volume) || volume < 0) errors.push("Volume must be zero or higher.");
       if (!dn) errors.push("Please select a line size.");
       if (errors.length) return showErrors("sansHazardResult", null, errors);
 
       const pd = pressure * dn;
+      const pv = pressure * volume;
       let category = "Undetermined";
       if (service === "dangerousGas") {
         if (pressure < 50) category = "Not Regulated";
@@ -1789,13 +1836,18 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
         else if (dn >= 200 && pressure >= 50000) category = "CAT II";
       }
 
+      const volumeCategory = calculateSans347VolumeCategory(pressure, volume, service);
       const serviceLabel = byId("sansServiceType").selectedOptions[0]?.textContent || "";
+      const od = getNpsOdMm(nps);
       showHtml("sansHazardResult", `<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>
         <tr><td>Service type</td><td>${esc(serviceLabel)}</td></tr>
         <tr><td>Pressure PS</td><td>${fmt(pressure, 2)} kPa</td></tr>
-        <tr><td>Line size</td><td>NPS ${esc(nps)} in</td></tr>
-        <tr><td>Hazard category</td><td><strong>${esc(category)}</strong></td></tr>
-        <tr><td>Assessment module</td><td><strong>${esc(assessmentModuleForCategory(category))}</strong></td></tr>
+        <tr><td>Volume V</td><td>${fmt(volume, 2)} L</td></tr>
+        <tr><td>Line size</td><td>NPS ${esc(nps)} in${od ? ` (${formatSansOdMm(od)} mm OD)` : ""}</td></tr>
+        <tr><td>PS x DN</td><td>${fmt(pd, 0)}</td></tr>
+        <tr><td>PS x V</td><td>${fmt(pv, 0)}</td></tr>
+        <tr><td>Line size assessment</td><td><strong>${esc(category)}</strong></td></tr>
+        <tr><td>Volume assessment</td><td><strong>${esc(volumeCategory)}</strong></td></tr>
       </tbody></table>`);
     }
 

@@ -1,10 +1,10 @@
-const CACHE_NAME = "beruapp-pwa-v5";
+const CACHE_NAME = "beruapp-pwa-v6";
 
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./assets/beruapp-logo.jpg",
+  "./assets/beruapp-logo.png",
   "./assets/beruseal-logo.png",
   "./assets/target-logo.png",
   "./assets/target.ico",
