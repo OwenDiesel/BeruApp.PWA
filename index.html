@@ -153,22 +153,47 @@
 
     nav {
       display: grid;
-      gap: 14px;
+      gap: 9px;
     }
 
     .nav-group {
       display: grid;
-      gap: 7px;
+      gap: 0;
+      border: 1px solid var(--sidebar-line);
+      border-radius: 8px;
+      overflow: hidden;
     }
 
     .nav-label {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       color: var(--sidebar-muted);
-      font-size: 11px;
+      background: rgba(255,255,255,.05);
+      font-size: 12px;
       font-weight: 800;
       letter-spacing: .08em;
       text-transform: uppercase;
-      padding: 4px 10px 0;
-      opacity: .76;
+      padding: 11px 12px;
+      cursor: pointer;
+    }
+
+    .nav-label::-webkit-details-marker { display: none; }
+
+    .nav-label::after {
+      content: "+";
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .nav-group[open] .nav-label::after { content: "-"; }
+
+    .nav-group-items {
+      display: grid;
+      gap: 4px;
+      padding: 7px;
     }
 
     .nav-item {
@@ -228,13 +253,19 @@
 
     .status {
       flex: 0 0 auto;
-      padding: 8px 12px;
-      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border-radius: 8px;
       background: var(--ok-bg);
       color: var(--ok);
-      font-size: 13px;
+      font-size: 18px;
       font-weight: 700;
       border: 1px solid var(--ok-line);
+      line-height: 1;
     }
 
     .status.error {
@@ -246,26 +277,27 @@
     .theme-toggle {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 3px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: transparent;
-      box-shadow: none;
-      opacity: .72;
     }
 
     .theme-option {
-      min-height: 28px;
-      padding: 5px 8px;
-      background: transparent;
-      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      min-height: 34px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--result-bg);
+      color: var(--ink);
       box-shadow: none;
-      font-size: 12px;
+      font-size: 17px;
+      line-height: 1;
     }
 
     .theme-option:hover {
-      background: var(--result-bg);
+      background: var(--panel);
       color: var(--ink);
       transform: none;
       box-shadow: none;
@@ -439,9 +471,16 @@
 
     .reference-toolbar {
       display: grid;
-      grid-template-columns: minmax(220px, 1.2fr) minmax(150px, .5fr) auto;
+      grid-template-columns: minmax(220px, 1fr) auto;
       gap: 12px;
       align-items: end;
+    }
+
+    .filter-toolbar {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
     }
 
     .count-chip {
@@ -471,6 +510,60 @@
       color: var(--muted);
       font-style: italic;
     }
+
+    .guide-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .guide-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--card-bg);
+      padding: 14px;
+    }
+
+    .guide-card header {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .guide-card header span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .guide-card header strong {
+      color: var(--brand);
+      font-size: 18px;
+    }
+
+    .guide-fields {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .guide-field {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    .guide-field dt {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .guide-field dd { margin: 0; }
 
     .cards {
       display: grid;
@@ -629,9 +722,11 @@
       .topbar-actions { width: 100%; justify-content: space-between; }
       .inline-lookup { grid-template-columns: 1fr; }
       .reference-toolbar { grid-template-columns: 1fr; }
+      .filter-toolbar { grid-template-columns: 1fr; }
       .grid,
       .grid.two,
       .grid.three { grid-template-columns: 1fr; }
+      .guide-field { grid-template-columns: 1fr; gap: 3px; }
       main { padding: 18px; }
     }
   </style>
@@ -643,28 +738,34 @@
         <img class="brand-logo" src="assets/beruapp-logo.jpg" alt="BeruApp logo">
       </div>
       <nav>
-        <div class="nav-group">
-          <div class="nav-label">Calculators</div>
-          <button class="nav-item active" data-view="compoundCalculator">Compound Calculator</button>
-          <button class="nav-item" data-view="nonCircularCalc">Non-Circular</button>
-          <button class="nav-item" data-view="circularCalc">Circular</button>
-          <button class="nav-item" data-view="boltStandaloneCalc">Bolt Standalone</button>
-          <button class="nav-item" data-view="unitConverter">Unit Converter</button>
-        </div>
-        <div class="nav-group">
-          <div class="nav-label">Materials</div>
-          <button class="nav-item" data-view="compoundSelector">Compound Selector</button>
-          <button class="nav-item" data-view="materialGuideLookup">Material Guide</button>
-          <button class="nav-item" data-view="asmeTable1A">ASME Table 1A</button>
-        </div>
-        <div class="nav-group">
-          <div class="nav-label">References</div>
-          <button class="nav-item" data-view="pipeScheduleLookup">Pipe Schedule</button>
-          <button class="nav-item" data-view="elbowDimensions">90 deg Elbows</button>
-          <button class="nav-item" data-view="ansiFlanges">ANSI Flanges</button>
-          <button class="nav-item" data-view="sans347Hazard">SANS 347 Hazard Category</button>
-          <button class="nav-item" data-view="weldingProcedure">WPS Library</button>
-        </div>
+        <details class="nav-group" open>
+          <summary class="nav-label">Calculators</summary>
+          <div class="nav-group-items">
+            <button class="nav-item active" data-view="compoundCalculator">Compound Calculator</button>
+            <button class="nav-item" data-view="nonCircularCalc">Non-Circular</button>
+            <button class="nav-item" data-view="circularCalc">Circular</button>
+            <button class="nav-item" data-view="boltStandaloneCalc">Bolt Standalone</button>
+            <button class="nav-item" data-view="unitConverter">Unit Converter</button>
+          </div>
+        </details>
+        <details class="nav-group">
+          <summary class="nav-label">Materials</summary>
+          <div class="nav-group-items">
+            <button class="nav-item" data-view="compoundSelector">Compound Selector</button>
+            <button class="nav-item" data-view="materialGuideLookup">Material Guide by Temperature</button>
+            <button class="nav-item" data-view="asmeTable1A">ASME Table 1A</button>
+          </div>
+        </details>
+        <details class="nav-group">
+          <summary class="nav-label">References</summary>
+          <div class="nav-group-items">
+            <button class="nav-item" data-view="pipeScheduleLookup">Pipe Schedule</button>
+            <button class="nav-item" data-view="elbowDimensions">90 deg Elbows</button>
+            <button class="nav-item" data-view="ansiFlanges">ANSI Flanges</button>
+            <button class="nav-item" data-view="sans347Hazard">SANS 347 Hazard Category</button>
+            <button class="nav-item" data-view="weldingProcedure">WPS Library</button>
+          </div>
+        </details>
       </nav>
     </aside>
 
@@ -676,10 +777,9 @@
         </div>
         <div class="topbar-actions">
           <div class="theme-toggle" role="group" aria-label="Theme setting">
-            <button type="button" class="theme-option" data-theme-choice="light">Light</button>
-            <button type="button" class="theme-option" data-theme-choice="dark">Dark</button>
+            <button type="button" class="theme-option" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode">☾</button>
           </div>
-          <div id="dataStatus" class="status">Loading source data</div>
+          <div id="dataStatus" class="status" aria-label="Loading source data" title="Loading source data">…</div>
         </div>
       </div>
 
@@ -773,12 +873,11 @@
 
       <section id="materialGuideLookup" class="view">
         <div class="section">
-          <h3>Material Guide Based on Temperature</h3>
+          <h3>Material Guide by Temperature</h3>
           <div class="grid two">
-            <label>Design temperature (degrees Celsius)<input type="number" id="guideTempC" placeholder="Enter temperature"></label>
-          </div>
-          <div class="actions">
-            <button data-action="showMaterialGuideByTemp">Show PDF Values</button>
+            <label>Design temperature range
+              <select id="guideTempRange"></select>
+            </label>
           </div>
           <div class="result" id="guideTempResult"></div>
         </div>
@@ -788,13 +887,21 @@
         <div class="section">
           <h3>ASME BPVC II - Part D Table 1A</h3>
           <div class="reference-toolbar">
-            <label>Search material, spec, grade, UNS, or line number
+            <label>Search material, spec, grade, or UNS
               <input type="search" id="asmeSearch" placeholder="Example: SA-516, 304L, S40910">
             </label>
-            <label>Stress temperature (C)
-              <select id="asmeTempSelect"></select>
-            </label>
             <div class="count-chip" id="asmeCount">Loading table</div>
+          </div>
+          <div class="filter-toolbar">
+            <label>Composition<select id="asmeFilterComposition"></select></label>
+            <label>Product form<select id="asmeFilterProductForm"></select></label>
+            <label>Spec.<select id="asmeFilterSpec"></select></label>
+            <label>Type / grade<select id="asmeFilterTypeGrade"></select></label>
+            <label>UNS / alloy<select id="asmeFilterUnsAlloy"></select></label>
+            <label>P-No.<select id="asmeFilterPNo"></select></label>
+            <label>Group<select id="asmeFilterGroup"></select></label>
+            <label>Min tensile<select id="asmeFilterMinTensile"></select></label>
+            <label>Min yield<select id="asmeFilterMinYield"></select></label>
           </div>
           <p class="compact-note">Showing the first 80 matches to keep the phone view responsive. Narrow the search for a shorter list.</p>
           <div class="table-wrap" id="asmeTableWrap"></div>
@@ -1043,8 +1150,8 @@
     const titles = {
       compoundCalculator: ["Compound Calculator", "Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences."],
       compoundSelector: ["Compound Selector", "Shortlist compounds by service category."],
-      materialGuideLookup: ["Material Guide", "Return the Material Guide based on Temp PDF values for a design temperature in degrees Celsius."],
-      asmeTable1A: ["ASME Table 1A", "Search ASME BPVC II - Part D Table 1A allowable stress values for ferrous materials."],
+      materialGuideLookup: ["Material Guide by Temperature", "Display material guide values for a selected design temperature range in degrees Celsius."],
+      asmeTable1A: ["ASME Table 1A", "Search and filter ASME BPVC II - Part D Table 1A allowable stress values for ferrous materials."],
       pipeScheduleLookup: ["Pipe Schedule", "Look up outside diameter and schedule wall thickness by NPS."],
       elbowDimensions: ["90 deg Elbows", "Look up 90 degree long-radius and short-radius elbow center-to-end dimensions up to NPS 48."],
       ansiFlanges: ["ANSI Flanges", "Look up ANSI B16.5 weld neck and slip-on flange dimensions."],
@@ -1080,6 +1187,17 @@
       { band: "Elevated temperature", range: "1101 to 1500", min: 1101, max: 1500, material: "Stainless steel", plate: "SA-240-347H", pipe: "SA-312-347H", forgings: "SA-182-347H", fittings: "SA-403-347H", bolting: "SA-193-BB with SA-194-B" },
       { band: "Elevated temperature", range: "1101 to 1500", min: 1101, max: 1500, material: "Incoloy", plate: "SB-424", pipe: "SB-423", forgings: "SB-425", fittings: "SB-366", bolting: "SA-193-BB with SA-194-B" },
       { band: "Elevated temperature", range: "Above 1500", min: 1500, max: Infinity, minExclusive: true, material: "Inconel", plate: "SB-443", pipe: "SB-444", forgings: "SB-446", fittings: "SB-366", bolting: "SA-193-BB with SA-194-B" }
+    ];
+    const asmeFilterFields = [
+      { id: "asmeFilterComposition", key: "nominalComposition" },
+      { id: "asmeFilterProductForm", key: "productForm" },
+      { id: "asmeFilterSpec", key: "specNo" },
+      { id: "asmeFilterTypeGrade", key: "typeGrade" },
+      { id: "asmeFilterUnsAlloy", key: "alloyDesigUnsNo" },
+      { id: "asmeFilterPNo", key: "pNo" },
+      { id: "asmeFilterGroup", key: "groupNo" },
+      { id: "asmeFilterMinTensile", key: "minTensileStrengthMpa", format: value => `${value} MPa` },
+      { id: "asmeFilterMinYield", key: "minYieldStrengthMpa", format: value => `${value} MPa` }
     ];
     const liveCalculators = [
       {
@@ -1151,9 +1269,13 @@
     function applyTheme(theme, persist = true) {
       const selected = theme === "dark" ? "dark" : "light";
       document.body.dataset.theme = selected;
-      document.querySelectorAll("[data-theme-choice]").forEach(button => {
-        button.classList.toggle("active", button.dataset.themeChoice === selected);
-      });
+      const toggle = document.querySelector("[data-theme-toggle]");
+      if (toggle) {
+        const nextTheme = selected === "dark" ? "light" : "dark";
+        toggle.textContent = selected === "dark" ? "☀" : "☾";
+        toggle.setAttribute("aria-label", `Switch to ${nextTheme} mode`);
+        toggle.setAttribute("title", `Switch to ${nextTheme} mode`);
+      }
       if (persist) {
         try { localStorage.setItem(THEME_KEY, selected); } catch {}
       }
@@ -1206,9 +1328,9 @@
     }
 
     document.addEventListener("click", event => {
-      const theme = event.target.closest("[data-theme-choice]");
-      if (theme) {
-        applyTheme(theme.dataset.themeChoice);
+      const themeToggle = event.target.closest("[data-theme-toggle]");
+      if (themeToggle) {
+        applyTheme(document.body.dataset.theme === "dark" ? "light" : "dark");
         return;
       }
 
@@ -1226,7 +1348,8 @@
       if (["sansServiceType", "sansLineSize"].includes(event.target.id)) calculateSans347Hazard();
       if (["npsFlangeSelect", "classFlangeSelect", "typeFlangeSelect"].includes(event.target.id)) showFlangeData();
       if (event.target.id === "wpsSelect") showWpsData();
-      if (event.target.id === "asmeTempSelect") renderAsmeTable();
+      if (event.target.id === "guideTempRange") showMaterialGuideByTemp();
+      if (event.target.id.startsWith("asmeFilter")) renderAsmeTable();
       if (["lengthFrom", "lengthTo"].includes(event.target.id)) convertLength();
       if (["volumeFrom", "volumeTo"].includes(event.target.id)) convertVolume();
       if (["pressureFrom", "pressureTo"].includes(event.target.id)) convertPressure();
@@ -1238,7 +1361,6 @@
       if (event.target.id === "volumeInput") convertVolume();
       if (event.target.id === "pressureInput") convertPressure();
       if (event.target.id === "sansPressure") calculateSans347Hazard();
-      if (event.target.id === "guideTempC") byId("guideTempResult").style.display = "none";
       if (event.target.id === "asmeSearch") renderAsmeTable();
       runLiveForTarget(event.target.id);
     });
@@ -1264,6 +1386,7 @@
         state.asmeTable1A = asmeTable1A;
         populatePipeSelects();
         populateWpsDropdown();
+        populateMaterialGuideControls();
         populateAsmeControls();
         populateUnitSelects();
         populateEngineeringSelects();
@@ -1273,12 +1396,17 @@
         calculateSans347Hazard();
         showFlangeData();
         showWpsData();
+        showMaterialGuideByTemp();
         renderAsmeTable();
         runAllLiveCalculators();
-        status.textContent = "Source data loaded";
+        status.textContent = "✓";
+        status.setAttribute("aria-label", "Source data loaded");
+        status.setAttribute("title", "Source data loaded");
         status.classList.remove("error");
       } catch (error) {
-        status.textContent = "Source data unavailable";
+        status.textContent = "!";
+        status.setAttribute("aria-label", "Source data unavailable");
+        status.setAttribute("title", "Source data unavailable");
         status.classList.add("error");
         console.error(error);
       }
@@ -1341,11 +1469,33 @@
         Object.keys(state.wps).map(key => `<option value="${esc(key)}">${esc(key)}</option>`).join("");
     }
 
-    function populateAsmeControls() {
-      const temperatures = state.asmeTable1A.temperatureColumnsC || [];
-      byId("asmeTempSelect").innerHTML = temperatures
-        .map(temp => `<option value="${esc(temp)}" ${Number(temp) === 40 ? "selected" : ""}>${esc(temp)} C</option>`)
+    function populateMaterialGuideControls() {
+      const groups = materialGuideRows.reduce((acc, row) => {
+        const key = materialGuideRangeKey(row);
+        if (!acc.some(item => item.key === key)) {
+          acc.push({ key, label: `${row.band} - ${materialGuideRangeC(row)}` });
+        }
+        return acc;
+      }, []);
+      byId("guideTempRange").innerHTML = groups
+        .map((group, index) => `<option value="${esc(group.key)}" ${index === 0 ? "selected" : ""}>${esc(group.label)}</option>`)
         .join("");
+    }
+
+    function populateAsmeControls() {
+      asmeFilterFields.forEach(field => {
+        const values = uniqueSortedAsmeValues(field.key);
+        byId(field.id).innerHTML = `<option value="">All</option>` +
+          values.map(value => `<option value="${esc(value)}">${esc(field.format ? field.format(value) : value)}</option>`).join("");
+      });
+    }
+
+    function uniqueSortedAsmeValues(key) {
+      return [...new Set((state.asmeTable1A.rows || [])
+        .map(row => row[key])
+        .filter(value => value != null && value !== "")
+        .map(value => String(value)))]
+        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
     }
 
     function populateUnitSelects() {
@@ -1667,7 +1817,6 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
 
     function asmeSearchText(row) {
       return [
-        row.lineNo,
         row.nominalComposition,
         row.productForm,
         row.specNo,
@@ -1680,6 +1829,13 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       ].filter(value => value != null).join(" ").toLowerCase();
     }
 
+    function matchesAsmeFilters(row) {
+      return asmeFilterFields.every(field => {
+        const selected = byId(field.id)?.value || "";
+        return !selected || String(row[field.key] ?? "") === selected;
+      });
+    }
+
     function renderAsmeTable() {
       const wrap = byId("asmeTableWrap");
       const count = byId("asmeCount");
@@ -1687,8 +1843,11 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
 
       const rows = state.asmeTable1A.rows || [];
       const query = (byId("asmeSearch")?.value || "").trim().toLowerCase();
-      const temp = byId("asmeTempSelect")?.value || "40";
-      const matches = rows.filter(row => !query || asmeSearchText(row).includes(query));
+      const temp = "40";
+      const matches = rows.filter(row =>
+        (!query || asmeSearchText(row).includes(query)) &&
+        matchesAsmeFilters(row)
+      );
       const visible = matches.slice(0, 80);
 
       count.textContent = `${matches.length.toLocaleString()} match${matches.length === 1 ? "" : "es"}`;
@@ -1703,7 +1862,6 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
         <table>
           <thead>
             <tr>
-              <th>Line</th>
               <th>Composition</th>
               <th>Product form</th>
               <th>Spec.</th>
@@ -1721,7 +1879,6 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
               const stress = row.stressMpaByTempC?.[temp];
               return `
                 <tr>
-                  <td>${cell(row.lineNo)}</td>
                   <td>${cell(row.nominalComposition)}</td>
                   <td>${cell(row.productForm)}</td>
                   <td><strong>${cell(row.specNo)}</strong></td>
@@ -1769,45 +1926,38 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       return `${fmt(fToC(row.min), 0)} to ${fmt(fToC(row.max), 0)} C`;
     }
 
-    function showMaterialGuideByTemp() {
-      const tempC = num("guideTempC");
-      if (!Number.isFinite(tempC)) {
-        return showHtml("guideTempResult", `<span class="error-text">Please enter a valid temperature in degrees Celsius.</span>`);
-      }
-      const tempF = cToF(tempC);
+    function materialGuideRangeKey(row) {
+      return `${row.min}|${row.max}|${row.minExclusive ? 1 : 0}|${row.band}`;
+    }
 
-      const matches = materialGuideRows.filter(row => {
-        const aboveMin = row.minExclusive ? tempF > row.min : tempF >= row.min;
-        return aboveMin && tempF <= row.max;
-      });
+    function showMaterialGuideByTemp() {
+      const selectedRange = byId("guideTempRange")?.value || "";
+      const matches = materialGuideRows.filter(row => materialGuideRangeKey(row) === selectedRange);
 
       if (!matches.length) {
-        return showHtml("guideTempResult", `<div class="notice">No row in the PDF table covers ${esc(fmt(tempC, 1))} C.</div>`);
+        return showHtml("guideTempResult", `<div class="notice">Select a design temperature range to display the material guide.</div>`);
       }
 
       const cell = value => value ? esc(value) : `<span class="muted-cell">Blank in PDF</span>`;
       const rows = matches.map(row => `
-        <tr>
-          <td>${esc(row.band)}</td>
-          <td><strong>${esc(materialGuideRangeC(row))}</strong></td>
-          <td><strong>${esc(row.material)}</strong></td>
-          <td>${cell(row.plate)}</td>
-          <td>${cell(row.pipe)}</td>
-          <td>${cell(row.forgings)}</td>
-          <td>${cell(row.fittings)}</td>
-          <td>${cell(row.bolting)}</td>
-        </tr>`).join("");
+        <article class="guide-card">
+          <header>
+            <span>${esc(row.band)}</span>
+            <strong>${esc(materialGuideRangeC(row))}</strong>
+          </header>
+          <dl class="guide-fields">
+            <div class="guide-field"><dt>Material</dt><dd><strong>${esc(row.material)}</strong></dd></div>
+            <div class="guide-field"><dt>Plate</dt><dd>${cell(row.plate)}</dd></div>
+            <div class="guide-field"><dt>Pipe</dt><dd>${cell(row.pipe)}</dd></div>
+            <div class="guide-field"><dt>Forgings</dt><dd>${cell(row.forgings)}</dd></div>
+            <div class="guide-field"><dt>Fittings</dt><dd>${cell(row.fittings)}</dd></div>
+            <div class="guide-field"><dt>Bolting</dt><dd>${cell(row.bolting)}</dd></div>
+          </dl>
+        </article>`).join("");
 
       showHtml("guideTempResult", `
-        <p><strong>${matches.length} PDF row${matches.length === 1 ? "" : "s"} found for ${esc(fmt(tempC, 1))} C.</strong></p>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Range type</th><th>Design temperature</th><th>Material</th><th>Plate</th><th>Pipe</th><th>Forgings</th><th>Fittings</th><th>Bolting</th></tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>`);
+        <p><strong>${esc(materialGuideRangeC(matches[0]))}: ${matches.length} material guide row${matches.length === 1 ? "" : "s"}.</strong></p>
+        <div class="guide-list">${rows}</div>`);
     }
 
     function convertLength() {
