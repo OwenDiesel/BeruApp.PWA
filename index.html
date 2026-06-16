@@ -234,8 +234,9 @@
     .topbar-actions {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
       flex: 0 0 auto;
+      position: relative;
     }
 
     .topbar h2 {
@@ -251,18 +252,47 @@
       line-height: 1.45;
     }
 
+    .settings-menu {
+      position: relative;
+    }
+
+    .settings-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 38px;
+      padding: 7px 9px 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--result-bg);
+      color: var(--ink);
+      box-shadow: none;
+    }
+
+    .settings-trigger:hover {
+      background: var(--panel);
+      color: var(--ink);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .settings-trigger-label {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
     .status {
       flex: 0 0 auto;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
+      width: 24px;
+      height: 24px;
       padding: 0;
-      border-radius: 8px;
+      border-radius: 7px;
       background: var(--ok-bg);
       color: var(--ok);
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 700;
       border: 1px solid var(--ok-line);
       line-height: 1;
@@ -274,38 +304,94 @@
       border-color: var(--danger-line);
     }
 
-    .theme-toggle {
-      display: inline-flex;
-      align-items: center;
+    .settings-panel {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      z-index: 20;
+      width: min(310px, calc(100vw - 36px));
+      display: grid;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
     }
 
-    .theme-option {
+    .settings-panel[hidden] { display: none; }
+
+    .settings-row {
+      display: grid;
+      gap: 7px;
+    }
+
+    .settings-row-title {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .settings-note {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .settings-source {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--result-bg);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .theme-toggle { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .theme-option,
+    .unit-option {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
       min-height: 34px;
-      padding: 0;
+      padding: 7px 9px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--result-bg);
       color: var(--ink);
       box-shadow: none;
-      font-size: 17px;
+      font-size: 12px;
+      font-weight: 800;
       line-height: 1;
     }
 
-    .theme-option:hover {
+    .theme-option:hover,
+    .unit-option:hover {
       background: var(--panel);
       color: var(--ink);
       transform: none;
       box-shadow: none;
     }
 
-    .theme-option.active {
-      background: var(--result-bg);
-      color: var(--ink);
+    .theme-option.active,
+    .unit-option.active {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #ffffff;
     }
 
     .view { display: none; }
@@ -643,6 +729,14 @@
       text-align: center;
     }
 
+    .version-line {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
     .inline-lookup {
       display: grid;
       grid-template-columns: minmax(240px, 360px) minmax(210px, 1fr);
@@ -779,10 +873,37 @@
           <p id="viewDescription">Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences.</p>
         </div>
         <div class="topbar-actions">
-          <div class="theme-toggle" role="group" aria-label="Theme setting">
-            <button type="button" class="theme-option" data-theme-toggle aria-label="Switch to dark mode" title="Switch to dark mode">☾</button>
+          <div class="settings-menu">
+            <button type="button" class="settings-trigger" data-settings-toggle aria-expanded="false" aria-controls="settingsPanel">
+              <span class="settings-trigger-label">Settings</span>
+              <span id="dataStatus" class="status" aria-label="Loading source data" title="Loading source data">…</span>
+            </button>
+            <div class="settings-panel" id="settingsPanel" hidden>
+              <div class="settings-row">
+                <span class="settings-row-title">Source data</span>
+                <div class="settings-source">
+                  <span id="dataStatusText">Loading source data</span>
+                  <span id="dataStatusPanel" class="status" aria-hidden="true">…</span>
+                </div>
+              </div>
+              <div class="settings-row">
+                <span class="settings-row-title">Theme</span>
+                <div class="segmented theme-toggle" role="group" aria-label="Theme setting">
+                  <button type="button" class="theme-option" data-theme-choice="light">Light</button>
+                  <button type="button" class="theme-option" data-theme-choice="dark">Dark</button>
+                </div>
+              </div>
+              <div class="settings-row">
+                <span class="settings-row-title">Units</span>
+                <div class="segmented" role="group" aria-label="Global unit setting">
+                  <button type="button" class="unit-option" data-unit-choice="metric">Metric</button>
+                  <button type="button" class="unit-option" data-unit-choice="imperial">Imperial</button>
+                  <button type="button" class="unit-option" data-unit-choice="mixed">Mixed</button>
+                </div>
+                <span class="settings-note">Controls displayed result units across references and calculators.</span>
+              </div>
+            </div>
           </div>
-          <div id="dataStatus" class="status" aria-label="Loading source data" title="Loading source data">…</div>
         </div>
       </div>
 
@@ -1122,7 +1243,10 @@
         </div>
       </section>
 
-      <footer class="footer">Created by Owen Diesel</footer>
+      <footer class="footer">
+        <div>Created by Owen Diesel</div>
+        <div class="version-line">App version: <span id="appVersionText"></span> | Source data version: <span id="sourceDataVersionText"></span></div>
+      </footer>
     </main>
   </div>
 
@@ -1178,7 +1302,11 @@
     const byId = id => document.getElementById(id);
     const num = id => parseFloat(byId(id).value);
     const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+    const APP_VERSION = "v1.1.0";
+    const SOURCE_DATA_VERSION = "2026.06.15";
     const THEME_KEY = "beruapp-theme";
+    const UNIT_KEY = "beruapp-unit-mode";
+    let unitMode = "mixed";
     const materialGuideRows = [
       { band: "Cryogenic", range: "-425 to -321", min: -425, max: -321, material: "Stainless steel", plate: "SA-240-304, 304L, 347, 316, 316L", pipe: "SA-312-304, 304L, 347, 316, 316L", forgings: "SA-182-304, 304L, 347, 316, 316L", fittings: "SA-403-304, 304L, 347, 316, 316L", bolting: "SA-320-B8 with SA-194-8" },
       { band: "Cryogenic", range: "-320 to -151", min: -320, max: -151, material: "9 nickel", plate: "SA-353", pipe: "SA-333-8", forgings: "SA-522-1", fittings: "SA-420-WPL8", bolting: "SA-320-B8 with SA-194-8" },
@@ -1204,9 +1332,49 @@
       { id: "asmeFilterUnsAlloy", key: "alloyDesigUnsNo" },
       { id: "asmeFilterPNo", key: "pNo" },
       { id: "asmeFilterGroup", key: "groupNo" },
-      { id: "asmeFilterMinTensile", key: "minTensileStrengthMpa", format: value => `${value} MPa` },
-      { id: "asmeFilterMinYield", key: "minYieldStrengthMpa", format: value => `${value} MPa` }
+      { id: "asmeFilterMinTensile", key: "minTensileStrengthMpa", format: value => displayStressMpa(Number(value)) },
+      { id: "asmeFilterMinYield", key: "minYieldStrengthMpa", format: value => displayStressMpa(Number(value)) }
     ];
+    const unitDefinitions = {
+      metric: "Metric only",
+      imperial: "Imperial only",
+      mixed: "Mixed metric/imperial"
+    };
+    const mmToIn = value => value / 25.4;
+    const mm2ToIn2 = value => value / 645.16;
+    const mm3ToIn3 = value => value / 16387.064;
+    const nToLbf = value => value * 0.2248089431;
+    const nmToLbft = value => value * 0.7375621493;
+    const mpaToKsi = value => value * 0.1450377377;
+    const kpaToPsi = value => value * 0.1450377377;
+    const cToDisplayF = value => cToF(value);
+
+    function formatUnit(metricValue, metricUnit, imperialValue, imperialUnit, metricDigits = 2, imperialDigits = 2) {
+      if (unitMode === "metric") return `${fmt(metricValue, metricDigits)} ${metricUnit}`;
+      if (unitMode === "imperial") return `${fmt(imperialValue, imperialDigits)} ${imperialUnit}`;
+      return `${fmt(metricValue, metricDigits)} ${metricUnit} (${fmt(imperialValue, imperialDigits)} ${imperialUnit})`;
+    }
+
+    const displayLengthMm = (value, metricDigits = 2, imperialDigits = 3) => formatUnit(value, "mm", mmToIn(value), "in", metricDigits, imperialDigits);
+    const displayAreaMm2 = (value, metricDigits = 2, imperialDigits = 4) => formatUnit(value, "mm2", mm2ToIn2(value), "in2", metricDigits, imperialDigits);
+    const displayVolumeMm3 = (value, metricDigits = 2, imperialDigits = 3) => formatUnit(value, "mm3", mm3ToIn3(value), "in3", metricDigits, imperialDigits);
+    const displayVolumeL = (value, metricDigits = 2, imperialDigits = 3) => formatUnit(value, "L", value * 0.2641720524, "US gal", metricDigits, imperialDigits);
+    const displayPressureKpa = (value, metricDigits = 2, imperialDigits = 2) => formatUnit(value, "kPa", kpaToPsi(value), "psi", metricDigits, imperialDigits);
+    const displayStressMpa = (value, metricDigits = 2, imperialDigits = 3) => formatUnit(value, "MPa", mpaToKsi(value), "ksi", metricDigits, imperialDigits);
+    const displayForceN = (value, metricDigits = 2, imperialDigits = 2) => formatUnit(value, "N", nToLbf(value), "lbf", metricDigits, imperialDigits);
+    const displayTorqueNm = (value, metricDigits = 0, imperialDigits = 0) => formatUnit(value, "Nm", nmToLbft(value), "lb-ft", metricDigits, imperialDigits);
+
+    function displayTempC(value, digits = 0) {
+      if (unitMode === "metric") return `${fmt(value, digits)} C`;
+      if (unitMode === "imperial") return `${fmt(cToDisplayF(value), digits)} F`;
+      return `${fmt(value, digits)} C (${fmt(cToDisplayF(value), digits)} F)`;
+    }
+
+    function displayNps(nps, odMm = null) {
+      const dn = npsToDn[nps];
+      const size = unitMode === "metric" && dn ? `DN ${dn}` : `NPS ${nps} in`;
+      return odMm ? `${size} (${displayLengthMm(odMm, 1, 3)} OD)` : size;
+    }
     const liveCalculators = [
       {
         fields: ["clampLength", "clampWidth", "grooveWidth", "grooveDepth", "pipeOD", "numBores", "stickVolume"],
@@ -1277,13 +1445,11 @@
     function applyTheme(theme, persist = true) {
       const selected = theme === "dark" ? "dark" : "light";
       document.body.dataset.theme = selected;
-      const toggle = document.querySelector("[data-theme-toggle]");
-      if (toggle) {
-        const nextTheme = selected === "dark" ? "light" : "dark";
-        toggle.textContent = selected === "dark" ? "☀" : "☾";
-        toggle.setAttribute("aria-label", `Switch to ${nextTheme} mode`);
-        toggle.setAttribute("title", `Switch to ${nextTheme} mode`);
-      }
+      document.querySelectorAll("[data-theme-choice]").forEach(button => {
+        const active = button.dataset.themeChoice === selected;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", active ? "true" : "false");
+      });
       if (persist) {
         try { localStorage.setItem(THEME_KEY, selected); } catch {}
       }
@@ -1293,6 +1459,42 @@
       let saved = "";
       try { saved = localStorage.getItem(THEME_KEY) || ""; } catch {}
       applyTheme(saved || "light", false);
+    }
+
+    function applyUnitMode(mode, persist = true) {
+      unitMode = unitDefinitions[mode] ? mode : "mixed";
+      document.body.dataset.units = unitMode;
+      document.querySelectorAll("[data-unit-choice]").forEach(button => {
+        const active = button.dataset.unitChoice === unitMode;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+      if (persist) {
+        try { localStorage.setItem(UNIT_KEY, unitMode); } catch {}
+      }
+      refreshUnitDisplays();
+    }
+
+    function initUnitMode() {
+      let saved = "";
+      try { saved = localStorage.getItem(UNIT_KEY) || ""; } catch {}
+      applyUnitMode(saved || "mixed", false);
+    }
+
+    function refreshUnitDisplays() {
+      if (!byId("npsSelect") || !Object.keys(state.pipes).length) return;
+      populatePipeSelects();
+      populateMaterialGuideControls();
+      populateAsmeControls();
+      updatePipeOdPanel();
+      showPipeData();
+      showElbowData();
+      calculateSans347Hazard();
+      showFlangeData();
+      searchCompounds();
+      showMaterialGuideByTemp();
+      renderAsmeTable();
+      runAllLiveCalculators();
     }
 
     function fieldHasValue(id) {
@@ -1336,9 +1538,33 @@
     }
 
     document.addEventListener("click", event => {
-      const themeToggle = event.target.closest("[data-theme-toggle]");
-      if (themeToggle) {
-        applyTheme(document.body.dataset.theme === "dark" ? "light" : "dark");
+      const settingsToggle = event.target.closest("[data-settings-toggle]");
+      if (settingsToggle) {
+        const panel = byId("settingsPanel");
+        const isOpen = !panel.hidden;
+        panel.hidden = isOpen;
+        settingsToggle.setAttribute("aria-expanded", isOpen ? "false" : "true");
+        return;
+      }
+
+      if (!event.target.closest(".settings-menu")) {
+        const panel = byId("settingsPanel");
+        const trigger = document.querySelector("[data-settings-toggle]");
+        if (panel && trigger) {
+          panel.hidden = true;
+          trigger.setAttribute("aria-expanded", "false");
+        }
+      }
+
+      const themeChoice = event.target.closest("[data-theme-choice]");
+      if (themeChoice) {
+        applyTheme(themeChoice.dataset.themeChoice);
+        return;
+      }
+
+      const unitChoice = event.target.closest("[data-unit-choice]");
+      if (unitChoice) {
+        applyUnitMode(unitChoice.dataset.unitChoice);
         return;
       }
 
@@ -1374,9 +1600,27 @@
     });
 
     initTheme();
+    initUnitMode();
+    byId("appVersionText").textContent = APP_VERSION;
+    byId("sourceDataVersionText").textContent = SOURCE_DATA_VERSION;
+
+    function setSourceStatus(ok) {
+      const mainStatus = byId("dataStatus");
+      const panelStatus = byId("dataStatusPanel");
+      const label = byId("dataStatusText");
+      [mainStatus, panelStatus].forEach(status => {
+        if (!status) return;
+        status.textContent = ok ? "✓" : "!";
+        status.classList.toggle("error", !ok);
+      });
+      if (mainStatus) {
+        mainStatus.setAttribute("aria-label", ok ? "Source data loaded" : "Source data unavailable");
+        mainStatus.setAttribute("title", ok ? "Source data loaded" : "Source data unavailable");
+      }
+      if (label) label.textContent = ok ? "Source data loaded" : "Source data unavailable";
+    }
 
     async function loadDatabases() {
-      const status = byId("dataStatus");
       try {
         const [pipes, flanges, wps, compounds, engineering, asmeTable1A] = await Promise.all([
           fetchJson("pipes.json"),
@@ -1407,15 +1651,9 @@
         showMaterialGuideByTemp();
         renderAsmeTable();
         runAllLiveCalculators();
-        status.textContent = "✓";
-        status.setAttribute("aria-label", "Source data loaded");
-        status.setAttribute("title", "Source data loaded");
-        status.classList.remove("error");
+        setSourceStatus(true);
       } catch (error) {
-        status.textContent = "!";
-        status.setAttribute("aria-label", "Source data unavailable");
-        status.setAttribute("title", "Source data unavailable");
-        status.classList.add("error");
+        setSourceStatus(false);
         console.error(error);
       }
     }
@@ -1450,18 +1688,26 @@
     }
 
     function populatePipeSelects() {
-      const options = Object.keys(state.pipes).map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
+      const selectedPipe = byId("npsSelect")?.value || "";
+      const selectedElbow = byId("npsElbowSelect")?.value || "";
+      const selectedSans = byId("sansLineSize")?.value || "";
+      const selectedFlange = byId("npsFlangeSelect")?.value || "";
+      const options = Object.keys(state.pipes).map(size => `<option value="${esc(size)}">${esc(displayNps(size))}</option>`).join("");
       byId("npsSelect").innerHTML = `<option value="">Select pipe size</option>${options}`;
       byId("npsElbowSelect").innerHTML = standardNps
         .filter(size => elbowDimensions90[size])
-        .map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
+        .map(size => `<option value="${esc(size)}">${esc(displayNps(size))}</option>`).join("");
       byId("sansLineSize").innerHTML = standardNps
         .filter(size => npsToDn[size])
         .map(size => `<option value="${esc(size)}">${esc(formatNpsWithOd(size))}</option>`).join("");
       const flangeOptions = Object.keys(state.flanges)
         .map(key => key.replace("NPS_", ""))
-        .map(size => `<option value="${esc(size)}">${esc(size)} in</option>`).join("");
+        .map(size => `<option value="${esc(size)}">${esc(displayNps(size))}</option>`).join("");
       byId("npsFlangeSelect").innerHTML = `<option value="">Select pipe size</option>${flangeOptions}`;
+      if (selectedPipe) byId("npsSelect").value = selectedPipe;
+      if (selectedElbow) byId("npsElbowSelect").value = selectedElbow;
+      if (selectedSans) byId("sansLineSize").value = selectedSans;
+      if (selectedFlange) byId("npsFlangeSelect").value = selectedFlange;
     }
 
     function updatePipeOdPanel() {
@@ -1469,7 +1715,7 @@
       if (!panel) return;
       const nps = byId("npsSelect").value;
       const od = state.pipes[nps]?.od;
-      panel.innerHTML = `<span>Outside diameter (OD)</span><strong>${od ? `${fmtComma(od, 1)} mm` : "Select a size"}</strong>`;
+      panel.innerHTML = `<span>Outside diameter (OD)</span><strong>${od ? displayLengthMm(od, 1, 3) : "Select a size"}</strong>`;
     }
 
     function populateWpsDropdown() {
@@ -1478,6 +1724,7 @@
     }
 
     function populateMaterialGuideControls() {
+      const selected = byId("guideTempRange")?.value || "";
       const groups = materialGuideRows.reduce((acc, row) => {
         const key = materialGuideRangeKey(row);
         if (!acc.some(item => item.key === key)) {
@@ -1488,13 +1735,16 @@
       byId("guideTempRange").innerHTML = groups
         .map((group, index) => `<option value="${esc(group.key)}" ${index === 0 ? "selected" : ""}>${esc(group.label)}</option>`)
         .join("");
+      if (selected) byId("guideTempRange").value = selected;
     }
 
     function populateAsmeControls() {
       asmeFilterFields.forEach(field => {
+        const selected = byId(field.id)?.value || "";
         const values = uniqueSortedAsmeValues(field.key);
         byId(field.id).innerHTML = `<option value="">All</option>` +
           values.map(value => `<option value="${esc(value)}">${esc(field.format ? field.format(value) : value)}</option>`).join("");
+        if (selected) byId(field.id).value = selected;
       });
     }
 
@@ -1587,7 +1837,7 @@
       if (errors.length) return showErrors("resultGroove", "workingGroove", errors);
       const g = grooveValues();
       if (g.adjustedPerimeter <= 0 && g.numBores > 0) return showErrors("resultGroove", "workingGroove", ["Adjusted perimeter is not positive. Reduce bores or check dimensions."]);
-      showResult("resultGroove", `Total sealing groove volume: ${fmt(g.total)} mm3\nSticks required: ${g.sticks}\nBoxes required: ${g.boxes} (10 sticks/box)`);
+      showResult("resultGroove", `Total sealing groove volume: ${displayVolumeMm3(g.total)}\nSticks required: ${g.sticks}\nBoxes required: ${g.boxes} (10 sticks/box)`);
     }
 
     function showGrooveWorking() {
@@ -1600,12 +1850,12 @@
       const element = byId("workingGroove");
       if (element.style.display === "block") return element.style.display = "none";
       element.textContent = `Formula working:
-1. Perimeter = 2 x (${g.clampLength} + ${g.clampWidth}) = ${fmt(g.initialPerimeter)} mm
-2. Perimeter reduction = ${g.numBores} x ${g.pipeOD} = ${fmt(g.perimeterReduction)} mm
-3. Adjusted perimeter = ${fmt(g.initialPerimeter)} - ${fmt(g.perimeterReduction)} = ${fmt(g.adjustedPerimeter)} mm
-4. Main groove volume = ${fmt(g.adjustedPerimeter)} x ${g.grooveWidth} x ${g.grooveDepth} = ${fmt(g.mainGrooveVolume)} mm3
-5. Bore volume = pi x (${fmt(g.boreOuterRadius)}2 - ${fmt(g.boreInnerRadius)}2) x ${g.grooveWidth} x ${g.numBores} = ${fmt(g.totalBoreVolume)} mm3
-6. Total = ${fmt(g.mainGrooveVolume)} + ${fmt(g.totalBoreVolume)} = ${fmt(g.total)} mm3
+1. Perimeter = 2 x (${g.clampLength} + ${g.clampWidth}) = ${displayLengthMm(g.initialPerimeter)}
+2. Perimeter reduction = ${g.numBores} x ${g.pipeOD} = ${displayLengthMm(g.perimeterReduction)}
+3. Adjusted perimeter = ${displayLengthMm(g.initialPerimeter)} - ${displayLengthMm(g.perimeterReduction)} = ${displayLengthMm(g.adjustedPerimeter)}
+4. Main groove volume = ${fmt(g.adjustedPerimeter)} x ${g.grooveWidth} x ${g.grooveDepth} = ${displayVolumeMm3(g.mainGrooveVolume)}
+5. Bore volume = pi x (${fmt(g.boreOuterRadius)}2 - ${fmt(g.boreInnerRadius)}2) x ${g.grooveWidth} x ${g.numBores} = ${displayVolumeMm3(g.totalBoreVolume)}
+6. Total = ${displayVolumeMm3(g.mainGrooveVolume)} + ${displayVolumeMm3(g.totalBoreVolume)} = ${displayVolumeMm3(g.total)}
 7. Sticks = ceil(${fmt(g.total)} / ${g.stickVolume}) = ${g.sticks}`;
       element.style.display = "block";
     }
@@ -1616,7 +1866,7 @@
       if (errors.length) return showErrors("resultVoid", "workingVoid", errors);
       const volume = Math.PI * ((num("clampID") / 2) ** 2 - (num("pipeOD2") / 2) ** 2) * num("internalLength");
       const sticks = Math.ceil(volume / num("stickVolume2"));
-      showResult("resultVoid", `Total void volume: ${fmt(volume)} mm3\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
+      showResult("resultVoid", `Total void volume: ${displayVolumeMm3(volume)}\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
     }
 
     function showVoidWorking() {
@@ -1628,7 +1878,7 @@
       const volume = Math.PI * ((num("clampID") / 2) ** 2 - (num("pipeOD2") / 2) ** 2) * num("internalLength");
       element.textContent = `Void volume = pi x (clamp radius2 - pipe radius2) x internal length
 = pi x (${num("clampID")}/2)2 - (${num("pipeOD2")}/2)2 x ${num("internalLength")}
-= ${fmt(volume)} mm3
+= ${displayVolumeMm3(volume)}
 Sticks = ceil(${fmt(volume)} / ${num("stickVolume2")}) = ${Math.ceil(volume / num("stickVolume2"))}`;
       element.style.display = "block";
     }
@@ -1642,7 +1892,7 @@ Sticks = ceil(${fmt(volume)} / ${num("stickVolume2")}) = ${Math.ceil(volume / nu
       const net = cavity - pipe;
       if (net <= 0) return showErrors("resultSquareVoid", "workingSquareVoid", ["Net volume is not positive. Check the cavity and pipe dimensions."]);
       const sticks = Math.ceil(net / num("stickVolume3"));
-      showResult("resultSquareVoid", `Net void volume: ${fmt(net)} mm3\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
+      showResult("resultSquareVoid", `Net void volume: ${displayVolumeMm3(net)}\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
     }
 
     function showSquareWorking() {
@@ -1655,9 +1905,9 @@ Sticks = ceil(${fmt(volume)} / ${num("stickVolume2")}) = ${Math.ceil(volume / nu
       const pipe = Math.PI * (num("pipeOD3") / 2) ** 2 * num("pipeLength");
       const net = cavity - pipe;
       if (net <= 0) return showErrors("resultSquareVoid", "workingSquareVoid", ["Net volume is not positive. Check the cavity and pipe dimensions."]);
-      element.textContent = `Cavity volume = ${num("sqLength")} x ${num("sqDepth")} x ${num("sqWidth")} = ${fmt(cavity)} mm3
-Pipe volume = pi x (${num("pipeOD3")}/2)2 x ${num("pipeLength")} = ${fmt(pipe)} mm3
-Net volume = ${fmt(cavity)} - ${fmt(pipe)} = ${fmt(net)} mm3
+      element.textContent = `Cavity volume = ${num("sqLength")} x ${num("sqDepth")} x ${num("sqWidth")} = ${displayVolumeMm3(cavity)}
+Pipe volume = pi x (${num("pipeOD3")}/2)2 x ${num("pipeLength")} = ${displayVolumeMm3(pipe)}
+Net volume = ${displayVolumeMm3(cavity)} - ${displayVolumeMm3(pipe)} = ${displayVolumeMm3(net)}
 Sticks = ceil(${fmt(net)} / ${num("stickVolume3")}) = ${Math.ceil(net / num("stickVolume3"))}`;
       element.style.display = "block";
     }
@@ -1670,7 +1920,7 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume3")}) = ${Math.ceil(net / num("sti
       if (errors.length) return showErrors("resultDifference", "workingDifference", errors);
       const net = num("cavityVolumeInput") - existing;
       const sticks = Math.ceil(net / num("stickVolume4"));
-      showResult("resultDifference", `Net volume to fill: ${fmt(net)} mm3\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
+      showResult("resultDifference", `Net volume to fill: ${displayVolumeMm3(net)}\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
     }
 
     function showDifferenceWorking() {
@@ -1684,7 +1934,7 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume3")}) = ${Math.ceil(net / num("sti
       const net = num("cavityVolumeInput") - num("existingVolumeInput");
       element.textContent = `Net fill volume = cavity volume - existing volume
 = ${num("cavityVolumeInput")} - ${num("existingVolumeInput")}
-= ${fmt(net)} mm3
+= ${displayVolumeMm3(net)}
 Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("stickVolume4"))}`;
       element.style.display = "block";
     }
@@ -1701,9 +1951,9 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       if (!pipe) return showHtml("pipeResult", `<span class="error-text">Size data not found.</span>`);
       const rows = Object.entries(pipe).map(([key, value]) => {
         const label = key === "od" ? "Outside diameter (OD)" : `Wall thickness (${key.toUpperCase()})`;
-        return `<tr><td>${esc(label)}</td><td><strong>${fmtComma(value, key === "od" ? 1 : 2)} mm</strong></td></tr>`;
+        return `<tr><td>${esc(label)}</td><td><strong>${displayLengthMm(value, key === "od" ? 1 : 2, 3)}</strong></td></tr>`;
       }).join("");
-      showHtml("pipeResult", `<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td>NPS</td><td><strong>${esc(nps)} in</strong></td></tr>${rows}</tbody></table>`);
+      showHtml("pipeResult", `<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody><tr><td>Line size</td><td><strong>${esc(displayNps(nps))}</strong></td></tr>${rows}</tbody></table>`);
     }
 
     function showElbowData() {
@@ -1718,10 +1968,10 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       const label = radius === "long" ? "Long radius" : "Short radius";
       showHtml("elbowResult", `<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>
         <tr><td>Fitting</td><td><strong>90 deg elbow</strong></td></tr>
-        <tr><td>NPS</td><td>${esc(nps)} in</td></tr>
+        <tr><td>Line size</td><td>${esc(displayNps(nps))}</td></tr>
         <tr><td>DN</td><td>${npsToDn[nps] ? `DN ${npsToDn[nps]}` : "-"}</td></tr>
         <tr><td>Radius type</td><td>${label}</td></tr>
-        <tr><td>Center-to-end dimension A</td><td><strong>${fmt(centerToEnd, 0)} mm</strong></td></tr>
+        <tr><td>Center-to-end dimension A</td><td><strong>${displayLengthMm(centerToEnd, 0, 3)}</strong></td></tr>
       </tbody></table>`);
     }
 
@@ -1744,7 +1994,7 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       const rows = Object.entries(data).map(([key, value]) => {
         const isCount = key === "Num_Bolts";
         const isBolt = key === "Bolt_Size" || key === "Bronze_Size";
-        const display = value == null ? "N/A" : isCount ? value : isBolt ? `${value} in (${getMetricBoltEquivalent(value)})` : `${fmt(value)} mm`;
+        const display = value == null ? "N/A" : isCount ? value : isBolt ? displayBoltSize(value) : displayLengthMm(value, 2, 3);
         return `<tr><td>${esc(labels[key] || key)}</td><td><strong>${esc(display)}</strong></td></tr>`;
       }).join("");
       showHtml("flangeResult", `<table><thead><tr><th>Dimension</th><th>Value</th></tr></thead><tbody>${rows}</tbody></table>`);
@@ -1760,7 +2010,7 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
 
     function formatNpsWithOd(nps) {
       const od = getNpsOdMm(nps);
-      return od ? `${nps} in (${formatSansOdMm(od)} mm OD)` : `${nps} in`;
+      return displayNps(nps, od);
     }
 
     function calculateSans347VolumeCategory(pressure, volume, service) {
@@ -1841,9 +2091,9 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       const od = getNpsOdMm(nps);
       showHtml("sansHazardResult", `<table><thead><tr><th>Parameter</th><th>Value</th></tr></thead><tbody>
         <tr><td>Service type</td><td>${esc(serviceLabel)}</td></tr>
-        <tr><td>Pressure PS</td><td>${fmt(pressure, 2)} kPa</td></tr>
-        <tr><td>Volume V</td><td>${fmt(volume, 2)} L</td></tr>
-        <tr><td>Line size</td><td>NPS ${esc(nps)} in${od ? ` (${formatSansOdMm(od)} mm OD)` : ""}</td></tr>
+        <tr><td>Pressure PS</td><td>${displayPressureKpa(pressure, 2, 2)}</td></tr>
+        <tr><td>Volume V</td><td>${displayVolumeL(volume, 2, 3)}</td></tr>
+        <tr><td>Line size</td><td>${esc(displayNps(nps, od))}</td></tr>
         <tr><td>PS x DN</td><td>${fmt(pd, 0)}</td></tr>
         <tr><td>PS x V</td><td>${fmt(pv, 0)}</td></tr>
         <tr><td>Line size assessment</td><td><strong>${esc(category)}</strong></td></tr>
@@ -1853,6 +2103,13 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
 
     function getMetricBoltEquivalent(size) {
       return ({ "1/2": "M12", "5/8": "M16", "3/4": "M20", "7/8": "M22", "1": "M24", "1 1/8": "M27", "1 1/4": "M30", "1 3/8": "M36", "1 1/2": "M39", "1 5/8": "M42", "1 7/8": "M48", "2": "M52", "2 1/4": "M56", "2 1/2": "M64", "2 3/4": "M72", "3": "M76", "3 1/2": "M90" })[size] || "N/A";
+    }
+
+    function displayBoltSize(size) {
+      const metric = getMetricBoltEquivalent(size);
+      if (unitMode === "metric") return metric;
+      if (unitMode === "imperial") return `${size} in`;
+      return `${size} in (${metric})`;
     }
 
     function showWpsData() {
@@ -1909,7 +2166,7 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       }
 
       const cell = value => value == null || value === "" ? `<span class="muted-cell">N/A</span>` : esc(value);
-      const mpaCell = value => value == null || value === "" ? `<span class="muted-cell">N/A</span>` : `${esc(value)} MPa`;
+      const mpaCell = value => value == null || value === "" ? `<span class="muted-cell">N/A</span>` : displayStressMpa(Number(value));
       wrap.innerHTML = `
         <table>
           <thead>
@@ -1923,7 +2180,7 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
               <th>Group</th>
               <th>Min tensile</th>
               <th>Min yield</th>
-              <th>Stress at ${esc(temp)} C</th>
+              <th>Stress at ${esc(displayTempC(Number(temp)))}</th>
             </tr>
           </thead>
           <tbody>
@@ -1940,7 +2197,7 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
                   <td>${cell(row.groupNo)}</td>
                   <td>${mpaCell(row.minTensileStrengthMpa)}</td>
                   <td>${mpaCell(row.minYieldStrengthMpa)}</td>
-                  <td><strong>${stress == null ? "N/A" : `${esc(stress)} MPa`}</strong></td>
+                  <td><strong>${stress == null ? "N/A" : displayStressMpa(Number(stress))}</strong></td>
                 </tr>`;
             }).join("")}
           </tbody>
@@ -1965,7 +2222,7 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
         <article class="compound-card">
           <h4>${esc(compound.product)}</h4>
           <div class="meta">${esc(compound.brand)}</div>
-          <span class="pill">${esc(compound.minTemp)} C to ${esc(compound.maxTemp)} C</span>
+          <span class="pill">${esc(displayTempC(Number(compound.minTemp)))} to ${esc(displayTempC(Number(compound.maxTemp)))}</span>
           <span class="pill">${esc(compound.color)}</span>
           <p><strong>Form:</strong> ${esc(compound.form)}</p>
           <p><strong>Features:</strong> ${esc(compound.features)}</p>
@@ -1974,8 +2231,8 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
     }
 
     function materialGuideRangeC(row) {
-      if (row.max === Infinity) return `Above ${fmt(fToC(row.min), 0)} C`;
-      return `${fmt(fToC(row.min), 0)} to ${fmt(fToC(row.max), 0)} C`;
+      if (row.max === Infinity) return `Above ${displayTempC(fToC(row.min), 0)}`;
+      return `${displayTempC(fToC(row.min), 0)} to ${displayTempC(fToC(row.max), 0)}`;
     }
 
     function materialGuideRangeKey(row) {
@@ -2041,14 +2298,14 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       const errors = validatePositive([["rectLength", "Length"], ["rectWidth", "Width"], ["rectHeight", "Height"]]);
       if (errors.length) return showHtml("rectVolumeResult", `<span class="error-text">${errors.map(esc).join("<br>")}</span>`);
       const volume = num("rectLength") * num("rectWidth") * num("rectHeight");
-      showResult("rectVolumeResult", `Volume: ${fmt(volume)} mm3`);
+      showResult("rectVolumeResult", `Volume: ${displayVolumeMm3(volume)}`);
     }
 
     function calcCylindricalVolume() {
       const errors = validatePositive([["cylDiameter", "Diameter"], ["cylLength", "Length"]]);
       if (errors.length) return showHtml("cylVolumeResult", `<span class="error-text">${errors.map(esc).join("<br>")}</span>`);
       const volume = Math.PI * (num("cylDiameter") / 2) ** 2 * num("cylLength");
-      showResult("cylVolumeResult", `Volume: ${fmt(volume)} mm3`);
+      showResult("cylVolumeResult", `Volume: ${displayVolumeMm3(volume)}`);
     }
 
     function interpStress(collection, name, temp) {
@@ -2117,10 +2374,10 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       const requiredEndplate = H * Math.sqrt((squareFactor * attachmentFactor * pm) / (material.stress * endEfficiency)) + ca;
 
       showHtml("nonCircularResult", metricsHtml([
-        { label: "Allowable material stress", value: `${fmt(material.stress)} MPa` },
+        { label: "Allowable material stress", value: displayStressMpa(material.stress) },
         { label: "Attachment factor C", value: fmt(attachmentFactor, 4) },
         { label: "Square/rectangular factor Z", value: fmt(squareFactor, 4) },
-        { label: "Required endplate thickness UG-34", value: `${fmt(requiredEndplate)} mm` },
+        { label: "Required endplate thickness UG-34", value: displayLengthMm(requiredEndplate) },
         { label: "Endplate check", value: num("ncEndActual") >= requiredEndplate ? "Valid" : "Invalid" },
         { label: "Shell thickness check", value: minActualShell >= num("ncTr") ? "Valid" : "Invalid" }
       ]));
@@ -2157,12 +2414,12 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       const requiredEndplate = (num("circID") + 2 * ca) * Math.sqrt((cf * pm) / (endplate.stress * E)) + ca;
 
       showHtml("circularResult", metricsHtml([
-        { label: "Shell allowable stress", value: `${fmt(shell.stress)} MPa` },
-        { label: "Endplate allowable stress", value: `${fmt(endplate.stress)} MPa` },
-        { label: "UG-27 ID basis thickness", value: `${fmt(tminId)} mm` },
-        { label: "UG-27 OD basis thickness", value: `${fmt(tminOd)} mm` },
+        { label: "Shell allowable stress", value: displayStressMpa(shell.stress) },
+        { label: "Endplate allowable stress", value: displayStressMpa(endplate.stress) },
+        { label: "UG-27 ID basis thickness", value: displayLengthMm(tminId) },
+        { label: "UG-27 OD basis thickness", value: displayLengthMm(tminOd) },
         { label: "UG-34 factor Cf", value: fmt(cf, 4) },
-        { label: "UG-34 required endplate", value: `${fmt(requiredEndplate)} mm` },
+        { label: "UG-34 required endplate", value: displayLengthMm(requiredEndplate) },
         { label: "Cylinder check", value: actualShell >= Math.max(tminId, tminOd) ? "Valid" : "Invalid" },
         { label: "Endplate check", value: num("circEndActual") >= requiredEndplate ? "Valid" : "Invalid" }
       ]));
@@ -2214,16 +2471,16 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       const recommended = recommendBoltSize(requiredArea);
 
       showHtml("boltStandaloneResult", metricsHtml([
-        { label: "Pressure area", value: `${fmt(area)} mm2` },
-        { label: "Nominal load per bolt", value: `${fmt(nominalLoad)} N` },
-        { label: "Available root area", value: `${fmt(rootArea)} mm2` },
-        { label: "Required root area", value: `${fmt(requiredArea)} mm2` },
-        { label: "Actual bolt stress", value: `${fmt(actualStress)} MPa` },
+        { label: "Pressure area", value: displayAreaMm2(area) },
+        { label: "Nominal load per bolt", value: displayForceN(nominalLoad) },
+        { label: "Available root area", value: displayAreaMm2(rootArea) },
+        { label: "Required root area", value: displayAreaMm2(requiredArea) },
+        { label: "Actual bolt stress", value: displayStressMpa(actualStress) },
         { label: "Stress check", value: mat.stress > actualStress ? "Valid" : "Invalid" },
         { label: "Required bolt size", value: recommended?.size || "No size found" },
         { label: "Torque coefficient K", value: fmt(torqueCoefficient, 4) },
-        { label: "Minimum torque needed", value: `${Math.ceil(Math.min(...torqueValues))} Nm` },
-        { label: "Maximum torque not to exceed", value: `${Math.floor(Math.max(...torqueValues))} Nm` }
+        { label: "Minimum torque needed", value: displayTorqueNm(Math.ceil(Math.min(...torqueValues))) },
+        { label: "Maximum torque not to exceed", value: displayTorqueNm(Math.floor(Math.max(...torqueValues))) }
       ]));
     }
 
