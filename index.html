@@ -231,6 +231,10 @@
       margin-bottom: 22px;
     }
 
+    .topbar > div:first-child {
+      min-width: 0;
+    }
+
     .topbar-actions {
       display: flex;
       align-items: center;
@@ -254,13 +258,16 @@
 
     .settings-menu {
       position: relative;
+      max-width: 100%;
     }
 
     .settings-trigger {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 9px;
       min-height: 38px;
+      max-width: 100%;
       padding: 7px 9px 7px 12px;
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -816,7 +823,14 @@
       .brand-logo { width: min(58vw, 150px); max-height: 54px; }
       nav { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
       .topbar { align-items: flex-start; flex-direction: column; }
-      .topbar-actions { width: 100%; justify-content: space-between; }
+      .topbar-actions { width: 100%; justify-content: flex-start; }
+      .settings-menu { width: 100%; }
+      .settings-trigger { width: 100%; }
+      .settings-panel {
+        left: 0;
+        right: auto;
+        width: min(100%, calc(100vw - 36px));
+      }
       .inline-lookup { grid-template-columns: 1fr; }
       .reference-toolbar { grid-template-columns: 1fr; }
       .filter-toolbar { grid-template-columns: 1fr; }

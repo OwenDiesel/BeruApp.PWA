@@ -1,4 +1,4 @@
-const CACHE_NAME = "beruapp-pwa-v7";
+const CACHE_NAME = "beruapp-pwa-v8";
 
 const APP_SHELL = [
   "./",
