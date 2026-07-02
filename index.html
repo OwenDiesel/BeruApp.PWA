@@ -905,6 +905,8 @@
       --focus: rgba(176,23,34,.22);
       --button-shadow: rgba(176,23,34,.24);
       --shadow: 0 18px 42px rgba(16, 24, 40, 0.08);
+      --header-surface: rgba(255, 255, 255, .86);
+      --header-border: rgba(16, 24, 40, .08);
       --radius: 12px;
       --radius-sm: 10px;
     }
@@ -934,13 +936,15 @@
       --notice-bg: #252b34;
       --notice-line: #46505f;
       --shadow: 0 18px 42px rgba(0,0,0,.28);
+      --header-surface: rgba(31, 36, 44, .9);
+      --header-border: rgba(255, 255, 255, .08);
     }
 
     body {
       font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
       background:
-        linear-gradient(180deg, var(--page-highlight) 0%, transparent 280px),
-        linear-gradient(135deg, var(--page) 0%, #eef2f6 52%, var(--page-wash) 100%);
+        linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.72) 300px, transparent 620px),
+        linear-gradient(135deg, var(--page) 0%, #eef2f6 58%, var(--page-wash) 100%);
       font-size: 15px;
     }
 
@@ -961,7 +965,7 @@
 
     .formula-watermark span {
       position: absolute;
-      color: rgba(31, 35, 40, .075);
+      color: rgba(31, 35, 40, .048);
       font-size: clamp(16px, 2.2vw, 30px);
       font-weight: 800;
       letter-spacing: 0;
@@ -970,7 +974,7 @@
     }
 
     body[data-theme="dark"] .formula-watermark span {
-      color: rgba(248, 250, 252, .07);
+      color: rgba(248, 250, 252, .052);
     }
 
     .formula-watermark span:nth-child(1) { top: 9%; left: 36%; --rotate: -11deg; }
@@ -1046,6 +1050,12 @@
       align-items: center;
       gap: 32px;
       margin-bottom: 34px;
+      padding: 18px 20px;
+      border: 1px solid var(--header-border);
+      border-radius: 12px;
+      background: var(--header-surface);
+      box-shadow: 0 14px 34px rgba(16, 24, 40, .06);
+      backdrop-filter: blur(10px);
     }
 
     .topbar h2 {
@@ -1238,6 +1248,7 @@
       .topbar {
         gap: 18px;
         margin-bottom: 24px;
+        padding: 16px;
       }
 
       .topbar h2 {
