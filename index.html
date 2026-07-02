@@ -9,8 +9,8 @@
   <meta name="theme-color" content="#b01722" />
   <meta name="description" content="BeruApp engineering calculators and reference tools." />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="assets/icons/icon-192.png" type="image/png" />
-  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="icon" href="assets/icons/target-icon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/icons/target-icon-192.png" />
   <title>BeruApp</title>
   <style>
     :root {
@@ -942,9 +942,12 @@
 
     body {
       font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.72) 300px, transparent 620px),
-        linear-gradient(135deg, var(--page) 0%, #eef2f6 58%, var(--page-wash) 100%);
+      background-color: var(--page);
+      background-image: url("assets/asset-3.png");
+      background-repeat: no-repeat;
+      background-position: center 28px;
+      background-size: min(86vw, 980px) auto;
+      background-attachment: fixed;
       font-size: 15px;
     }
 
