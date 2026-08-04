@@ -729,6 +729,8 @@
       background: var(--notice-bg);
     }
 
+    [hidden] { display: none !important; }
+
     .error-text { color: var(--danger); font-weight: 800; }
 
     .diagram-panel {
@@ -836,6 +838,80 @@
 
     .metric strong {
       font-size: 20px;
+    }
+
+    /* Original card surface with a pointer-reactive dot field. */
+    .topbar {
+      position: relative;
+      z-index: 100;
+    }
+
+    .settings-menu { z-index: 101; }
+    .settings-panel { z-index: 1000; }
+
+    .section {
+      --dot-x: 50%;
+      --dot-y: 50%;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background: var(--panel);
+      border: 1px solid rgba(16, 24, 40, .07);
+      box-shadow: var(--shadow);
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(176, 23, 34, .38) 1.2px, transparent 1.5px);
+      background-size: 18px 18px;
+      -webkit-mask-image: radial-gradient(circle 170px at var(--dot-x) var(--dot-y), #000 0%, rgba(0,0,0,.8) 35%, transparent 76%);
+      mask-image: radial-gradient(circle 170px at var(--dot-x) var(--dot-y), #000 0%, rgba(0,0,0,.8) 35%, transparent 76%);
+      opacity: 0;
+      transition: opacity .22s ease;
+    }
+
+    .section:hover::before { opacity: .72; }
+
+    .section > * { position: relative; z-index: 1; }
+
+    body[data-theme="dark"] .section {
+      background: var(--panel);
+      border-color: rgba(255, 255, 255, .08);
+      box-shadow: var(--shadow);
+    }
+
+    body[data-theme="dark"] .section::before {
+      background-image: radial-gradient(circle, rgba(255, 113, 125, .44) 1.2px, transparent 1.5px);
+    }
+
+    .compound-details {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--result-bg);
+      overflow: hidden;
+    }
+
+    body[data-theme="dark"] .compound-details { background: var(--result-bg); }
+
+    .compound-details summary {
+      cursor: pointer;
+      padding: 15px 17px;
+      color: var(--ink);
+      font-weight: 800;
+      list-style-position: inside;
+      user-select: none;
+    }
+
+    .compound-details[open] summary { border-bottom: 1px solid var(--line); }
+    .compound-details .result { margin: 0; border: 0; border-radius: 0; background: transparent; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .section::before { display: none; }
     }
 
     @media (max-width: 860px) {
@@ -1291,7 +1367,7 @@
         <details class="nav-group" open>
           <summary class="nav-label">Calculators</summary>
           <div class="nav-group-items">
-            <button class="nav-item active" data-view="compoundCalculator">Compound Calculator</button>
+            <button class="nav-item active" data-view="compoundCalculator">Compound</button>
             <button class="nav-item" data-view="nonCircularCalc">Non-Circular</button>
             <button class="nav-item" data-view="circularCalc">Circular</button>
             <button class="nav-item" data-view="boltStandaloneCalc">Bolt Standalone</button>
@@ -1301,7 +1377,6 @@
         <details class="nav-group">
           <summary class="nav-label">Materials</summary>
           <div class="nav-group-items">
-            <button class="nav-item" data-view="compoundSelector">Compound Selector</button>
             <button class="nav-item" data-view="materialGuideLookup">Material Guide by Temperature</button>
             <button class="nav-item" data-view="asmeTable1A">ASME Table 1A</button>
           </div>
@@ -1323,8 +1398,8 @@
     <main>
       <div class="topbar">
         <div>
-          <h2 id="viewTitle">Compound Calculator</h2>
-          <p id="viewDescription">Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences.</p>
+          <h2 id="viewTitle">Compound</h2>
+          <p id="viewDescription">Select a fluid group and compound, then calculate the required volume, quantity, and weight.</p>
         </div>
         <div class="topbar-actions">
           <div class="settings-menu">
@@ -1363,6 +1438,40 @@
 
       <section id="compoundCalculator" class="view active">
         <div class="section">
+          <h3>Compound Selector</h3>
+          <div class="grid">
+            <label>1. Compound type
+              <select id="compoundType">
+                <option value="" selected disabled hidden>Select compound type</option>
+              </select>
+            </label>
+            <label>2. Fluid group
+              <select id="compoundFluidGroup" disabled>
+                <option value="" selected disabled hidden>Select fluid group</option>
+              </select>
+            </label>
+            <label>3. Compound
+              <select id="compoundSelect" disabled>
+                <option value="" selected disabled hidden>Select compound</option>
+              </select>
+            </label>
+            <label>4. Calculator
+              <select id="compoundCalculatorSelect" disabled>
+                <option value="" selected disabled hidden>Select calculator</option>
+                <option value="groove">Sealing Groove Volume</option>
+                <option value="void">Annular Void Fill</option>
+                <option value="square">Square Cavity Fill</option>
+                <option value="difference">Known Volume Difference</option>
+              </select>
+            </label>
+          </div>
+          <details class="compound-details" id="compoundInformation" hidden>
+            <summary id="compoundInformationLabel">Selected compound information</summary>
+            <div class="result" id="compoundSelectionSummary"></div>
+          </details>
+        </div>
+
+        <div class="section compound-calculator-panel" data-compound-calculator="groove" hidden>
           <h3>Sealing Groove Volume</h3>
           <div class="grid">
             <label>Clamp length (mm)<input type="number" id="clampLength" placeholder="200"></label>
@@ -1375,7 +1484,6 @@
             <label>Bore 2 count<input type="number" id="grooveBoreCount2" min="0" step="1"></label>
             <label>Bore 3 OD (mm)<input type="number" id="grooveBoreOD3" placeholder="114.3"></label>
             <label>Bore 3 count<input type="number" id="grooveBoreCount3" min="0" step="1"></label>
-            <label>Stick volume (mm3)<input type="number" id="stickVolume" value="18000"></label>
           </div>
           <div class="actions">
             <button class="secondary" data-action="showGrooveWorking">Show Formula & Working</button>
@@ -1384,13 +1492,12 @@
           <div class="working" id="workingGroove"></div>
         </div>
 
-        <div class="section">
+        <div class="section compound-calculator-panel" data-compound-calculator="void" hidden>
           <h3>Annular Void Fill</h3>
           <div class="grid">
             <label>Internal length (mm)<input type="number" id="internalLength" placeholder="100"></label>
             <label>Clamp ID (mm)<input type="number" id="clampID" placeholder="120"></label>
             <label>Pipe OD (mm)<input type="number" id="pipeOD2" placeholder="60.3"></label>
-            <label>Stick volume (mm3)<input type="number" id="stickVolume2" value="18000"></label>
           </div>
           <div class="actions">
             <button class="secondary" data-action="showVoidWorking">Show Formula & Working</button>
@@ -1399,7 +1506,7 @@
           <div class="working" id="workingVoid"></div>
         </div>
 
-        <div class="section">
+        <div class="section compound-calculator-panel" data-compound-calculator="square" hidden>
           <h3>Square Cavity Fill</h3>
           <div class="grid">
             <label>Cavity length (mm)<input type="number" id="sqLength" placeholder="150"></label>
@@ -1407,7 +1514,6 @@
             <label>Cavity width (mm)<input type="number" id="sqWidth" placeholder="120"></label>
             <label>Pipe OD (mm)<input type="number" id="pipeOD3" placeholder="48.3"></label>
             <label>Pipe length in cavity (mm)<input type="number" id="pipeLength" placeholder="150"></label>
-            <label>Stick volume (mm3)<input type="number" id="stickVolume3" value="18000"></label>
           </div>
           <div class="actions">
             <button class="secondary" data-action="showSquareWorking">Show Formula & Working</button>
@@ -1416,40 +1522,17 @@
           <div class="working" id="workingSquareVoid"></div>
         </div>
 
-        <div class="section">
+        <div class="section compound-calculator-panel" data-compound-calculator="difference" hidden>
           <h3>Known Volume Difference</h3>
           <div class="grid three">
             <label>Cavity volume (mm3)<input type="number" id="cavityVolumeInput" placeholder="500000"></label>
             <label>Existing volume (mm3)<input type="number" id="existingVolumeInput" placeholder="150000"></label>
-            <label>Stick volume (mm3)<input type="number" id="stickVolume4" value="18000"></label>
           </div>
           <div class="actions">
             <button class="secondary" data-action="showDifferenceWorking">Show Formula & Working</button>
           </div>
           <div class="result" id="resultDifference"></div>
           <div class="working" id="workingDifference"></div>
-        </div>
-      </section>
-
-      <section id="compoundSelector" class="view">
-        <div class="section">
-          <h3>Compound Selector</h3>
-          <div class="grid two">
-            <label>Fluid category
-              <select id="searchCategory">
-                <option value="">Select category</option>
-                <option value="water_steam_utilities">Water, steam & utilities</option>
-                <option value="hydrocarbons">Hydrocarbons</option>
-                <option value="hydrocarbons_cryo">Hydrocarbons, cryogenic</option>
-                <option value="superheated_steam">Superheated steam</option>
-                <option value="ptfe_gas_caustic_amine">PTFE, gas, caustic & amine</option>
-                <option value="acids_chemicals">Acids & chemicals</option>
-              </select>
-            </label>
-          </div>
-          <div class="cards" id="compoundResultsGrid">
-            <div class="notice">Select a category to list matching compounds from the source information.</div>
-          </div>
         </div>
       </section>
 
@@ -1762,8 +1845,7 @@
       "44": { long: 1676, short: 1118 }, "46": { long: 1753, short: 1168 }, "48": { long: 1829, short: 1219 }
     };
     const titles = {
-      compoundCalculator: ["Compound Calculator", "Calculate sealing compound requirements for grooves, annular voids, square cavities, and known volume differences."],
-      compoundSelector: ["Compound Selector", "Shortlist compounds by service category."],
+      compoundCalculator: ["Compound", "Select a fluid group and compound, then calculate the required volume, quantity, and weight."],
       materialGuideLookup: ["Material Guide by Temperature", "Display material guide values for a selected design temperature range in degrees Celsius."],
       asmeTable1A: ["ASME Table 1A", "Search and filter ASME BPVC II - Part D Table 1A allowable stress values for ferrous materials."],
       pipeScheduleLookup: ["Pipe Schedule", "Look up outside diameter and schedule wall thickness by NPS."],
@@ -1842,8 +1924,8 @@
     const byId = id => document.getElementById(id);
     const num = id => parseFloat(byId(id).value);
     const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-    const APP_VERSION = "v1.1.0";
-    const SOURCE_DATA_VERSION = "2026.06.15";
+    const APP_VERSION = "v1.4.2";
+    const SOURCE_DATA_VERSION = "2026.07.28";
     const THEME_KEY = "beruapp-theme";
     const UNIT_KEY = "beruapp-unit-mode";
     let unitMode = "mixed";
@@ -1884,6 +1966,7 @@
     const mm2ToIn2 = value => value / 645.16;
     const mm3ToIn3 = value => value / 16387.064;
     const nToLbf = value => value * 0.2248089431;
+    const kgToLb = value => value * 2.2046226218;
     const nmToLbft = value => value * 0.7375621493;
     const mpaToKsi = value => value * 0.1450377377;
     const kpaToPsi = value => value * 0.1450377377;
@@ -1903,6 +1986,7 @@
     const displayStressMpa = (value, metricDigits = 2, imperialDigits = 3) => formatUnit(value, "MPa", mpaToKsi(value), "ksi", metricDigits, imperialDigits);
     const displayForceN = (value, metricDigits = 2, imperialDigits = 2) => formatUnit(value, "N", nToLbf(value), "lbf", metricDigits, imperialDigits);
     const displayTorqueNm = (value, metricDigits = 0, imperialDigits = 0) => formatUnit(value, "Nm", nmToLbft(value), "lb-ft", metricDigits, imperialDigits);
+    const displayWeightKg = (value, metricDigits = 3, imperialDigits = 3) => formatUnit(value, "kg", kgToLb(value), "lb", metricDigits, imperialDigits);
 
     function displayTempC(value, digits = 0) {
       if (unitMode === "metric") return `${fmt(value, digits)} C`;
@@ -1917,29 +2001,29 @@
     }
     const liveCalculators = [
       {
-        fields: ["clampLength", "clampWidth", "grooveWidth", "grooveDepth", "grooveBoreOD1", "grooveBoreCount1", "grooveBoreOD2", "grooveBoreCount2", "grooveBoreOD3", "grooveBoreCount3", "stickVolume"],
-        required: ["clampLength", "clampWidth", "grooveWidth", "grooveDepth", "stickVolume"],
+        fields: ["compoundSelect", "clampLength", "clampWidth", "grooveWidth", "grooveDepth", "grooveBoreOD1", "grooveBoreCount1", "grooveBoreOD2", "grooveBoreCount2", "grooveBoreOD3", "grooveBoreCount3"],
+        required: ["compoundSelect", "clampLength", "clampWidth", "grooveWidth", "grooveDepth"],
         resultIds: ["resultGroove"],
         workingId: "workingGroove",
         calculate: calculateGrooveVolume
       },
       {
-        fields: ["internalLength", "clampID", "pipeOD2", "stickVolume2"],
-        required: ["internalLength", "clampID", "pipeOD2", "stickVolume2"],
+        fields: ["compoundSelect", "internalLength", "clampID", "pipeOD2"],
+        required: ["compoundSelect", "internalLength", "clampID", "pipeOD2"],
         resultIds: ["resultVoid"],
         workingId: "workingVoid",
         calculate: calculateVoidVolume
       },
       {
-        fields: ["sqLength", "sqDepth", "sqWidth", "pipeOD3", "pipeLength", "stickVolume3"],
-        required: ["sqLength", "sqDepth", "sqWidth", "pipeOD3", "pipeLength", "stickVolume3"],
+        fields: ["compoundSelect", "sqLength", "sqDepth", "sqWidth", "pipeOD3", "pipeLength"],
+        required: ["compoundSelect", "sqLength", "sqDepth", "sqWidth", "pipeOD3", "pipeLength"],
         resultIds: ["resultSquareVoid"],
         workingId: "workingSquareVoid",
         calculate: calculateSquareVoidVolume
       },
       {
-        fields: ["cavityVolumeInput", "existingVolumeInput", "stickVolume4"],
-        required: ["cavityVolumeInput", "existingVolumeInput", "stickVolume4"],
+        fields: ["compoundSelect", "cavityVolumeInput", "existingVolumeInput"],
+        required: ["compoundSelect", "cavityVolumeInput", "existingVolumeInput"],
         resultIds: ["resultDifference"],
         workingId: "workingDifference",
         calculate: calculateDifferenceVolume
@@ -2037,7 +2121,7 @@
       showElbowData();
       calculateSans347Hazard();
       showFlangeData();
-      searchCompounds();
+      renderSelectedCompoundSummary();
       showMaterialGuideByTemp();
       renderAsmeTable();
       runAllLiveCalculators();
@@ -2122,7 +2206,10 @@
     });
 
     document.addEventListener("change", event => {
-      if (event.target.id === "searchCategory") searchCompounds();
+      if (event.target.id === "compoundType") updateCompoundFluidGroups();
+      if (event.target.id === "compoundFluidGroup") updateCompoundOptions();
+      if (event.target.id === "compoundSelect") updateCompoundSelection();
+      if (event.target.id === "compoundCalculatorSelect") showSelectedCompoundCalculator();
       if (event.target.id === "npsSelect") showPipeData();
       if (["npsElbowSelect", "elbowRadiusSelect"].includes(event.target.id)) showElbowData();
       if (["sansServiceType", "sansLineSize"].includes(event.target.id)) calculateSans347Hazard();
@@ -2145,6 +2232,14 @@
       if (event.target.id === "asmeSearch") renderAsmeTable();
       runLiveForTarget(event.target.id);
     });
+
+    document.addEventListener("pointermove", event => {
+      const section = event.target.closest(".section");
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      section.style.setProperty("--dot-x", `${event.clientX - rect.left}px`);
+      section.style.setProperty("--dot-y", `${event.clientY - rect.top}px`);
+    }, { passive: true });
 
     initTheme();
     initUnitMode();
@@ -2181,6 +2276,7 @@
         state.flanges = flanges;
         state.wps = wps;
         state.compounds = compounds;
+        populateCompoundTypes();
         state.engineering = engineering;
         state.asmeTable1A = asmeTable1A;
         populatePipeSelects();
@@ -2242,7 +2338,7 @@
       const selectedSans = byId("sansLineSize")?.value || "";
       const selectedFlange = byId("npsFlangeSelect")?.value || "";
       const options = Object.keys(state.pipes).map(size => `<option value="${esc(size)}">${esc(displayNps(size))}</option>`).join("");
-      byId("npsSelect").innerHTML = `<option value="">Select pipe size</option>${options}`;
+      byId("npsSelect").innerHTML = `<option value="" selected disabled hidden>Select pipe size</option>${options}`;
       byId("npsElbowSelect").innerHTML = standardNps
         .filter(size => elbowDimensions90[size])
         .map(size => `<option value="${esc(size)}">${esc(displayNps(size))}</option>`).join("");
@@ -2252,7 +2348,7 @@
       const flangeOptions = Object.keys(state.flanges)
         .map(key => key.replace("NPS_", ""))
         .map(size => `<option value="${esc(size)}">${esc(displayNps(size))}</option>`).join("");
-      byId("npsFlangeSelect").innerHTML = `<option value="">Select pipe size</option>${flangeOptions}`;
+      byId("npsFlangeSelect").innerHTML = `<option value="" selected disabled hidden>Select pipe size</option>${flangeOptions}`;
       if (selectedPipe) byId("npsSelect").value = selectedPipe;
       if (selectedElbow) byId("npsElbowSelect").value = selectedElbow;
       if (selectedSans) byId("sansLineSize").value = selectedSans;
@@ -2268,7 +2364,7 @@
     }
 
     function populateWpsDropdown() {
-      byId("wpsSelect").innerHTML = `<option value="">Select WPS</option>` +
+      byId("wpsSelect").innerHTML = `<option value="" selected disabled hidden>Select WPS</option>` +
         Object.keys(state.wps).map(key => `<option value="${esc(key)}">${esc(key)}</option>`).join("");
     }
 
@@ -2289,7 +2385,7 @@
 
     function populateBoltNutSelect() {
       const selected = byId("boltNutSizeSelect")?.value || "";
-      byId("boltNutSizeSelect").innerHTML = `<option value="">Select bolt size</option>` +
+      byId("boltNutSizeSelect").innerHTML = `<option value="" selected disabled hidden>Select bolt size</option>` +
         boltNutTable.map(row => `<option value="${esc(row.size)}">${esc(row.size)}</option>`).join("");
       if (selected) byId("boltNutSizeSelect").value = selected;
     }
@@ -2364,6 +2460,28 @@
       return errors;
     }
 
+    function compoundQuantity(volumeMm3) {
+      const compound = selectedCompound();
+      if (!compound) return null;
+      const sticks = Math.ceil(volumeMm3 / compound.volumeMm3);
+      return {
+        compound,
+        sticks,
+        boxes: Math.ceil(sticks / 10),
+        weightKg: volumeMm3 * compound.densityKgPerMm3
+      };
+    }
+
+    function compoundResultLines(volumeMm3) {
+      const quantity = compoundQuantity(volumeMm3);
+      return [
+        `Compound: ${quantity.compound.product}`,
+        `Sticks required: ${quantity.sticks}`,
+        `Boxes required: ${quantity.boxes} (10 sticks/box)`,
+        `Calculated compound weight: ${displayWeightKg(quantity.weightKg)}`
+      ].join("\n");
+    }
+
     function getGrooveBores() {
       const errors = [];
       const bores = [1, 2, 3].map(index => {
@@ -2399,7 +2517,7 @@
         grooveDepth: num("grooveDepth"),
         bores,
         totalBores: bores.reduce((sum, bore) => sum + bore.count, 0),
-        stickVolume: num("stickVolume")
+        stickVolume: selectedCompound().volumeMm3
       };
       const initialPerimeter = 2 * (values.clampLength + values.clampWidth);
       const perimeterReduction = values.bores.reduce((sum, bore) => sum + bore.count * bore.diameter, 0);
@@ -2417,16 +2535,16 @@
     }
 
     function calculateGrooveVolume() {
-      const errors = validatePositive([["clampLength","Clamp length"],["clampWidth","Clamp width"],["grooveWidth","Groove width"],["grooveDepth","Groove depth"],["stickVolume","Stick volume"]]);
+      const errors = validatePositive([["clampLength","Clamp length"],["clampWidth","Clamp width"],["grooveWidth","Groove width"],["grooveDepth","Groove depth"]]);
       errors.push(...getGrooveBores().errors);
       if (errors.length) return showErrors("resultGroove", "workingGroove", errors);
       const g = grooveValues();
       if (g.adjustedPerimeter <= 0 && g.totalBores > 0) return showErrors("resultGroove", "workingGroove", ["Adjusted perimeter is not positive. Reduce bore counts/ODs or check clamp dimensions."]);
-      showResult("resultGroove", `Total sealing groove volume: ${displayVolumeMm3(g.total)}\nTotal bores: ${g.totalBores}\nSticks required: ${g.sticks}\nBoxes required: ${g.boxes} (10 sticks/box)`);
+      showResult("resultGroove", `Total sealing groove volume: ${displayVolumeMm3(g.total)}\nTotal bores: ${g.totalBores}\n${compoundResultLines(g.total)}`);
     }
 
     function showGrooveWorking() {
-      const errors = validatePositive([["clampLength","Clamp length"],["clampWidth","Clamp width"],["grooveWidth","Groove width"],["grooveDepth","Groove depth"],["stickVolume","Stick volume"]]);
+      const errors = validatePositive([["clampLength","Clamp length"],["clampWidth","Clamp width"],["grooveWidth","Groove width"],["grooveDepth","Groove depth"]]);
       errors.push(...getGrooveBores().errors);
       if (errors.length) return showErrors("resultGroove", "workingGroove", errors);
       const g = grooveValues();
@@ -2445,47 +2563,48 @@
 ${boreWorking}
    Total bore groove volume = ${displayVolumeMm3(g.totalBoreVolume)}
 6. Total = ${displayVolumeMm3(g.mainGrooveVolume)} + ${displayVolumeMm3(g.totalBoreVolume)} = ${displayVolumeMm3(g.total)}
-7. Sticks = ceil(${fmt(g.total)} / ${g.stickVolume}) = ${g.sticks}`;
+7. Sticks = ceil(${fmt(g.total)} / ${g.stickVolume}) = ${g.sticks}
+8. Weight = ${fmt(g.total)} x ${selectedCompound().densityKgPerMm3} = ${displayWeightKg(g.total * selectedCompound().densityKgPerMm3)}`;
       element.style.display = "block";
     }
 
     function calculateVoidVolume() {
-      const errors = validatePositive([["internalLength","Internal length"],["clampID","Clamp ID"],["pipeOD2","Pipe OD"],["stickVolume2","Stick volume"]]);
+      const errors = validatePositive([["internalLength","Internal length"],["clampID","Clamp ID"],["pipeOD2","Pipe OD"]]);
       if (!errors.length && num("clampID") <= num("pipeOD2")) errors.push("Clamp ID must be larger than pipe OD.");
       if (errors.length) return showErrors("resultVoid", "workingVoid", errors);
       const volume = Math.PI * ((num("clampID") / 2) ** 2 - (num("pipeOD2") / 2) ** 2) * num("internalLength");
-      const sticks = Math.ceil(volume / num("stickVolume2"));
-      showResult("resultVoid", `Total void volume: ${displayVolumeMm3(volume)}\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
+      showResult("resultVoid", `Total void volume: ${displayVolumeMm3(volume)}\n${compoundResultLines(volume)}`);
     }
 
     function showVoidWorking() {
-      const errors = validatePositive([["internalLength","Internal length"],["clampID","Clamp ID"],["pipeOD2","Pipe OD"],["stickVolume2","Stick volume"]]);
+      const errors = validatePositive([["internalLength","Internal length"],["clampID","Clamp ID"],["pipeOD2","Pipe OD"]]);
       if (!errors.length && num("clampID") <= num("pipeOD2")) errors.push("Clamp ID must be larger than pipe OD.");
       if (errors.length) return showErrors("resultVoid", "workingVoid", errors);
       const element = byId("workingVoid");
       if (element.style.display === "block") return element.style.display = "none";
       const volume = Math.PI * ((num("clampID") / 2) ** 2 - (num("pipeOD2") / 2) ** 2) * num("internalLength");
+      const unitVolume = selectedCompound().volumeMm3;
       element.textContent = `Void volume = pi x ((clamp ID / 2)^2 - (pipe OD / 2)^2) x internal length
 = pi x ((${num("clampID")} / 2)^2 - (${num("pipeOD2")} / 2)^2) x ${num("internalLength")}
 = ${displayVolumeMm3(volume)}
-Sticks = ceil(${fmt(volume)} / ${num("stickVolume2")}) = ${Math.ceil(volume / num("stickVolume2"))}`;
+Sticks = ceil(${fmt(volume)} / ${unitVolume}) = ${Math.ceil(volume / unitVolume)}
+Weight = ${fmt(volume)} x ${selectedCompound().densityKgPerMm3} = ${displayWeightKg(volume * selectedCompound().densityKgPerMm3)}`;
       element.style.display = "block";
     }
 
     function calculateSquareVoidVolume() {
-      const errors = validatePositive([["sqLength","Cavity length"],["sqDepth","Cavity depth"],["sqWidth","Cavity width"],["pipeOD3","Pipe OD"],["pipeLength","Pipe length"],["stickVolume3","Stick volume"]]);
+      const errors = validatePositive([["sqLength","Cavity length"],["sqDepth","Cavity depth"],["sqWidth","Cavity width"],["pipeOD3","Pipe OD"],["pipeLength","Pipe length"]]);
       if (!errors.length && num("pipeLength") > num("sqLength")) errors.push("Pipe length cannot exceed cavity length.");
       if (errors.length) return showErrors("resultSquareVoid", "workingSquareVoid", errors);
       const cavity = num("sqLength") * num("sqDepth") * num("sqWidth");
       const pipe = Math.PI * (num("pipeOD3") / 2) ** 2 * num("pipeLength");
       const net = cavity - pipe;
       if (net <= 0) return showErrors("resultSquareVoid", "workingSquareVoid", ["Net volume is not positive. Check the cavity and pipe dimensions."]);
-      const sticks = Math.ceil(net / num("stickVolume3"));
-      showResult("resultSquareVoid", `Net void volume: ${displayVolumeMm3(net)}\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
+      showResult("resultSquareVoid", `Net void volume: ${displayVolumeMm3(net)}\n${compoundResultLines(net)}`);
     }
 
     function showSquareWorking() {
-      const errors = validatePositive([["sqLength","Cavity length"],["sqDepth","Cavity depth"],["sqWidth","Cavity width"],["pipeOD3","Pipe OD"],["pipeLength","Pipe length"],["stickVolume3","Stick volume"]]);
+      const errors = validatePositive([["sqLength","Cavity length"],["sqDepth","Cavity depth"],["sqWidth","Cavity width"],["pipeOD3","Pipe OD"],["pipeLength","Pipe length"]]);
       if (!errors.length && num("pipeLength") > num("sqLength")) errors.push("Pipe length cannot exceed cavity length.");
       if (errors.length) return showErrors("resultSquareVoid", "workingSquareVoid", errors);
       const element = byId("workingSquareVoid");
@@ -2494,26 +2613,27 @@ Sticks = ceil(${fmt(volume)} / ${num("stickVolume2")}) = ${Math.ceil(volume / nu
       const pipe = Math.PI * (num("pipeOD3") / 2) ** 2 * num("pipeLength");
       const net = cavity - pipe;
       if (net <= 0) return showErrors("resultSquareVoid", "workingSquareVoid", ["Net volume is not positive. Check the cavity and pipe dimensions."]);
+      const unitVolume = selectedCompound().volumeMm3;
       element.textContent = `Cavity volume = ${num("sqLength")} x ${num("sqDepth")} x ${num("sqWidth")} = ${displayVolumeMm3(cavity)}
 Pipe volume = pi x (${num("pipeOD3")}/2)2 x ${num("pipeLength")} = ${displayVolumeMm3(pipe)}
 Net volume = ${displayVolumeMm3(cavity)} - ${displayVolumeMm3(pipe)} = ${displayVolumeMm3(net)}
-Sticks = ceil(${fmt(net)} / ${num("stickVolume3")}) = ${Math.ceil(net / num("stickVolume3"))}`;
+Sticks = ceil(${fmt(net)} / ${unitVolume}) = ${Math.ceil(net / unitVolume)}
+Weight = ${fmt(net)} x ${selectedCompound().densityKgPerMm3} = ${displayWeightKg(net * selectedCompound().densityKgPerMm3)}`;
       element.style.display = "block";
     }
 
     function calculateDifferenceVolume() {
-      const errors = validatePositive([["cavityVolumeInput","Cavity volume"],["stickVolume4","Stick volume"]]);
+      const errors = validatePositive([["cavityVolumeInput","Cavity volume"]]);
       const existing = num("existingVolumeInput");
       if (!Number.isFinite(existing) || existing < 0) errors.push("Existing volume must be zero or higher.");
       if (!errors.length && num("cavityVolumeInput") <= existing) errors.push("Cavity volume must be greater than existing volume.");
       if (errors.length) return showErrors("resultDifference", "workingDifference", errors);
       const net = num("cavityVolumeInput") - existing;
-      const sticks = Math.ceil(net / num("stickVolume4"));
-      showResult("resultDifference", `Net volume to fill: ${displayVolumeMm3(net)}\nSticks required: ${sticks}\nBoxes required: ${Math.ceil(sticks / 10)}`);
+      showResult("resultDifference", `Net volume to fill: ${displayVolumeMm3(net)}\n${compoundResultLines(net)}`);
     }
 
     function showDifferenceWorking() {
-      const errors = validatePositive([["cavityVolumeInput","Cavity volume"],["stickVolume4","Stick volume"]]);
+      const errors = validatePositive([["cavityVolumeInput","Cavity volume"]]);
       const existing = num("existingVolumeInput");
       if (!Number.isFinite(existing) || existing < 0) errors.push("Existing volume must be zero or higher.");
       if (!errors.length && num("cavityVolumeInput") <= existing) errors.push("Cavity volume must be greater than existing volume.");
@@ -2521,10 +2641,12 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume3")}) = ${Math.ceil(net / num("sti
       const element = byId("workingDifference");
       if (element.style.display === "block") return element.style.display = "none";
       const net = num("cavityVolumeInput") - num("existingVolumeInput");
+      const unitVolume = selectedCompound().volumeMm3;
       element.textContent = `Net fill volume = cavity volume - existing volume
 = ${num("cavityVolumeInput")} - ${num("existingVolumeInput")}
 = ${displayVolumeMm3(net)}
-Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("stickVolume4"))}`;
+Sticks = ceil(${fmt(net)} / ${unitVolume}) = ${Math.ceil(net / unitVolume)}
+Weight = ${fmt(net)} x ${selectedCompound().densityKgPerMm3} = ${displayWeightKg(net * selectedCompound().densityKgPerMm3)}`;
       element.style.display = "block";
     }
 
@@ -2828,30 +2950,102 @@ Sticks = ceil(${fmt(net)} / ${num("stickVolume4")}) = ${Math.ceil(net / num("sti
       search?.focus();
     }
 
-    function searchCompounds() {
-      const category = byId("searchCategory").value;
-      const grid = byId("compoundResultsGrid");
-      if (!category) return grid.innerHTML = `<div class="notice error-text">Please select a fluid category.</div>`;
-      const matches = state.compounds.filter(compound => {
-        let categoryMatch = compound.category === category;
-        if (category === "water_steam_utilities" && ["C2AT", "C7"].includes(compound.product)) categoryMatch = true;
-        if (category === "hydrocarbons" && compound.product === "C7") categoryMatch = true;
-        return categoryMatch;
-      });
-      if (!matches.length) {
-        grid.innerHTML = `<div class="notice">No matching compounds found for that category. Consult Beruseal engineering for confirmation.</div>`;
+    function compoundType(compound) {
+      return compound.product.startsWith("JNL") ? "JNL compounds" : "Standard compounds";
+    }
+
+    function populateCompoundTypes() {
+      const available = new Set(state.compounds.map(compoundType));
+      const types = ["JNL compounds", "Standard compounds"].filter(type => available.has(type));
+      byId("compoundType").innerHTML = `<option value="" selected disabled hidden>Select compound type</option>` +
+        types.map(type => `<option value="${esc(type)}">${esc(type)}</option>`).join("");
+    }
+
+    function resetCompoundChoice() {
+      const compoundSelect = byId("compoundSelect");
+      compoundSelect.innerHTML = `<option value="" selected disabled hidden>Select compound</option>`;
+      compoundSelect.disabled = true;
+      byId("compoundCalculatorSelect").value = "";
+      byId("compoundCalculatorSelect").disabled = true;
+      byId("compoundInformation").hidden = true;
+      byId("compoundInformation").open = false;
+      showSelectedCompoundCalculator();
+      runAllLiveCalculators();
+    }
+
+    function updateCompoundFluidGroups() {
+      const type = byId("compoundType").value;
+      const fluidSelect = byId("compoundFluidGroup");
+      const groups = [...new Set(state.compounds
+        .filter(compound => compoundType(compound) === type)
+        .map(compound => compound.service))];
+      fluidSelect.innerHTML = `<option value="" selected disabled hidden>Select fluid group</option>` +
+        groups.map(group => `<option value="${esc(group)}">${esc(group)}</option>`).join("");
+      fluidSelect.disabled = !type;
+      fluidSelect.value = "";
+      resetCompoundChoice();
+    }
+
+    function updateCompoundOptions() {
+      const group = byId("compoundFluidGroup").value;
+      const type = byId("compoundType").value;
+      const select = byId("compoundSelect");
+      const matches = state.compounds.filter(compound =>
+        compound.service === group && compoundType(compound) === type
+      );
+      select.innerHTML = `<option value="" selected disabled hidden>Select compound</option>` +
+        matches.map(compound => `<option value="${esc(compound.product)}">${esc(compound.product)}</option>`).join("");
+      select.disabled = !group || !type;
+      byId("compoundCalculatorSelect").value = "";
+      byId("compoundCalculatorSelect").disabled = true;
+      byId("compoundInformation").hidden = true;
+      byId("compoundInformation").open = false;
+      showSelectedCompoundCalculator();
+      runAllLiveCalculators();
+    }
+
+    function selectedCompound() {
+      const product = byId("compoundSelect")?.value || "";
+      return state.compounds.find(compound => compound.product === product) || null;
+    }
+
+    function updateCompoundSelection() {
+      const compound = selectedCompound();
+      const calculatorSelect = byId("compoundCalculatorSelect");
+      calculatorSelect.value = "";
+      calculatorSelect.disabled = !compound;
+      showSelectedCompoundCalculator();
+      if (!compound) {
+        byId("compoundInformation").hidden = true;
+        byId("compoundInformation").open = false;
+        runAllLiveCalculators();
         return;
       }
-      grid.innerHTML = matches.map(compound => `
-        <article class="compound-card">
-          <h4>${esc(compound.product)}</h4>
-          <div class="meta">${esc(compound.brand)}</div>
-          <span class="pill">${esc(displayTempC(Number(compound.minTemp)))} to ${esc(displayTempC(Number(compound.maxTemp)))}</span>
-          <span class="pill">${esc(compound.color)}</span>
-          <p><strong>Form:</strong> ${esc(compound.form)}</p>
-          <p><strong>Features:</strong> ${esc(compound.features)}</p>
-          <p><strong>Applications:</strong> ${esc(compound.apps)}</p>
-        </article>`).join("");
+      byId("compoundInformation").hidden = false;
+      byId("compoundInformationLabel").textContent = `${compound.product} information`;
+      renderSelectedCompoundSummary();
+      runAllLiveCalculators();
+    }
+
+    function renderSelectedCompoundSummary() {
+      const compound = selectedCompound();
+      if (!compound) return;
+      showHtml("compoundSelectionSummary", metricsHtml([
+        { label: "Selected compound", value: compound.product },
+        { label: "Service", value: compound.service },
+        { label: "Temperature", value: compound.temperature },
+        { label: "Maximum pressure", value: `${compound.pressureBar} bar` },
+        { label: "Re-injection", value: compound.reinjection },
+        { label: "Unit volume", value: displayVolumeMm3(compound.volumeMm3) },
+        { label: "Density", value: `${fmt(compound.densityKgPerMm3 * 1e6, 5)} g/cm3` }
+      ]));
+    }
+
+    function showSelectedCompoundCalculator() {
+      const selected = byId("compoundCalculatorSelect")?.value || "";
+      document.querySelectorAll("[data-compound-calculator]").forEach(panel => {
+        panel.hidden = panel.dataset.compoundCalculator !== selected;
+      });
     }
 
     function materialGuideRangeC(row) {
