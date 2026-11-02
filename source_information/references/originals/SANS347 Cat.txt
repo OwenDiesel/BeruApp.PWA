@@ -1,0 +1,1292 @@
+Sub PDG()
+    Dim ws As Worksheet
+    Dim chartObj As ChartObject
+    Dim txtBox As Shape
+    Dim shp As Shape
+
+    Set ws = ThisWorkbook.Sheets("SASOL - REPORT")
+    Set chartObj = ws.ChartObjects("PCAT")
+
+    For Each shp In chartObj.Chart.Shapes
+        If shp.Type = msoTextBox Then
+            shp.Delete
+        End If
+    Next shp
+
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=120, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=250, Top:=100, Width:=60, Height:=20)
+        txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "DN = 25"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=300, Top:=100, Width:=60, Height:=20)
+        txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "DN = 100"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=345, Top:=100, Width:=60, Height:=20)
+        txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "DN = 350"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=300, Top:=20, Width:=60, Height:=20)
+        txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "DN = 100"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=280, Top:=71, Width:=100, Height:=20)
+    txtBox.Rotation = 24
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*DN = 100 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=327, Top:=71, Width:=100, Height:=20)
+    txtBox.Rotation = 24
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*DN = 350 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=73, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "SEP"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=275, Top:=190, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "Not Regulated"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=295, Top:=110, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "I"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=345, Top:=110, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "II"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=420, Top:=110, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "III"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+End Sub
+
+Sub PNDG()
+    Dim ws As Worksheet
+    Dim chartObj As ChartObject
+    Dim txtBox As Shape
+    Dim shp As Shape
+
+    Set ws = ThisWorkbook.Sheets("SASOL - REPORT")
+    Set chartObj = ws.ChartObjects("PCAT")
+
+    For Each shp In chartObj.Chart.Shapes
+        If shp.Type = msoTextBox Then
+            shp.Delete
+        End If
+    Next shp
+
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=120, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=257, Top:=30, Width:=60, Height:=20)
+        txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "DN = 32"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=298, Top:=30, Width:=60, Height:=20)
+        txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "DN = 100"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=332, Top:=30, Width:=60, Height:=20)
+        txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "DN = 250"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=330, Top:=92, Width:=100, Height:=20)
+    txtBox.Rotation = 24
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*DN = 100 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=360, Top:=92, Width:=100, Height:=20)
+    txtBox.Rotation = 24
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*DN = 350 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=390, Top:=92, Width:=100, Height:=20)
+    txtBox.Rotation = 24
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*DN = 500 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=73, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "SEP"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=275, Top:=190, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "Not Regulated"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=300, Top:=15, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "I"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=340, Top:=15, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "II"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=420, Top:=15, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "III"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+End Sub
+
+Sub PDL()
+    Dim ws As Worksheet
+    Dim chartObj As ChartObject
+    Dim txtBox As Shape
+    Dim shp As Shape
+
+    Set ws = ThisWorkbook.Sheets("SASOL - REPORT")
+    Set chartObj = ws.ChartObjects("PCAT")
+
+    For Each shp In chartObj.Chart.Shapes
+        If shp.Type = msoTextBox Then
+            shp.Delete
+        End If
+    Next shp
+
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=120, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=250, Top:=15, Width:=60, Height:=20)
+        txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "DN = 25"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=450, Top:=72, Width:=60, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 1000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=450, Top:=10, Width:=60, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=330, Top:=92, Width:=100, Height:=20)
+    txtBox.Rotation = 24
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*DN = 200 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=73, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "SEP"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=275, Top:=190, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "Not Regulated"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=415, Top:=90, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "I"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=415, Top:=50, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "II"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=415, Top:=10, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "III"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+End Sub
+
+Sub PNDL()
+    Dim ws As Worksheet
+    Dim chartObj As ChartObject
+    Dim txtBox As Shape
+    Dim shp As Shape
+
+    Set ws = ThisWorkbook.Sheets("SASOL - REPORT")
+    Set chartObj = ws.ChartObjects("PCAT")
+
+    For Each shp In chartObj.Chart.Shapes
+        If shp.Type = msoTextBox Then
+            shp.Delete
+        End If
+    Next shp
+
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=120, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=323, Top:=25, Width:=60, Height:=20)
+        txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "DN = 200"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=450, Top:=72, Width:=60, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 1000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=450, Top:=10, Width:=60, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=338, Top:=83, Width:=100, Height:=20)
+    txtBox.Rotation = 23
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*DN = 500 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=73, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "SEP"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=275, Top:=190, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "Not Regulated"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=415, Top:=50, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "I"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=415, Top:=10, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "II"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+End Sub
+
+Sub VDG()
+    Dim ws As Worksheet
+    Dim chartObj As ChartObject
+    Dim txtBox As Shape
+    Dim shp As Shape
+
+    Set ws = ThisWorkbook.Sheets("SASOL - REPORT")
+    Set chartObj = ws.ChartObjects("VCAT")
+
+    For Each shp In chartObj.Chart.Shapes
+        If shp.Type = msoTextBox Then
+            shp.Delete
+        End If
+    Next shp
+
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=135, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=53, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 20 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=31, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 100 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=137, Top:=67, Width:=50, Height:=20)
+    txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "V = 1"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=200, Top:=61, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 100 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=200, Top:=83, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 20 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=200, Top:=103, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 5 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=200, Top:=116, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 2 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=95, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "SEP"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=275, Top:=190, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "Not Regulated"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=295, Top:=135, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "I"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=335, Top:=135, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "II"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=390, Top:=135, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "III"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=440, Top:=30, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "IV"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+End Sub
+
+Sub VNDG()
+    Dim ws As Worksheet
+    Dim chartObj As ChartObject
+    Dim txtBox As Shape
+    Dim shp As Shape
+
+    Set ws = ThisWorkbook.Sheets("SASOL - REPORT")
+    Set chartObj = ws.ChartObjects("VCAT")
+
+    For Each shp In chartObj.Chart.Shapes
+        If shp.Type = msoTextBox Then
+            shp.Delete
+        End If
+    Next shp
+
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=135, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=31, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 100 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=15, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 300 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=137, Top:=50, Width:=50, Height:=20)
+    txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "V = 1"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=210, Top:=50, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 300 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=210, Top:=65, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 100 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=210, Top:=87, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 20 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=210, Top:=107, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 5 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=560, Top:=106, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 400"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=95, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "SEP"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=275, Top:=190, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "Not Regulated"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=340, Top:=135, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "I"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=390, Top:=135, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "II"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=450, Top:=135, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "III"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=440, Top:=30, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "IV"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+End Sub
+
+Sub VDL()
+    Dim ws As Worksheet
+    Dim chartObj As ChartObject
+    Dim txtBox As Shape
+    Dim shp As Shape
+
+    Set ws = ThisWorkbook.Sheets("SASOL - REPORT")
+    Set chartObj = ws.ChartObjects("VCAT")
+
+    For Each shp In chartObj.Chart.Shapes
+        If shp.Type = msoTextBox Then
+            shp.Delete
+        End If
+    Next shp
+
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=450, Top:=135, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=450, Top:=94, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 1000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=450, Top:=40, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=137, Top:=15, Width:=50, Height:=20)
+    txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "V = 1"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=190, Top:=80, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 20 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=95, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "SEP"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=275, Top:=190, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "Not Regulated"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=390, Top:=120, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "I"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=390, Top:=75, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "II"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=40, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "II"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=390, Top:=25, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "III"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+End Sub
+
+Sub VNDL()
+    Dim ws As Worksheet
+    Dim chartObj As ChartObject
+    Dim txtBox As Shape
+    Dim shp As Shape
+
+    Set ws = ThisWorkbook.Sheets("SASOL - REPORT")
+    Set chartObj = ws.ChartObjects("VCAT")
+
+    For Each shp In chartObj.Chart.Shapes
+        If shp.Type = msoTextBox Then
+            shp.Delete
+        End If
+    Next shp
+
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=135, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=580, Top:=95, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 1000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=580, Top:=40, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 50 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=220, Top:=15, Width:=50, Height:=20)
+    txtBox.Rotation = 270
+    With txtBox.TextFrame2
+        .TextRange.text = "V = 10"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=315, Top:=74, Width:=100, Height:=20)
+    txtBox.Rotation = 21
+    With txtBox.TextFrame2
+        .TextRange.text = "PS*V = 1 000 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=95, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "SEP"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=275, Top:=190, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "Not Regulated"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=100, Top:=31, Width:=100, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "PS = 100 000"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=420, Top:=70, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "I"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=180, Top:=20, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "I"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+    Set txtBox = chartObj.Chart.Shapes.AddTextbox( _
+        Orientation:=msoTextOrientationHorizontal, _
+        Left:=420, Top:=20, Width:=50, Height:=20)
+    With txtBox.TextFrame2
+        .TextRange.text = "II"
+        .TextRange.Font.Size = 9
+        .TextRange.Font.Bold = True
+    End With
+End Sub
+
+Sub VRefreshHAZCAT()
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Sheets("FIXED DATA")
+    Set wsSR = ThisWorkbook.Sheets("SASOL - REPORT")
+    Dim chartObj As ChartObject
+    Dim chartSeries As Series
+    Dim arrSeries As Variant
+    Set chartObj = wsSR.ChartObjects("VCAT")
+    'Set CAT to undetermined to indicate a refresh
+    ws.Range("AE15") = "Graph Changed (Update Pressure / Volume to refresh)"
+    If ws.Range("AD14") = "Vessels - Dangerous Gas" Then
+        ', Array(, ), Array(, )
+        chartObj.Chart.ChartTitle.text = "Figure 1 - Graph for Vessels - Dangerous Gas"
+        arrSeries = Array(Array(0.1, 10000), Array(50, 50), Array(0.1, 1), Array(20000, 20000), Array(1, 400), Array(20000, 50), Array(1, 1), Array(2000, 20000), Array(1, 40), Array(2000, 50), Array(1, 100), Array(5000, 50), Array(0.1, 1), Array(100000, 100000), Array(1, 2000), Array(100000, 50))
+    ElseIf ws.Range("AD14") = "Vessels - Non Dangerous Gas" Then
+        chartObj.Chart.ChartTitle.text = "Figure 2 - Graph for Vessels - Non Dangerous Gas"
+        arrSeries = Array(Array(0.1, 10000), Array(50, 50), Array(0.1, 1), Array(100000, 100000), Array(1, 2000), Array(100000, 50), Array(1, 1), Array(5000, 100000), Array(1, 100), Array(5000, 50), Array(1, 400), Array(20000, 50), Array(0.1, 1), Array(300000, 300000), Array(1, 750), Array(300000, 400), Array(750, 20000), Array(400, 400))
+    ElseIf ws.Range("AD14") = "Vessels - Dangerous Liquids" Then
+        chartObj.Chart.ChartTitle.text = "Figure 3 - Graph for Vessels - Dangerous Liquids"
+        arrSeries = Array(Array(0.1, 10000), Array(50, 50), Array(0.1, 10000), Array(50000, 50000), Array(1, 1), Array(1000000, 20000), Array(1, 400), Array(20000, 50), Array(20, 10000), Array(1000, 1000))
+    ElseIf ws.Range("AD14") = "Vessels - Non Dangerous Liquids" Then
+        chartObj.Chart.ChartTitle.text = "Figure 4 - Graph for Vessels - Non Dangerous Liquids"
+        arrSeries = Array(Array(0.1, 10000), Array(50, 50), Array(0.1, 10), Array(100000, 100000), Array(10, 10), Array(100000, 1000000), Array(20, 10000), Array(50000, 50000), Array(1000, 10000), Array(1000, 1000), Array(10, 1000), Array(100000, 1000))
+    Else
+        chartObj.Chart.ChartTitle.text = "Information Not Found"
+        arrSeries = Array(Array(1, 1), Array(1, 1))
+    End If
+
+    Dim totalElements As Long
+    totalElements = (UBound(arrSeries) - LBound(arrSeries) + 1) / 2
+
+    ' Delete all series in reverse order
+    With chartObj.Chart
+        For i = .SeriesCollection.Count To 1 Step -1
+            .SeriesCollection(i).Delete
+        Next i
+    End With
+
+    ' Add a new series
+    countSeries = totalElements
+    Count = 0
+    For i = 0 To countSeries - 1
+        With chartObj.Chart
+            Set chartSeries = .SeriesCollection.NewSeries
+            chartSeries.Name = "=""Series: """ ' Series name
+            chartSeries.Border.Color = RGB(255, 0, 0)
+            chartSeries.MarkerStyle = xlMarkerStyleNone
+            chartSeries.Format.Line.Weight = 1.75
+            chartSeries.XValues = arrSeries(i + Count) ' X-axis values
+            chartSeries.Values = arrSeries(i + Count + 1)  ' Y-axis values
+        End With
+        Count = Count + 1
+    Next i
+    ' Add a new series
+    With chartObj.Chart
+        Set chartSeries = .SeriesCollection.NewSeries
+        chartSeries.Name = "=""Series: """ ' Series name
+        chartSeries.Border.Color = RGB(46, 117, 182)
+        chartSeries.MarkerStyle = xlMarkerStyleNone
+        chartSeries.Format.Line.Weight = 1.75
+        chartSeries.XValues = ws.Range("AD12:AD13")
+        chartSeries.Values = ws.Range("AE12:AE13")
+    End With
+    With chartObj.Chart
+        Set chartSeries = .SeriesCollection.NewSeries
+        chartSeries.Name = "=""Series: """ ' Series name
+        chartSeries.Border.Color = RGB(46, 117, 182)
+        chartSeries.MarkerStyle = xlMarkerStyleNone
+        chartSeries.Format.Line.Weight = 1.75
+        chartSeries.XValues = ws.Range("AG12:AG13")
+        chartSeries.Values = ws.Range("AH12:AH13")
+    End With
+    With chartObj.Chart
+        Set chartSeries = .SeriesCollection.NewSeries
+        chartSeries.Name = "=""New Series""" ' Series name
+        chartSeries.XValues = ws.Range("AD13") ' X-axis values
+        chartSeries.Values = ws.Range("AE13")  ' Y-axis values
+        chartSeries.MarkerStyle = xlMarkerStyleCircle   ' ? Circle marker
+        chartSeries.MarkerSize = 5                     ' ?? Adjust size as needed
+        chartSeries.MarkerForegroundColor = RGB(0, 0, 0) ' ? Black border
+        chartSeries.MarkerBackgroundColor = RGB(0, 0, 0) ' ? Black fill
+    End With
+    If ws.Range("AD14") = "Vessels - Dangerous Gas" Then
+        Call VDG
+    ElseIf ws.Range("AD14") = "Vessels - Non Dangerous Gas" Then
+        Call VNDG
+    ElseIf ws.Range("AD14") = "Vessels - Dangerous Liquids" Then
+        Call VDL
+    ElseIf ws.Range("AD14") = "Vessels - Non Dangerous Liquids" Then
+        Call VNDL
+    End If
+    varPressure = ws.Range("AE13")
+    varVolume = ws.Range("AD13")
+    If ws.Range("AD14") = "Vessels - Dangerous Gas" Then
+        'Not Regulated
+        If varPressure < 50 Then
+            ws.Range("AE15") = "Not Regulated"
+        'SEP
+        ElseIf (varPressure >= 50 And varPressure < 20000 And varVolume < 1) Or (varPressure >= 50 And varPressure * varVolume < 2000) Then
+            ws.Range("AE15") = "SEP"
+        'CAT I (Seen as CAT II for SASOL)
+        ElseIf (varVolume >= 1 And varPressure >= 50 And varPressure * varVolume >= 2000 And varPressure * varVolume < 5000) Then
+            ws.Range("AE15") = "CAT I"
+        'CAT II
+        ElseIf (varVolume >= 1 And varPressure >= 50 And varPressure * varVolume >= 5000 And varPressure * varVolume < 20000) Then
+            ws.Range("AE15") = "CAT II"
+        'CAT III
+        ElseIf ((varVolume >= 1 And varPressure >= 50 And varPressure * varVolume >= 20000 And varPressure * varVolume < 100000)) Or (varPressure >= 20000 And varPressure < 100000 And varVolume < 1) Then
+            ws.Range("AE15") = "CAT III"
+        'CAT IV
+        ElseIf (varPressure >= 100000 Or varPressure >= 50 Or varPressure * varVolume >= 100000) Then
+            ws.Range("AE15") = "CAT IV"
+        Else
+            ws.Range("AE15") = "Undetermined"
+        End If
+    ElseIf ws.Range("AD14") = "Vessels - Non Dangerous Gas" Then
+        'Not Regulated
+        If varPressure < 50 Then
+            ws.Range("AE15") = "Not Regulated"
+        'SEP
+        ElseIf (varPressure >= 50 And varPressure < 100000 And varVolume < 1) Or (varPressure >= 50 And varPressure * varVolume < 5000) Then
+            ws.Range("AE15") = "SEP"
+        'CAT I (Seen as CAT II for SASOL)
+        ElseIf (varVolume >= 1 And varPressure >= 50 And varPressure * varVolume >= 5000 And varPressure * varVolume < 20000) Then
+            ws.Range("AE15") = "CAT I"
+        'CAT II
+        ElseIf (varVolume >= 1 And varPressure >= 50 And varPressure * varVolume >= 20000 And varPressure * varVolume < 100000) Then
+            ws.Range("AE15") = "CAT II"
+        'CAT III
+        ElseIf (varPressure >= 100000 And varPressure < 300000 And varVolume < 1) Or (varVolume >= 1 And varPressure * varVolume >= 100000 And varPressure * varVolume < 300000 And varVolume < 750) Or (varVolume >= 750 And varPressure * varVolume >= 100000 And varVolume < 2000 And varPressure < 400) Or (varPressure >= 50 And varPressure < 400 And varVolume >= 2000) Then
+            ws.Range("AE15") = "CAT III"
+        'CAT IV
+        ElseIf (varPressure >= 300000 Or varPressure >= 400 Or varPressure * varVolume >= 300000) Then
+            ws.Range("AE15") = "CAT IV"
+        Else
+            ws.Range("AE15") = "Undetermined"
+        End If
+    ElseIf ws.Range("AD14") = "Vessels - Dangerous Liquids" Then
+        'Not Regulated
+        If varPressure < 50 Then
+            ws.Range("AE15") = "Not Regulated"
+        'SEP
+        ElseIf (varPressure >= 50 And varPressure < 50000 And varVolume < 1) Or (varPressure >= 50 And varPressure * varVolume < 20000) Then
+            ws.Range("AE15") = "SEP"
+        'CAT I (Seen as CAT II for SASOL)
+        ElseIf (varPressure < 1000 And varPressure >= 50 And varPressure * varVolume >= 20000) Then
+            ws.Range("AE15") = "CAT I"
+        'CAT II
+        ElseIf (varPressure < 50000 And varPressure >= 1000 And varPressure * varVolume >= 20000 And varVolume >= 1) Then
+            ws.Range("AE15") = "CAT II"
+        'CAT II (Top Left Corner)
+        ElseIf varPressure >= 50000 And varVolume < 1 Then
+            ws.Range("AE15") = "CAT II"
+        'CAT III
+        ElseIf varPressure >= 50000 And varVolume >= 1 Then
+            ws.Range("AE15") = "CAT III"
+        Else
+            ws.Range("AE15") = "Undetermined"
+        End If
+    ElseIf ws.Range("AD14") = "Vessels - Non Dangerous Liquids" Then
+        'Not Regulated
+        If varPressure < 50 Then
+            ws.Range("AE15") = "Not Regulated"
+        'SEP
+        ElseIf (varPressure >= 50 And varPressure < 100000 And varVolume < 10) Or (varPressure >= 50 And varPressure * varVolume < 1000000 And varVolume >= 10 And varVolume < 1000) Or (varVolume >= 1000 And varPressure >= 50 And varPressure < 1000) Then
+            ws.Range("AE15") = "SEP"
+        'CAT I (Seen as CAT II for SASOL)
+        ElseIf (varPressure * varVolume >= 1000000 And varPressure < 50000 And varVolume < 1000) Or (varVolume >= 1000 And varPressure >= 1000 And varPressure < 50000) Then
+            ws.Range("AE15") = "CAT I"
+        'CAT I (Seen as CAT II for SASOL - Top Left Corner)
+        ElseIf (varPressure >= 100000 And varVolume < 10) Then
+            ws.Range("AE15") = "CAT I"
+        'CAT II
+        ElseIf (varVolume >= 10 And varVolume < 20 And varPressure * varVolume >= 1000000) Or (varVolume >= 20 And varPressure >= 50000) Then
+            ws.Range("AE15") = "CAT II"
+        Else
+            ws.Range("AE15") = "Undetermined"
+        End If
+    End If
+End Sub
+
+Sub PRefreshHAZCAT()
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Sheets("FIXED DATA")
+    Set wsSR = ThisWorkbook.Sheets("SASOL - REPORT")
+    Dim chartObj As ChartObject
+    Dim chartSeries As Series
+    Dim arrSeries As Variant
+    Set chartObj = wsSR.ChartObjects("PCAT")
+    'Set CAT to undetermined to indicate a refresh
+    ws.Range("AE22") = "Graph Changed (Update Pressure / Volume to refresh)"
+    If ws.Range("AD21") = "Piping - Dangerous Gas" Then
+        ', Array(, ), Array(, )
+        chartObj.Chart.ChartTitle.text = "Figure 1 - Graph for Piping - Dangerous Gas"
+        arrSeries = Array(Array(0.1, 10000), Array(50, 50), Array(25, 25), Array(50, 1000000), Array(100, 100), Array(50, 1000), Array(100, 25), Array(1000, 4000), Array(350, 350), Array(50, 1000), Array(350, 100), Array(1000, 3500), Array(100, 100), Array(3500, 1000000))
+    ElseIf ws.Range("AD21") = "Piping - Non Dangerous Gas" Then
+        chartObj.Chart.ChartTitle.text = "Figure 2 - Graph for Piping - Non Dangerous Gas"
+        arrSeries = Array(Array(0.1, 10000), Array(50, 50), Array(32, 2000), Array(3125, 50), Array(32, 32), Array(3125, 100000), Array(100, 7000), Array(3500, 50), Array(100, 100), Array(3500, 100000), Array(250, 10000), Array(2000, 50), Array(250, 250), Array(2000, 100000))
+    ElseIf ws.Range("AD21") = "Piping - Dangerous Liquids" Then
+        chartObj.Chart.ChartTitle.text = "Figure 3 - Graph for Piping - Dangerous Liquids"
+        arrSeries = Array(Array(0.1, 10000), Array(50, 50), Array(25, 10000), Array(50000, 50000), Array(25, 25), Array(1000000, 8000), Array(25, 4000), Array(8000, 50), Array(200, 10000), Array(1000, 1000))
+    ElseIf ws.Range("AD21") = "Piping - Non Dangerous Liquids" Then
+        chartObj.Chart.ChartTitle.text = "Figure 4 - Graph for Piping - Non Dangerous Liquids"
+        arrSeries = Array(Array(0.1, 10000), Array(50, 50), Array(500, 10000), Array(1000, 1000), Array(200, 500), Array(2500, 1000), Array(200, 200), Array(2500, 100000), Array(200, 10000), Array(50000, 50000))
+    Else
+        chartObj.Chart.ChartTitle.text = "Information Not Found"
+        arrSeries = Array(Array(1, 1), Array(1, 1))
+    End If
+
+    Dim totalElements As Long
+    totalElements = (UBound(arrSeries) - LBound(arrSeries) + 1) / 2
+
+    ' Delete all series in reverse order
+    With chartObj.Chart
+        For i = .SeriesCollection.Count To 1 Step -1
+            .SeriesCollection(i).Delete
+        Next i
+    End With
+
+    ' Add a new series
+    countSeries = totalElements
+    Count = 0
+    For i = 0 To countSeries - 1
+        With chartObj.Chart
+            Set chartSeries = .SeriesCollection.NewSeries
+            chartSeries.Name = "=""Series: """ ' Series name
+            chartSeries.Border.Color = RGB(255, 0, 0)
+            chartSeries.MarkerStyle = xlMarkerStyleNone
+            chartSeries.Format.Line.Weight = 1.75
+            chartSeries.XValues = arrSeries(i + Count) ' X-axis values
+            chartSeries.Values = arrSeries(i + Count + 1)  ' Y-axis values
+        End With
+        Count = Count + 1
+    Next i
+    ' Add a new series
+    With chartObj.Chart
+        Set chartSeries = .SeriesCollection.NewSeries
+        chartSeries.Name = "=""Series: """ ' Series name
+        chartSeries.Border.Color = RGB(46, 117, 182)
+        chartSeries.MarkerStyle = xlMarkerStyleNone
+        chartSeries.Format.Line.Weight = 1.75
+        chartSeries.XValues = ws.Range("AD19:AD20")
+        chartSeries.Values = ws.Range("AE19:AE20")
+    End With
+    With chartObj.Chart
+        Set chartSeries = .SeriesCollection.NewSeries
+        chartSeries.Name = "=""Series: """ ' Series name
+        chartSeries.Border.Color = RGB(46, 117, 182)
+        chartSeries.MarkerStyle = xlMarkerStyleNone
+        chartSeries.Format.Line.Weight = 1.75
+        chartSeries.XValues = ws.Range("AG19:AG20")
+        chartSeries.Values = ws.Range("AH19:AH20")
+    End With
+    With chartObj.Chart
+        Set chartSeries = .SeriesCollection.NewSeries
+        chartSeries.Name = "=""New Series""" ' Series name
+        chartSeries.XValues = ws.Range("AD20") ' X-axis values
+        chartSeries.Values = ws.Range("AE20")  ' Y-axis values
+        chartSeries.MarkerStyle = xlMarkerStyleCircle   ' ? Circle marker
+        chartSeries.MarkerSize = 5                     ' ?? Adjust size as needed
+        chartSeries.MarkerForegroundColor = RGB(0, 0, 0) ' ? Black border
+        chartSeries.MarkerBackgroundColor = RGB(0, 0, 0) ' ? Black fill
+    End With
+    If ws.Range("AD21") = "Piping - Dangerous Gas" Then
+        Call PDG
+    ElseIf ws.Range("AD21") = "Piping - Non Dangerous Gas" Then
+        Call PNDG
+    ElseIf ws.Range("AD21") = "Piping - Dangerous Liquids" Then
+        Call PDL
+    ElseIf ws.Range("AD21") = "Piping - Non Dangerous Liquids" Then
+        Call PNDL
+    End If
+    varPressure = ws.Range("AE20")
+    varDN = ws.Range("AD20")
+    If ws.Range("AD21") = "Piping - Dangerous Gas" Then
+        'Not Regulated
+        If varPressure < 50 Then
+            ws.Range("AE22") = "Not Regulated"
+        'SEP
+        ElseIf (varPressure >= 50 And varDN < 25) Then
+            ws.Range("AE22") = "SEP"
+        'CAT I (Seen as CAT II for SASOL)
+        ElseIf (varPressure >= 50 And varPressure * varDN < 100000 And varDN >= 25 And varDN < 100) Then
+            ws.Range("AE22") = "CAT I"
+        'CAT II
+        ElseIf (varDN >= 25 And varDN < 100 And varPressure * varDN >= 100000) Or (varDN >= 100 And varDN < 350 And varPressure * varDN < 350000) Then
+            ws.Range("AE22") = "CAT II"
+        'CAT III
+        ElseIf (varDN >= 100 And varDN < 350 And varPressure * varDN >= 350000) Or (varDN >= 350 And varPressure >= 50) Then
+            ws.Range("AE22") = "CAT III"
+        Else
+            ws.Range("AE22") = "Undetermined"
+        End If
+    ElseIf ws.Range("AD21") = "Piping - Non Dangerous Gas" Then
+        'Not Regulated
+        If varPressure < 50 Then
+            ws.Range("AE22") = "Not Regulated"
+        'SEP
+        ElseIf (varPressure >= 50 And varDN < 32) Or (varPressure >= 50 And varDN >= 32 And varPressure * varDN < 100000) Then
+            ws.Range("AE22") = "SEP"
+        'CAT I (Seen as CAT II for SASOL)
+        ElseIf (varDN >= 32 And varDN < 100 And varPressure * varDN >= 100000) Or (varDN >= 100 And varDN * varPressure >= 100000 And varDN * varPressure < 350000 And varPressure >= 50) Then
+            ws.Range("AE22") = "CAT I"
+        'CAT II
+        ElseIf (varDN >= 100 And varDN < 250 And varPressure * varDN >= 350000) Or (varDN >= 250 And varDN * varPressure >= 350000 And varDN * varPressure < 500000 And varPressure >= 50) Then
+            ws.Range("AE22") = "CAT II"
+        'CAT III
+        ElseIf (varDN >= 250 And varDN * varPressure >= 500000) Then
+            ws.Range("AE22") = "CAT III"
+        Else
+            ws.Range("AE22") = "Undetermined"
+        End If
+    ElseIf ws.Range("AD21") = "Piping - Dangerous Liquids" Then
+        'Not Regulated
+        If varPressure < 50 Then
+            ws.Range("AE22") = "Not Regulated"
+        'SEP
+        ElseIf (varPressure >= 50 And varDN < 25) Or (varDN >= 25 And varPressure >= 50 And varDN * varPressure < 200000) Then
+            ws.Range("AE22") = "SEP"
+        'CAT I (Seen as CAT II for SASOL)
+        ElseIf (varDN * varPressure >= 200000 And varPressure < 1000 And varPressure >= 50) Then
+            ws.Range("AE22") = "CAT I"
+        'CAT II
+        ElseIf (varDN >= 25 And varDN < 200 And varDN * varPressure >= 200000 And varPressure < 50000) Or (varDN >= 200 And varPressure >= 1000 And varPressure < 50000) Then
+            ws.Range("AE22") = "CAT II"
+        'CAT III
+        ElseIf varPressure >= 50000 And varDN >= 25 Then
+            ws.Range("AE22") = "CAT III"
+        Else
+            ws.Range("AE22") = "Undetermined"
+        End If
+    ElseIf ws.Range("AD21") = "Piping - Non Dangerous Liquids" Then
+        'Not Regulated
+        If varPressure < 50 Then
+            ws.Range("AE22") = "Not Regulated"
+        'SEP
+        ElseIf (varPressure >= 50 And varDN < 200) Or (varDN >= 200 And varDN < 500 And varPressure >= 50 And varPressure * varDN < 500000) Or (varDN >= 500 And varPressure >= 50 And varPressure < 1000) Then
+            ws.Range("AE22") = "SEP"
+        'CAT I (Seen as CAT II for SASOL)
+        ElseIf (varDN >= 200 And varDN < 500 And varDN * varPressure >= 500000 And varPressure < 50000) Or (varDN >= 500 And varPressure >= 1000 And varPressure < 50000) Then
+            ws.Range("AE22") = "CAT I"
+        'CAT II
+        ElseIf varDN >= 200 And varPressure >= 50000 Then
+            ws.Range("AE22") = "CAT II"
+        Else
+            ws.Range("AE22") = "Undetermined"
+        End If
+    End If
+End Sub
+
+Private Sub Worksheet_Activate()
+'    Dim wsa As Worksheet
+'    Set wsa = ThisWorkbook.Sheets("FIXED DATA")
+'
+'    If Not IsEmpty(wsa.Range("AD16").Value) Then
+'        If Not IsEmpty(wsa.Range("AD17").Value) Then
+'            Call VRefreshHAZCAT
+'            Call PRefreshHAZCAT
+'        End If
+'    End If
+End Sub
+
+Sub InputDataRefresh()
+    Dim wsa As Worksheet
+    Set wsa = ThisWorkbook.Sheets("FIXED DATA")
+    
+    If Not IsEmpty(wsa.Range("AD16").Value) Then
+        If Not IsEmpty(wsa.Range("AD17").Value) Then
+            Call VRefreshHAZCAT
+            Call PRefreshHAZCAT
+        End If
+    End If
+End Sub
+
